@@ -6,5 +6,7 @@
     	<!-- 사용할 DTO 등록  -->
 		<typeAlias type="com.petsbnb.dto.UserDTO" alias="UserDTO"/>
 		<typeAlias type="com.petsbnb.dto.FileDTO" alias="FileDTO"/>
+		<typeAlias type="com.petsbnb.dto.PetDTO" alias="PetDTO"/>
+		<typeAlias type="com.petsbnb.dto.PetFileDTO" alias="PetFileDTO"/>
     </typeAliases>
 </configuration>

@@ -2,6 +2,81 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- JAVA와 연결할 Mapper 파일 설정 -->
 <mapper namespace="com.petsbnb.persistance.mapper.PetMapper">
-
+	
+	<insert id="insertPetProfile" parameterType="PetDTO">
+		INSERT INTO PET_INFO
+		(
+			USER_NO,
+			PET_NAME,
+			PET_GENDER,
+			PET_KIND,
+			PET_WEIGHT,
+			PET_NEUTRALIZATION,
+			PET_MEETANOTHERPET,
+			PET_BARKS,
+			PET_BOWELTRAINING,
+			PET_COMPREHENSIVE_VACCINE,
+			PET_RABIESVACCINATION,
+			PET_HEARTWORM,
+			PET_CORONAENTERITIS,
+			PET_KENNELKOV,
+			PET_NONEVACCINE,
+			PET_UNFAMILIAR,
+			PET_SPECIALMATTERS,
+			PET_REFERENCE,
+			REG_NO,
+			REG_DT
+		)
+		VALUES
+		(
+			 #{userNo},
+			 #{petName},
+			 #{petGender},
+			 #{petKind},
+			 #{petWeight},
+			 #{petNeutralization},
+			 #{petMeetAnotherPet},
+			 #{petBarks},
+			 #{petBowelTraining},
+			 #{petComprehensiveVaccine},
+			 #{petRabiesvaccination},
+			 #{petHeartworm},
+			 #{petCoronaenteritis},
+			 #{petKennelkov},
+			 #{petNonevaccine},
+			 #{petUnfamiliar},
+			 #{petSpecialMatters},
+			 #{petReference},
+			 #{userNo},
+			 NOW()
+		)
+		<selectKey resultType="string" keyProperty="petNo" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+	<insert id="insertPetImageFile" parameterType="java.util.Map">
+		INSERT INTO PET_FILE_INFO
+		(
+			PET_NO,
+			USER_NO,
+			PET_FILE_ORG_NAME,
+			PET_FILE_NAME,
+			PET_FILE_PATH,
+			REG_NO,
+			REG_DT
+		)
+		VALUE
+		<foreach collection="petImages" item="item" index="index" separator=",">
+		(
+			#{item.petNo},
+			#{item.userNo},
+			#{item.petFileOrgName},
+			#{item.petFileName},
+			#{item.petFilePath},
+			#{item.regNo},
+			NOW()
+		)
+		</foreach>
+	</insert>
 			
 </mapper>

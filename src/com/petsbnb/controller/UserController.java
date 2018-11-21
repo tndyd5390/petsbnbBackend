@@ -38,9 +38,9 @@ public class UserController {
 	@Resource(name="UserService")
 	private IUserService userService;
 	
-String userImageFilePath = "C:\\Users\\DATA16\\git\\petsbnb_backend\\WebContent\\userImageFile\\";
+	String userImageFilePath = "C:\\Users\\DATA16\\git\\petsbnbBackend\\WebContent\\userImageFile\\";
 	
-	@RequestMapping(value="user/daumPostView")
+	@RequestMapping(value="/user/daumPostView")
 	public ModelAndView daumPostView(HttpServletRequest req, HttpServletResponse resp, Model model, HttpSession session) throws Exception{
 		log.info(this.getClass() + ".daumPostView start!!!");
 		
