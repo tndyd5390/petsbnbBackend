@@ -114,4 +114,15 @@
 		       USER_ADDRESS_DETAIL = #{userAddressDetail}
 		 WHERE USER_NO = #{userNo}
 	</update>
+	<select id="getUserImage" parameterType="UserDTO" resultType="FileDTO">
+		SELECT FILE_NO			AS fileNo,
+			   FILE_ORG_NAME	AS fileOrgName,
+		       FILE_NAME		AS fileName,
+		       FILE_PATH		AS filePath
+		  FROM FILE_INFO
+		 WHERE FILE_NO = (SELECT IMAGE_FILE_NO 
+		  					FROM USER_INFO 
+		  				   WHERE USER_NO = #{userNo});
+	
+	</select>
 </mapper>

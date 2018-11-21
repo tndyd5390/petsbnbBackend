@@ -17,4 +17,5 @@ public interface UserMapper {
 	public int insertUserImage(FileDTO fDTO) throws Exception;
 	public int updateUserImage(FileDTO fDTO) throws Exception;
 	public int updateUserAddress(UserDTO uDTO) throws Exception;
+	public FileDTO getUserImage(UserDTO uDTO) throws Exception;
 }

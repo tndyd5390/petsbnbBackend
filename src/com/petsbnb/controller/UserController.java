@@ -313,4 +313,28 @@ public class UserController {
 		return resultMap;
 	}
 	
+	@RequestMapping(value="/user/getUserImage", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> getUserImage(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getUserImage start!!!");
+		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		
+		UserDTO udto = new UserDTO();
+		udto.setUserNo(userNo);
+		
+		FileDTO fDTO = userService.getUserImage(udto);		
+		
+		Map<Object, Object> resultMap = new HashMap<>();
+		if(fDTO != null){
+			resultMap.put("result", true);
+			resultMap.put("fileInfo", fDTO);
+		}else{
+			resultMap.put("result", false);
+		}
+		
+		log.info(this.getClass() + ".getUserImage end!!!");
+		return resultMap;
+	}
+	
 }

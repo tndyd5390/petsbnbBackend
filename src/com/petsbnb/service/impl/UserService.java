@@ -63,4 +63,9 @@ public class UserService implements IUserService {
 	public int updateUserAddress(UserDTO uDTO) throws Exception {
 		return userMapper.updateUserAddress(uDTO);
 	}
+
+	@Override
+	public FileDTO getUserImage(UserDTO uDTO) throws Exception {
+		return userMapper.getUserImage(uDTO);
+	}
 }
