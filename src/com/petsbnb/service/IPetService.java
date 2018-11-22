@@ -8,4 +8,6 @@ import com.petsbnb.dto.PetFileDTO;
 
 public interface IPetService {
 	public boolean insertPetProfile(Map<String, Object> pfMap, PetDTO pDTO) throws Exception;
+	public List<PetDTO> getPetList(String userNo) throws Exception;
+	public Map<String, Object> getPetInfo(PetDTO pDTO) throws Exception;
 }

@@ -6,6 +6,7 @@ public class PetDTO {
 	private String petName;
 	private String petGender;
 	private String petKind;
+	private String petBirthday;
 	private String petWeight;
 	private String petNeutralization;
 	private String petUnfamiliar;
@@ -24,19 +25,8 @@ public class PetDTO {
 	private String regDt;
 	private String chgNo;
 	private String chgDt;
-	
-	public String getPetSpecialMatters() {
-		return petSpecialMatters;
-	}
-	public void setPetSpecialMatters(String petSpecialMatters) {
-		this.petSpecialMatters = petSpecialMatters;
-	}
-	public String getPetReference() {
-		return petReference;
-	}
-	public void setPetReference(String petReference) {
-		this.petReference = petReference;
-	}
+	private String age;
+	private String petFileName;
 	public String getPetNo() {
 		return petNo;
 	}
@@ -67,6 +57,12 @@ public class PetDTO {
 	public void setPetKind(String petKind) {
 		this.petKind = petKind;
 	}
+	public String getPetBirthday() {
+		return petBirthday;
+	}
+	public void setPetBirthday(String petBirthday) {
+		this.petBirthday = petBirthday;
+	}
 	public String getPetWeight() {
 		return petWeight;
 	}
@@ -85,10 +81,10 @@ public class PetDTO {
 	public void setPetUnfamiliar(String petUnfamiliar) {
 		this.petUnfamiliar = petUnfamiliar;
 	}
-	public String getpetMeetAnotherPet() {
+	public String getPetMeetAnotherPet() {
 		return petMeetAnotherPet;
 	}
-	public void setpetMeetAnotherPet(String petMeetAnotherPet) {
+	public void setPetMeetAnotherPet(String petMeetAnotherPet) {
 		this.petMeetAnotherPet = petMeetAnotherPet;
 	}
 	public String getPetBarks() {
@@ -97,10 +93,10 @@ public class PetDTO {
 	public void setPetBarks(String petBarks) {
 		this.petBarks = petBarks;
 	}
-	public String getpetBowelTraining() {
+	public String getPetBowelTraining() {
 		return petBowelTraining;
 	}
-	public void setpetBowelTraining(String petBowelTraining) {
+	public void setPetBowelTraining(String petBowelTraining) {
 		this.petBowelTraining = petBowelTraining;
 	}
 	public String getPetComprehensiveVaccine() {
@@ -127,10 +123,10 @@ public class PetDTO {
 	public void setPetCoronaenteritis(String petCoronaenteritis) {
 		this.petCoronaenteritis = petCoronaenteritis;
 	}
-	public String getpetKennelkov() {
+	public String getPetKennelkov() {
 		return petKennelkov;
 	}
-	public void setpetKennelkov(String petKennelkov) {
+	public void setPetKennelkov(String petKennelkov) {
 		this.petKennelkov = petKennelkov;
 	}
 	public String getPetNonevaccine() {
@@ -138,6 +134,18 @@ public class PetDTO {
 	}
 	public void setPetNonevaccine(String petNonevaccine) {
 		this.petNonevaccine = petNonevaccine;
+	}
+	public String getPetSpecialMatters() {
+		return petSpecialMatters;
+	}
+	public void setPetSpecialMatters(String petSpecialMatters) {
+		this.petSpecialMatters = petSpecialMatters;
+	}
+	public String getPetReference() {
+		return petReference;
+	}
+	public void setPetReference(String petReference) {
+		this.petReference = petReference;
 	}
 	public String getRegNo() {
 		return regNo;
@@ -163,4 +171,17 @@ public class PetDTO {
 	public void setChgDt(String chgDt) {
 		this.chgDt = chgDt;
 	}
+	public String getAge() {
+		return age;
+	}
+	public void setAge(String age) {
+		this.age = age;
+	}
+	public String getPetFileName() {
+		return petFileName;
+	}
+	public void setPetFileName(String petFileName) {
+		this.petFileName = petFileName;
+	}
+	
 }

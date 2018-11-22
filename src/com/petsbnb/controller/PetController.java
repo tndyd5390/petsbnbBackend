@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,6 +48,8 @@ public class PetController {
 		log.info("petGender : " + petGender);
 		String petKind = CmmUtil.nvl(req.getParameter("petKind"));
 		log.info("petKind : " + petKind);
+		String petBirthday = CmmUtil.nvl(req.getParameter("petBirthday"));
+		log.info("petBirthday : " + petBirthday);
 		String petWeight = CmmUtil.nvl(req.getParameter("petWeight"));
 		log.info("petWeight : " + petWeight);
 		String petNeutralization = CmmUtil.nvl(req.getParameter("petNeutralization"));
@@ -81,17 +84,18 @@ public class PetController {
 		pDTO.setPetName(petName);
 		pDTO.setPetGender(petGender);
 		pDTO.setPetKind(petKind);
+		pDTO.setPetBirthday(petBirthday);
 		pDTO.setPetWeight(petWeight);
 		pDTO.setPetNeutralization(petNeutralization);
 		pDTO.setPetUnfamiliar(petUnfamiliar);
-		pDTO.setpetMeetAnotherPet(petMeetAnotherPet);
+		pDTO.setPetMeetAnotherPet(petMeetAnotherPet);
 		pDTO.setPetBarks(petBarks);
-		pDTO.setpetBowelTraining(petBowelTraining);
+		pDTO.setPetBowelTraining(petBowelTraining);
 		pDTO.setPetComprehensiveVaccine(petComprehensiveVaccine);
 		pDTO.setPetRabiesvaccination(petRabiesVaccination);
 		pDTO.setPetHeartworm(petHeartWorm);
 		pDTO.setPetCoronaenteritis(petCoronaEnteritis);
-		pDTO.setpetKennelkov(petKennelkov);
+		pDTO.setPetKennelkov(petKennelkov);
 		pDTO.setPetNonevaccine(petNoneVaccine);
 		pDTO.setPetSpecialMatters(petSpecialMatters);
 		pDTO.setPetReference(petReference);
@@ -137,6 +141,38 @@ public class PetController {
 		
 		log.info(this.getClass() + ".petProfileRegProc end!!!");
 		return resultMap;
+	}
+	
+	@RequestMapping(value="/pet/getPetList")
+	public @ResponseBody List<PetDTO> getPetList(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getList start!!!");
 		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		
+		List<PetDTO> pList = petService.getPetList(userNo);
+		
+		log.info(this.getClass() + ".getList end!!!");
+		return pList;
+	}
+	
+	@RequestMapping(value="/pet/getPetInfo")
+	public @ResponseBody Map<String, Object> getPetInfo(@RequestBody Map<Object,Object> param) throws Exception{
+		log.info(this.getClass() + ".getPetInfo start!!!");
+		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		String petNo = CmmUtil.nvl((String)param.get("petNo"));
+		log.info("petNo");
+		
+		PetDTO pDTO = new PetDTO();
+		pDTO.setUserNo(userNo);
+		pDTO.setPetNo(petNo);
+		
+		Map<String, Object> result = petService.getPetInfo(pDTO);
+		
+		log.info(this.getClass() + ".getPetInfo end!!!");
+		System.out.println(result);
+		return result;
 	}
 }

@@ -1,5 +1,6 @@
 package com.petsbnb.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,11 +36,27 @@ public class PetService implements IPetService{
 		int insertPetImages = petMapper.insertPetImageFile(pfMap);
 		
 		boolean result = false;
-		
+		System.out.println("inserPetProfile : " + insertPetProfile);
+		System.out.println("insertPetImages : " + insertPetImages);
 		if(insertPetProfile > 0 && insertPetImages > 0){
 			result = true;
 		}
 		
-		return false;
+		return result;
+	}
+
+	@Override
+	public List<PetDTO> getPetList(String userNo) throws Exception {
+		return petMapper.getPetList(userNo);
+	}
+
+	@Override
+	public Map<String, Object> getPetInfo(PetDTO pDTO) throws Exception {
+		Map<String, Object> result = new HashMap<>();
+		PetDTO pDTO1 = petMapper.getPetDTO(pDTO);
+		List<PetFileDTO> pList = petMapper.getPetFileDTO(pDTO);
+		result.put("petDTO", pDTO1);
+		result.put("petFileList", pList);
+		return result;
 	}
 }
