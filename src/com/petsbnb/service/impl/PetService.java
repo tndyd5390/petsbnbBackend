@@ -59,4 +59,34 @@ public class PetService implements IPetService{
 		result.put("petFileList", pList);
 		return result;
 	}
+
+	@Override
+	public List<PetFileDTO> deleteImageAndGetImage(PetFileDTO pfDTO) throws Exception {
+		int deleteRow = petMapper.deletePetFile(pfDTO);
+		List<PetFileDTO> pfList = petMapper.getPetFileList(pfDTO);
+		return pfList;
+	}
+
+	@Override
+	public List<PetFileDTO> insertImageAndGetImage(PetFileDTO pfDTO) throws Exception {
+		int insertRow = petMapper.insertPetFile(pfDTO);
+		List<PetFileDTO> pfList = petMapper.getPetFileList(pfDTO);
+		return pfList;
+	}
+
+	@Override
+	public int updatePetProfile(PetDTO pDTO) throws Exception {
+		return petMapper.updatePetProfile(pDTO);
+	}
+
+	@Override
+	public boolean deletePetProfile(PetDTO pDTO) throws Exception {
+		boolean result = false;
+		int deletePetImage = petMapper.deletePetImage(pDTO);
+		int deletePetProfile = petMapper.deletePetProfile(pDTO);
+		if(deletePetImage != 0 && deletePetProfile != 0){
+			result = true;
+		}
+		return result;
+	}
 }

@@ -14,4 +14,10 @@ public interface PetMapper {
 	public List<PetDTO> getPetList(String userNo) throws Exception;
 	public PetDTO getPetDTO(PetDTO pDTO) throws Exception;
 	public List<PetFileDTO> getPetFileDTO(PetDTO pDTO) throws Exception;
+	public int deletePetFile(PetFileDTO pfDTO) throws Exception;
+	public int insertPetFile(PetFileDTO pfDTO) throws Exception;
+	public List<PetFileDTO> getPetFileList(PetFileDTO pfDTO) throws Exception;
+	public int updatePetProfile(PetDTO pDTO) throws Exception;
+	public int deletePetImage(PetDTO pDTO) throws Exception;
+	public int deletePetProfile(PetDTO pDTO) throws Exception;
 }

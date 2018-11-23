@@ -139,5 +139,74 @@
 		 WHERE PET_NO = #{petNo} and USER_NO=#{userNo}
 	
 	</select>
+	<delete id="deletePetFile" parameterType="PetFileDTO">
+		DELETE FROM PET_FILE_INFO WHERE PET_FILE_NO = #{petFileNo}
+	</delete>
+	<select id="getPetFileList" parameterType="PetFileDTO" resultType="PetFileDTO">
+		SELECT PET_FILE_NO			AS petFileNo,
+   			   PET_NO				AS petNo,
+			   PET_FILE_ORG_NAME	AS petFileOrgName,
+			   PET_FILE_NAME		AS petFileName,
+			   PET_FILE_PATH		AS petFilePath,
+			   REG_NO				AS regNo,
+			   REG_DT				AS regDt,
+			   CHG_NO				AS chgNo,
+			   CHG_DT				AS chgDt,
+			   USER_NO				AS userNo
+		  FROM PET_FILE_INFO
+		 WHERE PET_NO = #{petNo} and USER_NO=#{userNo}
+	</select>
+	<insert id="insertPetFile" parameterType="PetFileDTO">
+		INSERT INTO PET_FILE_INFO
+		(
+			PET_NO,
+			USER_NO,
+			PET_FILE_ORG_NAME,
+			PET_FILE_NAME,
+			PET_FILE_PATH,
+			REG_NO,
+			REG_DT
+		)
+		VALUE
+		(
+			#{petNo},
+			#{userNo},
+			#{petFileOrgName},
+			#{petFileName},
+			#{petFilePath},
+			#{regNo},
+			NOW()
+		)
+	</insert>
+	<update id="updatePetProfile" parameterType="PetDTO">
+		UPDATE PET_INFO
+		   SET PET_BIRTHDAY = #{petBirthday},
+			   PET_NAME = #{petName},
+			   PET_GENDER = #{petGender},
+			   PET_KIND = #{petKind},
+			   PET_WEIGHT = #{petWeight},
+			   PET_NEUTRALIZATION = #{petNeutralization},
+			   PET_UNFAMILIAR = #{petUnfamiliar},
+			   PET_MEETANOTHERPET = #{petMeetAnotherPet},
+			   PET_BARKS = #{petBarks},
+			   PET_BOWELTRAINING = #{petBowelTraining},
+			   PET_COMPREHENSIVE_VACCINE = #{petComprehensiveVaccine},
+			   PET_RABIESVACCINATION = #{petRabiesvaccination},
+			   PET_HEARTWORM = #{petHeartworm},
+			   PET_CORONAENTERITIS = #{petCoronaenteritis},
+			   PET_KENNELKOV = #{petKennelkov},
+			   PET_NONEVACCINE = #{petNonevaccine},
+			   PET_SPECIALMATTERS = #{petSpecialMatters},
+			   PET_REFERENCE = #{petReference},
+			   CHG_NO = #{userNo},
+			   CHG_DT = NOW()
+	     WHERE PET_NO = #{petNo}
+	</update>
+	<delete id="deletePetImage" parameterType="PetDTO">
+		DELETE FROM PET_FILE_INFO WHERE USER_NO = #{userNo} AND PET_NO = #{petNo}
 	
+	</delete>
+	<delete id="deletePetProfile" parameterType="PetDTO">
+		DELETE FROM PET_INFO WHERE PET_NO = #{petNo} AND USER_NO = #{userNo}
+	</delete>
 </mapper>
