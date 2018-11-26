@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,6 +30,8 @@ import com.petsbnb.dto.UserDTO;
 import com.petsbnb.service.IUserService;
 import com.petsbnb.util.AES256Util;
 import com.petsbnb.util.CmmUtil;
+import com.petsbnb.util.Email;
+import com.petsbnb.util.EmailSender;
 
 @Controller
 public class UserController {
@@ -37,6 +40,9 @@ public class UserController {
 	
 	@Resource(name="UserService")
 	private IUserService userService;
+	
+	@Autowired
+	private EmailSender emailSender;
 	
 	String userImageFilePath = "C:\\Users\\DATA16\\git\\petsbnbBackend\\WebContent\\userImageFile\\";
 	
@@ -335,6 +341,94 @@ public class UserController {
 		
 		log.info(this.getClass() + ".getUserImage end!!!");
 		return resultMap;
+	}
+	
+	@RequestMapping(value="/user/userFindEmail.do", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> userFindEmail(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".userFindEmail start!!!!");
+		
+		String name = CmmUtil.nvl((String)param.get("name"));
+		log.info("name : " + name);
+		name = AES256Util.strEncode(name);
+		String phone = CmmUtil.nvl((String)param.get("phone"));
+		log.info("phone : " + phone);
+		phone=AES256Util.strEncode(phone);
+		
+		UserDTO uDTO = new UserDTO();
+		uDTO.setUserName(name);
+		uDTO.setUserPhone(phone);
+		
+		uDTO = userService.getUserFindEmail(uDTO);
+		
+		Map<Object, Object> resultMap = new HashMap<>();
+		if(uDTO == null){
+			resultMap.put("result", false);
+		}else{
+			resultMap.put("result", true);
+			resultMap.put("userEmail", AES256Util.strDecode(uDTO.getUserEmail()));
+		}
+		System.out.println(resultMap.toString());
+		log.info(this.getClass() + ".userFindEmail end!!!");
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/user/userFindPassword", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> userFindPassword(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".userFindPassword start!!!");
+		
+		String email = CmmUtil.nvl((String)param.get("email"));
+		email = AES256Util.strEncode(email);
+		log.info("email : " + email);
+		String name = CmmUtil.nvl((String)param.get("name"));
+		name = AES256Util.strEncode(name);
+		log.info("name : " + name);
+		String phone = CmmUtil.nvl((String)param.get("phone"));
+		phone = AES256Util.strEncode(phone);
+		log.info("phone : " + phone);
+		
+		String tmpPass = CmmUtil.createTmpPassword();
+		tmpPass = AES256Util.strEncode(tmpPass);
+		
+		UserDTO uDTO = new UserDTO();
+		uDTO.setUserEmail(email);
+		uDTO.setUserPhone(phone);
+		uDTO.setUserName(name);
+		uDTO.setUserPassword(tmpPass);
+		
+		uDTO = userService.getUserFindPassword(uDTO);
+		
+		Map<Object, Object> resultMap = new HashMap<>();
+		
+		if(uDTO == null){
+			resultMap.put("result", false);
+		}else{
+			Email sendEmail = new Email();
+			sendEmail.setReciver(AES256Util.strDecode(uDTO.getUserEmail()));
+			sendEmail.setSubject("Petsbnb 임시비밀번호 입니다.");
+			sendEmail.setContent(AES256Util.strDecode(uDTO.getUserPassword()));
+			emailSender.SendEmail(sendEmail);
+			resultMap.put("result", true);
+		}
+		
+		log.info(this.getClass() + ".userFindPassword end!!!");
+		return resultMap;
+		
+	}
+	
+	@RequestMapping(value="/user/checkPetSitter", method=RequestMethod.POST)
+	public @ResponseBody UserDTO checkPetSitter(@RequestBody Map<Object,Object> param) throws Exception{
+		log.info(this.getClass() + ".checkPetSitter start!!!");
+		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		
+		UserDTO uDTO = new UserDTO();
+		uDTO.setUserNo(userNo);
+		
+		uDTO = userService.getCheckPetSitter(uDTO);
+		
+		log.info(this.getClass() + ".checkPetSitter end!!!");
+		return uDTO;
 	}
 	
 }

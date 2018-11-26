@@ -15,4 +15,7 @@ public interface IUserService {
 	public boolean updateUserImage(FileDTO fDTO) throws Exception;
 	public int updateUserAddress(UserDTO uDTO) throws Exception;
 	public FileDTO getUserImage(UserDTO uDTO) throws Exception;
+	public UserDTO getUserFindEmail(UserDTO uDTO) throws Exception;
+	public UserDTO getUserFindPassword(UserDTO uDTO) throws Exception;
+	public UserDTO getCheckPetSitter(UserDTO uDTO) throws Exception;
 }

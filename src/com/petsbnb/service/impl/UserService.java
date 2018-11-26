@@ -68,4 +68,20 @@ public class UserService implements IUserService {
 	public FileDTO getUserImage(UserDTO uDTO) throws Exception {
 		return userMapper.getUserImage(uDTO);
 	}
+
+	@Override
+	public UserDTO getUserFindEmail(UserDTO uDTO) throws Exception {
+		return userMapper.getUserFindEmail(uDTO);
+	}
+
+	@Override
+	public UserDTO getUserFindPassword(UserDTO uDTO) throws Exception {
+		int updateTmpPass = userMapper.updateUserTmpPassword(uDTO);
+		return userMapper.getUserFindPassword(uDTO);
+	}
+
+	@Override
+	public UserDTO getCheckPetSitter(UserDTO uDTO) throws Exception {
+		return userMapper.getCheckPetSitter(uDTO);
+	}
 }

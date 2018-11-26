@@ -15,6 +15,13 @@ public class UserDTO {
 	private String fileName;
 	private String filePath;
 	private String imageFileNo;
+	private String isPetSitter;
+	public String getIsPetSitter() {
+		return isPetSitter;
+	}
+	public void setIsPetSitter(String isPetSitter) {
+		this.isPetSitter = isPetSitter;
+	}
 	public String getFileNo() {
 		return fileNo;
 	}

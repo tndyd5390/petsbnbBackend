@@ -48,4 +48,23 @@
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" 
 		p:maxUploadSize="104857600" p:maxInMemorySize="104857600" />
 
+	<!-- 이메일 보내기 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="defaultEncoding" value="utf-8"/>
+		<property name="username" value="kangseokopo@gmail.com" />
+		<property name="password" value="vhfflxpr" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtp.auth">true</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="email" class="com.petsbnb.util.Email">
+	</bean>
+	<bean id="emailSender" class="com.petsbnb.util.EmailSender">
+	</bean>
+	
 </beans>

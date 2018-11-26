@@ -1,5 +1,7 @@
 package com.petsbnb.util;
 
+import java.util.UUID;
+
 public class CmmUtil {
 	public static String nvl(String str, String chg_str) {
 		String res;
@@ -39,5 +41,11 @@ public class CmmUtil {
 		}else{				
 			return "";
 		}
+	}
+	
+	public static String createTmpPassword(){
+		String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+		uuid = uuid.substring(0, 8);
+		return uuid;
 	}
 }

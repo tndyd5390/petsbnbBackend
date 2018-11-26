@@ -125,4 +125,23 @@
 		  				   WHERE USER_NO = #{userNo});
 	
 	</select>
+	<select id="getUserFindEmail" parameterType="UserDTO" resultType="UserDTO">
+		SELECT USER_EMAIL AS userEmail FROM USER_INFO WHERE USER_NAME = #{userName} AND USER_PHONE=#{userPhone}
+	</select>
+	<select id="getUserFindPassword" parameterType="UserDTO" resultType="UserDTO">
+		SELECT USER_PASSWORD AS userPassword,
+			   USER_EMAIL as userEmail
+		  FROM USER_INFO 
+		 WHERE USER_NAME = #{userName} AND USER_PHONE=#{userPhone} AND USER_EMAIL=#{userEmail}
+	</select>
+	<update id="updateUserTmpPassword" parameterType="UserDTO">
+		UPDATE USER_INFO 
+		   SET USER_PASSWORD = #{userPassword}
+		 WHERE USER_NAME = #{userName} AND USER_PHONE=#{userPhone} AND USER_EMAIL=#{userEmail}
+	</update>
+	<select id="getCheckPetSitter" parameterType="UserDTO" resultType="UserDTO">
+		SELECT IS_PET_SITTER AS isPetSitter
+		  FROM USER_INFO
+		 WHERE USER_NO = #{userNo}
+	</select>
 </mapper>
