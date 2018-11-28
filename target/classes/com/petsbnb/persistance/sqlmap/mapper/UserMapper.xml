@@ -144,4 +144,10 @@
 		  FROM USER_INFO
 		 WHERE USER_NO = #{userNo}
 	</select>
+	<select id="getUserAddress" parameterType="UserDTO" resultType="UserDTO">
+		SELECT USER_ADDRESS AS userAddress,
+		       USER_ADDRESS_DETAIL AS userAddressDetail
+		  FROM USER_INFO
+		 WHERE USER_NO = #{userNo}
+	</select>
 </mapper>

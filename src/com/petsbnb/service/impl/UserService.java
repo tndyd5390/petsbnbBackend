@@ -1,6 +1,7 @@
 package com.petsbnb.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -83,5 +84,10 @@ public class UserService implements IUserService {
 	@Override
 	public UserDTO getCheckPetSitter(UserDTO uDTO) throws Exception {
 		return userMapper.getCheckPetSitter(uDTO);
+	}
+
+	@Override
+	public UserDTO getUserAddress(UserDTO uDTO) throws Exception {
+		return userMapper.getUserAddress(uDTO);
 	}
 }

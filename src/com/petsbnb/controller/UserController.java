@@ -431,4 +431,53 @@ public class UserController {
 		return uDTO;
 	}
 	
+	@RequestMapping(value="/user/getUserAddress", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> getUserAddress(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getUserAddress start!!!");
+		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		
+		UserDTO uDTO = new UserDTO();
+		uDTO.setUserNo(userNo);
+		
+		uDTO = userService.getUserAddress(uDTO);
+		String userAddress = AES256Util.strDecode(uDTO.getUserAddress());
+		String userAddressDetail = AES256Util.strDecode(uDTO.getUserAddressDetail());
+		
+		userAddress += " " + userAddressDetail;
+		
+		Map<Object, Object> resultMap = new HashMap<>();
+		resultMap.put("userAddress", userAddress);
+		
+		log.info(this.getClass() + ".getUserAddress end!!!");
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/user/applyPetSitter", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> applyPetSitter(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".applyPetSitter start!!!");
+		String name = CmmUtil.nvl((String)param.get("name"));
+		log.info("name : " + name);
+		name = AES256Util.strEncode(name);
+		String gender = CmmUtil.nvl((String)param.get("gender"));
+		log.info("gender : " + gender);
+		gender = AES256Util.strEncode(gender);
+		String birthday = CmmUtil.nvl((String)param.get("birthday"));
+		log.info("birthday : " + birthday);
+		birthday = AES256Util.strEncode(birthday);
+		String phone = CmmUtil.nvl((String)param.get("phone"));
+		log.info("phone : " + phone);
+		phone = AES256Util.strEncode(phone);
+		String job = CmmUtil.nvl((String)param.get("job"));
+		log.info("job : " + job);
+		job = AES256Util.strEncode(job);
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		
+		
+		log.info(this.getClass() + ".applyPetSitter end!!!");
+		return null;
+	}
+	
 }

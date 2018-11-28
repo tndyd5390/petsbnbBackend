@@ -1,7 +1,6 @@
 package com.petsbnb.persistance.mapper;
 
 import java.util.List;
-
 import com.petsbnb.config.Mapper;
 import com.petsbnb.dto.FileDTO;
 import com.petsbnb.dto.UserDTO;
@@ -22,4 +21,5 @@ public interface UserMapper {
 	public UserDTO getUserFindPassword(UserDTO uDTO) throws Exception;
 	public int updateUserTmpPassword(UserDTO uDTO) throws Exception;
 	public UserDTO getCheckPetSitter(UserDTO uDTO) throws Exception;
+	public UserDTO getUserAddress(UserDTO uDTO) throws Exception;
 }

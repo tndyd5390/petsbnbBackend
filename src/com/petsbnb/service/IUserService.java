@@ -1,6 +1,7 @@
 package com.petsbnb.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.petsbnb.dto.FileDTO;
 import com.petsbnb.dto.UserDTO;
@@ -18,4 +19,5 @@ public interface IUserService {
 	public UserDTO getUserFindEmail(UserDTO uDTO) throws Exception;
 	public UserDTO getUserFindPassword(UserDTO uDTO) throws Exception;
 	public UserDTO getCheckPetSitter(UserDTO uDTO) throws Exception;
+	public UserDTO getUserAddress(UserDTO uDTO) throws Exception;
 }
