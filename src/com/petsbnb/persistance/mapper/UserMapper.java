@@ -3,6 +3,7 @@ package com.petsbnb.persistance.mapper;
 import java.util.List;
 import com.petsbnb.config.Mapper;
 import com.petsbnb.dto.FileDTO;
+import com.petsbnb.dto.PetSitterApplyDTO;
 import com.petsbnb.dto.UserDTO;
 
 @Mapper("UserMapper")
@@ -22,4 +23,6 @@ public interface UserMapper {
 	public int updateUserTmpPassword(UserDTO uDTO) throws Exception;
 	public UserDTO getCheckPetSitter(UserDTO uDTO) throws Exception;
 	public UserDTO getUserAddress(UserDTO uDTO) throws Exception;
+	public int insertPetSitterApply(PetSitterApplyDTO pDTO) throws Exception;
+	public PetSitterApplyDTO checkAppliedUser(String userNo) throws Exception;
 }

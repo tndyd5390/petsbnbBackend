@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.petsbnb.dto.FileDTO;
+import com.petsbnb.dto.PetSitterApplyDTO;
 import com.petsbnb.dto.UserDTO;
 
 public interface IUserService {
@@ -20,4 +21,6 @@ public interface IUserService {
 	public UserDTO getUserFindPassword(UserDTO uDTO) throws Exception;
 	public UserDTO getCheckPetSitter(UserDTO uDTO) throws Exception;
 	public UserDTO getUserAddress(UserDTO uDTO) throws Exception;
+	public int insertPetSitterApply(PetSitterApplyDTO pDTO) throws Exception;
+	public PetSitterApplyDTO checkAppliedUser(String userNo) throws Exception;
 }

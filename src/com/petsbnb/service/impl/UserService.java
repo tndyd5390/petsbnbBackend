@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.petsbnb.dto.FileDTO;
+import com.petsbnb.dto.PetSitterApplyDTO;
 import com.petsbnb.dto.UserDTO;
 import com.petsbnb.persistance.mapper.UserMapper;
 import com.petsbnb.service.IUserService;
@@ -89,5 +90,15 @@ public class UserService implements IUserService {
 	@Override
 	public UserDTO getUserAddress(UserDTO uDTO) throws Exception {
 		return userMapper.getUserAddress(uDTO);
+	}
+
+	@Override
+	public int insertPetSitterApply(PetSitterApplyDTO pDTO) throws Exception {
+		return userMapper.insertPetSitterApply(pDTO);
+	}
+
+	@Override
+	public PetSitterApplyDTO checkAppliedUser(String userNo) throws Exception {
+		return userMapper.checkAppliedUser(userNo);
 	}
 }

@@ -150,4 +150,46 @@
 		  FROM USER_INFO
 		 WHERE USER_NO = #{userNo}
 	</select>
+	<insert id="insertPetSitterApply" parameterType="PetSitterApplyDTO">
+		INSERT INTO PETSITTER_APPLY
+		(
+			USER_NO,
+			APPLY_NAME,
+			APPLY_GENDER,
+			APPLY_BIRTHDAY,
+			APPLY_PHONE,
+			APPLY_EMAIL,
+			APPLY_JOB,
+			ACK,
+			REG_DT,
+			REG_NO
+		)
+		VALUES
+		(
+			#{userNo},
+			#{applyName},
+			#{applyGender},
+			#{applyBirthday},
+			#{applyPhone},
+			#{applyEmail},
+			#{applyJob},
+			'N',
+			NOW(),
+			#{userNo}
+		)
+	</insert>
+	<select id="checkAppliedUser" parameterType="string" resultType="PetSitterApplyDTO">
+		SELECT USER_NO				AS userNo,
+			   APPLY_NAME			AS applyName,
+			   APPLY_GENDER			AS applyGender,
+			   APPLY_BIRTHDAY		AS applyBirthday,
+			   APPLY_PHONE			AS applyPhone,
+			   APPLY_EMAIL			AS applyEmail,
+			   APPLY_JOB			AS applyJob,
+			   ACK					AS ack, 
+			   REG_DT				AS regDt,
+			   REG_NO				AS regNo
+	      FROM PETSITTER_APPLY
+	     WHERE USER_NO = #{userNo}
+	</select>
 </mapper>

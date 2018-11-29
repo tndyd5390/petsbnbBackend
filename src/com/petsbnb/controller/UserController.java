@@ -26,7 +26,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.petsbnb.dto.FileDTO;
+import com.petsbnb.dto.PetSitterApplyDTO;
 import com.petsbnb.dto.UserDTO;
+import com.petsbnb.persistance.mapper.UserMapper;
 import com.petsbnb.service.IUserService;
 import com.petsbnb.util.AES256Util;
 import com.petsbnb.util.CmmUtil;
@@ -462,7 +464,6 @@ public class UserController {
 		name = AES256Util.strEncode(name);
 		String gender = CmmUtil.nvl((String)param.get("gender"));
 		log.info("gender : " + gender);
-		gender = AES256Util.strEncode(gender);
 		String birthday = CmmUtil.nvl((String)param.get("birthday"));
 		log.info("birthday : " + birthday);
 		birthday = AES256Util.strEncode(birthday);
@@ -474,10 +475,50 @@ public class UserController {
 		job = AES256Util.strEncode(job);
 		String userNo = CmmUtil.nvl((String)param.get("userNo"));
 		log.info("userNo : " + userNo);
+		String email = CmmUtil.nvl((String)param.get("email"));
+		log.info("email : " + email);
+		email = AES256Util.strEncode(email);
 		
+		PetSitterApplyDTO pDTO = new PetSitterApplyDTO();
+		pDTO.setApplyName(name);
+		pDTO.setApplyGender(gender);
+		pDTO.setApplyBirthday(birthday);
+		pDTO.setApplyPhone(phone);
+		pDTO.setApplyJob(job);
+		pDTO.setUserNo(userNo);
+		pDTO.setApplyEmail(email);
 		
+		int insertResult = userService.insertPetSitterApply(pDTO);
+		
+		Map<Object, Object> resultMap = new HashMap<>();
+		if(insertResult != 0){
+			resultMap.put("result", true);
+		}else{
+			resultMap.put("result", false);
+		}
 		log.info(this.getClass() + ".applyPetSitter end!!!");
-		return null;
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/user/checkAppliedUser", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> checkAppliedUser(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".checkAppliedUser start!!!");
+		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		
+		PetSitterApplyDTO pDTO = userService.checkAppliedUser(userNo);
+		
+		Map<Object, Object> resultMap = new HashMap<>();
+		
+		if(pDTO != null){
+			resultMap.put("result", true);
+		}else{
+			resultMap.put("result", false);
+		}
+		
+		log.info(this.getClass() + ".checkAppliedUser end!!!");
+		return resultMap;
 	}
 	
 }
