@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- JAVA와 연결할 Mapper 파일 설정 -->
+<mapper namespace="com.petsbnb.persistance.mapper.PetSitterMapper">
+	<select id="getPetSitterInfo" parameterType="string" resultType="PetSitterDTO">
+		SELECT PETSITTER_NO						AS petSitterNo,
+			   USER_NO							AS userNo,
+			   PETSITTER_NAME					AS petSitterName,
+  			   PETSITTER_INTRODUCE_ONELINE		AS petSitterIntroduceOneLine,
+  			   PETSITTERENV						AS petSitterEnv,
+  			   PETSITTER_HAS_PET 				AS petSitterHasPet,
+  			   LOGNTERM_AVAILABLE 				AS longTermAvailable,
+  			   WALK_AVAILABLE 					AS walkAvailable,
+  			   BATH_AVAILABLE 					AS bathAvailable,
+  			   FIRSTAID_AVAIABLE 				AS firstAidAvailable,
+  			   MARKING_IMPOSSIBLE 				AS markingImpossible,
+  			   BOWEL_IMPOSSIBLE 				AS bowelImpossible,
+  			   ATTACK_IMPOSSIBLE  				AS attackImpossible,
+  			   SEPARATION_IMPOSSIBLE 			AS separationImpossible,
+  			   BITE_IMPOSSIBLE 					AS biteImpossible,
+  			   SMALLPET_NIGHT_PRICE 			AS smallPetNightPrice,
+  			   SMALLPET_DAY_PRICE 				AS smallPetDayPrice,
+  			   MIDDLEPET_NIGHT_PRICE 			AS middlePetNightPrice,
+  			   MIDDLEPET_DAY_PRICE 				AS middlePetDayPrice,
+  			   BIGPET_NIGHT_PRICE 				AS bigPetNightPrice,
+  			   BIGPET_DAY_PRICE 				AS bigPetDayPrice,
+  			   REFUND_ACCOUNT_NAME 				AS refundAccountName,
+  			   REFUND_BANK 						AS refundBank,
+  			   REFUND_ACCOUNT_NUMBER 			AS refundAccountNumber,
+  			   NECESSARY_ITEM 					AS necessaryItem,
+  			   PETSITTER_INTRODUCE 				AS petSitterIntorduce,
+  			   REG_DT 							AS regDt,
+  			   REG_NO  							AS regNo,
+  			   CHG_DT  							AS chgDt,
+  			   CHG_NO  							AS chgNo
+  		  FROM PETSITTER_INFO
+  		 WHERE USER_NO = #{userNo}
+	</select>
+</mapper>
