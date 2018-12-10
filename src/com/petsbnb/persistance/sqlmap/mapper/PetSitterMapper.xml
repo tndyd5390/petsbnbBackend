@@ -9,10 +9,10 @@
   			   PETSITTER_INTRODUCE_ONELINE		AS petSitterIntroduceOneLine,
   			   PETSITTERENV						AS petSitterEnv,
   			   PETSITTER_HAS_PET 				AS petSitterHasPet,
-  			   LOGNTERM_AVAILABLE 				AS longTermAvailable,
+  			   LONGTERM_AVAILABLE 				AS longTermAvailable,
   			   WALK_AVAILABLE 					AS walkAvailable,
   			   BATH_AVAILABLE 					AS bathAvailable,
-  			   FIRSTAID_AVAIABLE 				AS firstAidAvailable,
+  			   FIRSTAID_AVAILABLE 				AS firstAidAvailable,
   			   MARKING_IMPOSSIBLE 				AS markingImpossible,
   			   BOWEL_IMPOSSIBLE 				AS bowelImpossible,
   			   ATTACK_IMPOSSIBLE  				AS attackImpossible,
@@ -28,12 +28,152 @@
   			   REFUND_BANK 						AS refundBank,
   			   REFUND_ACCOUNT_NUMBER 			AS refundAccountNumber,
   			   NECESSARY_ITEM 					AS necessaryItem,
-  			   PETSITTER_INTRODUCE 				AS petSitterIntorduce,
+  			   PETSITTER_INTRODUCE 				AS petSitterIntroduce,
   			   REG_DT 							AS regDt,
   			   REG_NO  							AS regNo,
   			   CHG_DT  							AS chgDt,
   			   CHG_NO  							AS chgNo
   		  FROM PETSITTER_INFO
   		 WHERE USER_NO = #{userNo}
+	</select>
+	
+	<insert id="insertPetSitterInfo" parameterType="PetSitterDTO">
+		INSERT INTO PETSITTER_INFO
+		(
+			USER_NO,
+			PETSITTER_NAME,
+			PETSITTER_INTRODUCE_ONELINE,
+			PETSITTERENV,
+			PETSITTER_HAS_PET,
+			LONGTERM_AVAILABLE,
+			WALK_AVAILABLE,
+			BATH_AVAILABLE,
+			FIRSTAID_AVAILABLE,
+			HAIRCARE_AVAILABLE,
+			MARKING_IMPOSSIBLE,
+			BOWEL_IMPOSSIBLE,
+			ATTACK_IMPOSSIBLE,
+			SEPARATION_IMPOSSIBLE,
+			BITE_IMPOSSIBLE,
+			SMALLPET_NIGHT_PRICE,
+			SMALLPET_DAY_PRICE,
+			MIDDLEPET_NIGHT_PRICE,
+			MIDDLEPET_DAY_PRICE,
+			BIGPET_NIGHT_PRICE,
+			BIGPET_DAY_PRICE,
+			REFUND_ACCOUNT_NAME,
+			REFUND_BANK,
+			REFUND_ACCOUNT_NUMBER,
+			NECESSARY_ITEM,
+			PETSITTER_INTRODUCE,
+			REG_DT,
+			REG_NO
+		)
+		VALUES
+		(
+			#{userNo} ,
+			#{petSitterName} ,
+			#{petSitterIntroduceOneLine} ,
+			#{petSitterEnv} ,
+			#{petSitterHasPet} ,
+			#{longTermAvailable} ,
+			#{walkAvailable} ,
+			#{bathAvailable} ,
+			#{firstaidAvailable} ,
+			#{haircareAvailable} ,
+			#{markingImpossible} ,
+			#{bowelImpossible} ,
+			#{attackImpossible} ,
+			#{separationImpossible} ,
+			#{biteImpossible} ,
+			#{smallPetNightPrice} ,
+			#{smallPetDayPrice} ,
+			#{middlePetNightPrice} ,
+			#{middlePetDayPrice} ,
+			#{bigPetNightPrice} ,
+			#{bigPetDayPrice} ,
+			#{refundAccountName} ,
+			#{refundBank} ,
+			#{refundAccountNumber} ,
+			#{necessaryItem} ,
+			#{petSitterIntroduce} ,
+			NOW(),
+			#{userNo}
+		)
+		<selectKey resultType="string" keyProperty="petSitterNo" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+	
+	<insert id="insertPetSitterImageFile" parameterType="java.util.Map">
+	INSERT INTO PETSITTER_FILE_INFO
+	(
+		
+		PETSITTER_NO,
+		USER_NO,
+		PETSITTER_FILE_ORG_NAME,
+		PETSITTER_FILE_NAME,
+		PETSITTER_FILE_PATH,
+		REG_NO,
+		REG_DT
+	)
+	VALUES
+		<foreach collection="petSitterImages" item="item" index="index" separator=",">
+			(
+				
+				#{item.petSitterNo},
+				#{item.userNo},
+				#{item.petSitterFileOrgName},
+				#{item.petSitterFileName},
+				#{item.petSitterFilePath},
+				#{item.regNo},
+				NOW()
+			)
+		</foreach>
+	</insert>
+	<select id="getPetSitterInfoByPetSitterNo" parameterType="string" resultType="PetSitterDTO">
+		SELECT PETSITTER_NO						AS petSitterNo,
+			   USER_NO							AS userNo,
+			   PETSITTER_NAME					AS petSitterName,
+  			   PETSITTER_INTRODUCE_ONELINE		AS petSitterIntroduceOneLine,
+  			   PETSITTERENV						AS petSitterEnv,
+  			   PETSITTER_HAS_PET 				AS petSitterHasPet,
+  			   LONGTERM_AVAILABLE 				AS longTermAvailable,
+  			   WALK_AVAILABLE 					AS walkAvailable,
+  			   BATH_AVAILABLE 					AS bathAvailable,
+  			   FIRSTAID_AVAILABLE 				AS firstAidAvailable,
+  			   HAIRCARE_AVAILABLE				AS haircareAvailable,
+  			   MARKING_IMPOSSIBLE 				AS markingImpossible,
+  			   BOWEL_IMPOSSIBLE 				AS bowelImpossible,
+  			   ATTACK_IMPOSSIBLE  				AS attackImpossible,
+  			   SEPARATION_IMPOSSIBLE 			AS separationImpossible,
+  			   BITE_IMPOSSIBLE 					AS biteImpossible,
+  			   SMALLPET_NIGHT_PRICE 			AS smallPetNightPrice,
+  			   SMALLPET_DAY_PRICE 				AS smallPetDayPrice,
+  			   MIDDLEPET_NIGHT_PRICE 			AS middlePetNightPrice,
+  			   MIDDLEPET_DAY_PRICE 				AS middlePetDayPrice,
+  			   BIGPET_NIGHT_PRICE 				AS bigPetNightPrice,
+  			   BIGPET_DAY_PRICE 				AS bigPetDayPrice,
+  			   REFUND_ACCOUNT_NAME 				AS refundAccountName,
+  			   REFUND_BANK 						AS refundBank,
+  			   REFUND_ACCOUNT_NUMBER 			AS refundAccountNumber,
+  			   NECESSARY_ITEM 					AS necessaryItem,
+  			   PETSITTER_INTRODUCE 				AS petSitterIntroduce,
+  			   REG_DT 							AS regDt,
+  			   REG_NO  							AS regNo,
+  			   CHG_DT  							AS chgDt,
+  			   CHG_NO  							AS chgNo
+  		  FROM PETSITTER_INFO
+  		 WHERE PETSITTER_NO = #{petSitterNo}
+	</select>
+	<select id="getPetSitterImage" parameterType="string" resultType="PetSitterFileDTO">
+		SELECT PETSITTER_FILE_NO		AS petSitterFileNo,
+			   PETSITTER_NO				AS petSitterNo,
+			   USER_NO					AS userNo,
+			   PETSITTER_FILE_ORG_NAME	AS petSitterFileOrgName,
+			   PETSITTER_FILE_NAME		AS petSitterFileName,
+			   PETSITTER_FILE_PATH		AS petSitterFilePath
+		  FROM PETSITTER_FILE_INFO
+		 WHERE PETSITTER_NO = #{petSitterNo}
 	</select>
 </mapper>

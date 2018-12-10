@@ -1,6 +1,12 @@
 package com.petsbnb.controller;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -11,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.petsbnb.dto.PetFileDTO;
 import com.petsbnb.dto.PetSitterDTO;
+import com.petsbnb.dto.PetSitterFileDTO;
 import com.petsbnb.service.IPetSitterServcie;
 import com.petsbnb.util.CmmUtil;
 
@@ -24,6 +33,8 @@ public class PetSitterController {
 	
 	@Resource(name="PetSitterService")
 	private IPetSitterServcie petSitterService;
+	
+	String petSitterImageFilePath = "C:\\Users\\DATA16\\git\\petsbnbBackend\\WebContent\\petSitterImageFile\\";
 	
 	@RequestMapping(value="/petSitter/getPetSitterInfo", method=RequestMethod.POST)
 	public @ResponseBody Map<Object, Object> getPetSitterInfo(@RequestBody Map<Object, Object> param) throws Exception{
@@ -99,9 +110,88 @@ public class PetSitterController {
 		log.info("petSitterNapetSitterIntroduceme : " + petSitterIntroduce);
 		
 		
+		PetSitterDTO psDTO = new PetSitterDTO();
+		psDTO.setUserNo(userNo);
+		psDTO.setPetSitterName(petSitterName);
+		psDTO.setPetSitterIntroduceOneLine(petSitterIntroduceOneLine);
+		psDTO.setPetSitterEnv(petSitterEnv);
+		psDTO.setPetSitterHasPet(petSitterHasPet);
+		psDTO.setLongTermAvailable(longTermAvailable);
+		psDTO.setWalkAvailable(walkAvailable);
+		psDTO.setBathAvailable(bathAvailable);
+		psDTO.setFirstaidAvailable(firstaidAvailable);
+		psDTO.setHaircareAvailable(haircareAvailable);
+		psDTO.setMarkingImpossible(markingImpossible);
+		psDTO.setBowelImpossible(bowelImpossible);
+		psDTO.setAttackImpossible(attackImpossible);
+		psDTO.setSeparationImpossible(separationImpossible);
+		psDTO.setBiteImpossible(biteImpossible);
+		psDTO.setSmallPetNightPrice(smallPetNightPrice);
+		psDTO.setSmallPetDayPrice(smallPetDayPrice);
+		psDTO.setMiddlePetNightPrice(middlePetNightPrice);
+		psDTO.setMiddlePetDayPrice(middlePetDayPrice);
+		psDTO.setBigPetNightPrice(bigPetNightPrice);
+		psDTO.setBigPetDayPrice(bigPetDayPrice);
+		psDTO.setRefundAccountName(refundAccountName);
+		psDTO.setRefundBank(refundBank);
+		psDTO.setRefundAccountNumber(refundAccountNumber);
+		psDTO.setNecessaryItem(necessaryItem);
+		psDTO.setPetSitterIntroduce(petSitterIntroduce);
+		psDTO.setRegNo(userNo);
+		
+		
+		List<PetSitterFileDTO> psList = new ArrayList<>();
+		
+		Iterator<String> fileNames =  req.getFileNames();
+		while(fileNames.hasNext()){
+			String fileName = fileNames.next();
+			MultipartFile file = req.getFile(fileName);
+			
+			String reFileName = "";
+			String fileOrgName = file.getOriginalFilename();
+			String fileType = file.getContentType();
+			log.info(this.getClass() + ".file.petSitterImageFilePath() : " + file.getOriginalFilename());
+			
+			String extended = "." + fileType.substring(fileType.indexOf("/") + 1, fileType.length());
+			String now = new SimpleDateFormat("yyyyMMddhmsS").format(new Date());
+			
+			reFileName = petSitterImageFilePath + now + extended;
+			
+			File newFile = new File(reFileName);
+			file.transferTo(newFile);
+	
+			PetSitterFileDTO pfDTO = new PetSitterFileDTO();
+			pfDTO.setPetSitterFileOrgName(fileOrgName);
+			pfDTO.setPetSitterFileName(now + extended);
+			pfDTO.setPetSitterFilePath(petSitterImageFilePath);
+			pfDTO.setRegNo(userNo);
+			pfDTO.setUserNo(userNo);
+			
+			psList.add(pfDTO);
+		}
+		
+		Map<String, Object> psMap = new HashMap<>();
+		psMap.put("petSitterImages", psList);
+		
+		boolean result = petSitterService.insertPetSitterInfo(psMap, psDTO);
+		
+		Map<Object, Object> resultMap = new HashMap<>();
+		resultMap.put("result", result);
 		
 		log.info(this.getClass() + ".petSitterRegProc end!!!");
-		return null;
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/petSitter/getPetSitterInfoWithImage", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> getPetSitterInfoWithImage(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getPetSitterInfoWithImage start!!!");
+		
+		String petSitterNo = CmmUtil.nvl((String)param.get("petSitterNo"));
+		log.info("petSitterNo : " + petSitterNo);
+		
+		Map<Object, Object> result = petSitterService.getPetSitterInfoWithImage(petSitterNo);
+		log.info(this.getClass() + ".getPetSitterInfoWithImage end!!!");
+		return result;
 	}
 	
 }

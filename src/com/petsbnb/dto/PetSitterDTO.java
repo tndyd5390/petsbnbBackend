@@ -10,7 +10,8 @@ public class PetSitterDTO {
 	private String longTermAvailable;
 	private String walkAvailable;
 	private String bathAvailable;
-	private String firstAidAvailable;
+	private String firstaidAvailable;
+	private String haircareAvailable;
 	private String markingImpossible;
 	private String bowelImpossible;
 	private String attackImpossible;
@@ -26,11 +27,24 @@ public class PetSitterDTO {
 	private String refundBank;
 	private String refundAccountNumber;
 	private String necessaryItem;
-	private String petSitterIntorduce;
+	private String petSitterIntroduce;
 	private String regDt;
 	private String regNo;
 	private String chgDt;
 	private String chgNo;
+	
+	public String getHaircareAvailable() {
+		return haircareAvailable;
+	}
+	public void setHaircareAvailable(String haircareAvailable) {
+		this.haircareAvailable = haircareAvailable;
+	}
+	public String getFirstaidAvailable() {
+		return firstaidAvailable;
+	}
+	public void setFirstaidAvailable(String firstaidAvailable) {
+		this.firstaidAvailable = firstaidAvailable;
+	}
 	public String getPetSitterNo() {
 		return petSitterNo;
 	}
@@ -84,12 +98,6 @@ public class PetSitterDTO {
 	}
 	public void setBathAvailable(String bathAvailable) {
 		this.bathAvailable = bathAvailable;
-	}
-	public String getFirstAidAvailable() {
-		return firstAidAvailable;
-	}
-	public void setFirstAidAvailable(String firstAidAvailable) {
-		this.firstAidAvailable = firstAidAvailable;
 	}
 	public String getMarkingImpossible() {
 		return markingImpossible;
@@ -181,11 +189,11 @@ public class PetSitterDTO {
 	public void setNecessaryItem(String necessaryItem) {
 		this.necessaryItem = necessaryItem;
 	}
-	public String getPetSitterIntorduce() {
-		return petSitterIntorduce;
+	public String getPetSitterIntroduce() {
+		return petSitterIntroduce;
 	}
-	public void setPetSitterIntorduce(String petSitterIntorduce) {
-		this.petSitterIntorduce = petSitterIntorduce;
+	public void setPetSitterIntroduce(String petSitterIntroduce) {
+		this.petSitterIntroduce = petSitterIntroduce;
 	}
 	public String getRegDt() {
 		return regDt;

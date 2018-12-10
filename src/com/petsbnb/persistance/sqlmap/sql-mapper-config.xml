@@ -10,5 +10,6 @@
 		<typeAlias type="com.petsbnb.dto.PetFileDTO" alias="PetFileDTO"/>
 		<typeAlias type="com.petsbnb.dto.PetSitterApplyDTO" alias="PetSitterApplyDTO"/>
 		<typeAlias type="com.petsbnb.dto.PetSitterDTO" alias="PetSitterDTO"/>
+		<typeAlias type="com.petsbnb.dto.PetSitterFileDTO" alias="PetSitterFileDTO"/>
     </typeAliases>
 </configuration>
