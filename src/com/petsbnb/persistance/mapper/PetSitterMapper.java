@@ -14,4 +14,7 @@ public interface PetSitterMapper {
 	public int insertPetSitterImageFile(Map<String, Object> psMap) throws Exception;
 	public PetSitterDTO getPetSitterInfoByPetSitterNo(String petSitterNo) throws Exception;
 	public List<PetSitterFileDTO> getPetSitterImage(String petSitterNo) throws Exception;
+	public int insertPetSitterImage(PetSitterFileDTO pfDTO) throws Exception;
+	public int deletePetSitterImage(String petSitterFileNo) throws Exception;
+	public int updatePetSitterInfo(PetSitterDTO p) throws Exception;
 }

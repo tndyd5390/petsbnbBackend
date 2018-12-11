@@ -176,4 +176,64 @@
 		  FROM PETSITTER_FILE_INFO
 		 WHERE PETSITTER_NO = #{petSitterNo}
 	</select>
+	
+	<insert id="insertPetSitterImage" parameterType="PetSitterFileDTO">
+		INSERT INTO PETSITTER_FILE_INFO
+		(
+			
+			PETSITTER_NO,
+			USER_NO,
+			PETSITTER_FILE_ORG_NAME,
+			PETSITTER_FILE_NAME,
+			PETSITTER_FILE_PATH,
+			REG_NO,
+			REG_DT
+		)
+		VALUES
+		(
+				
+			#{petSitterNo},
+			#{userNo},
+			#{petSitterFileOrgName},
+			#{petSitterFileName},
+			#{petSitterFilePath},
+			#{regNo},
+			NOW()
+		)
+	</insert>
+	<delete id="deletePetSitterImage" parameterType="string">
+		DELETE FROM PETSITTER_FILE_INFO WHERE PETSITTER_FILE_NO = #{petSitterFileNo}
+	</delete>
+	
+	<update id="updatePetSitterInfo" parameterType="PetSitterDTO">
+		UPDATE PETSITTER_INFO
+		   SET PETSITTER_NAME = #{petSitterName},
+			   PETSITTER_INTRODUCE_ONELINE = #{petSitterIntroduceOneLine},
+			   PETSITTERENV = #{petSitterEnv},
+			   PETSITTER_HAS_PET = #{petSitterHasPet},
+			   LONGTERM_AVAILABLE = #{longTermAvailable},
+			   WALK_AVAILABLE = #{walkAvailable},
+			   BATH_AVAILABLE = #{bathAvailable},
+			   FIRSTAID_AVAILABLE = #{firstaidAvailable},
+			   HAIRCARE_AVAILABLE = #{haircareAvailable},
+			   MARKING_IMPOSSIBLE = #{markingImpossible},
+			   BOWEL_IMPOSSIBLE = #{bowelImpossible},
+			   ATTACK_IMPOSSIBLE = #{attackImpossible},
+			   SEPARATION_IMPOSSIBLE = #{separationImpossible},
+			   BITE_IMPOSSIBLE = #{biteImpossible},
+			   SMALLPET_NIGHT_PRICE = #{smallPetNightPrice},
+			   SMALLPET_DAY_PRICE = #{smallPetDayPrice},
+			   MIDDLEPET_NIGHT_PRICE = #{middlePetNightPrice},
+			   MIDDLEPET_DAY_PRICE = #{middlePetDayPrice},
+			   BIGPET_NIGHT_PRICE = #{bigPetNightPrice},
+			   BIGPET_DAY_PRICE = #{bigPetDayPrice},
+			   REFUND_ACCOUNT_NAME = #{refundAccountName},
+			   REFUND_BANK = #{refundBank},
+			   REFUND_ACCOUNT_NUMBER = #{refundAccountNumber},
+			   NECESSARY_ITEM = #{necessaryItem},
+			   PETSITTER_INTRODUCE = #{petSitterIntroduce},
+			   CHG_DT = NOW(),
+			   CHG_NO = #{userNo}
+		 WHERE PETSITTER_NO = #{petSitterNo}
+	</update>
 </mapper>

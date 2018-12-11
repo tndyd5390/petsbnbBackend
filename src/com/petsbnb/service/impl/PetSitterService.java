@@ -14,6 +14,7 @@ import com.petsbnb.dto.PetSitterDTO;
 import com.petsbnb.dto.PetSitterFileDTO;
 import com.petsbnb.persistance.mapper.PetSitterMapper;
 import com.petsbnb.service.IPetSitterServcie;
+import com.petsbnb.util.AES256Util;
 
 @Service("PetSitterService")
 public class PetSitterService implements IPetSitterServcie {
@@ -47,8 +48,33 @@ public class PetSitterService implements IPetSitterServcie {
 	@Override
 	public Map<Object, Object> getPetSitterInfoWithImage(String petSitterNo) throws Exception {
 		Map<Object, Object> result = new HashMap<>();
-		result.put("petSitterInfo", petSitterMapper.getPetSitterInfoByPetSitterNo(petSitterNo));
+		PetSitterDTO pDTO = petSitterMapper.getPetSitterInfoByPetSitterNo(petSitterNo);
+		pDTO.setRefundAccountName(AES256Util.strDecode(pDTO.getRefundAccountName()));
+		pDTO.setRefundBank(AES256Util.strDecode(pDTO.getRefundBank()));
+		pDTO.setRefundAccountNumber(AES256Util.strDecode(pDTO.getRefundAccountNumber()));
+		result.put("petSitterInfo", pDTO);
 		result.put("petSitterImages", petSitterMapper.getPetSitterImage(petSitterNo));
 		return result;
 	}
+
+	@Override
+	public List<PetSitterFileDTO> insertAndGetPetSitterImage(PetSitterFileDTO pfDTO) throws Exception {
+		int insertPetSitterImage = petSitterMapper.insertPetSitterImage(pfDTO);
+		List<PetSitterFileDTO> pList = petSitterMapper.getPetSitterImage(pfDTO.getPetSitterNo());
+		return pList;
+	}
+
+	@Override
+	public List<PetSitterFileDTO> deleteAndGetPetSitterImage(String petSitterNo, String petSitterFileNo) throws Exception {
+		int deletePetSitterImage = petSitterMapper.deletePetSitterImage(petSitterFileNo);
+		List<PetSitterFileDTO> pList = petSitterMapper.getPetSitterImage(petSitterNo);
+		return pList;
+	}
+
+	@Override
+	public boolean updatePetSitterInfo(PetSitterDTO p) throws Exception {
+		int update = petSitterMapper.updatePetSitterInfo(p);
+		return update > 0;
+	}
+
 }
