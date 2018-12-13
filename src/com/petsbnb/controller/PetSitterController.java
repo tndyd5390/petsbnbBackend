@@ -402,4 +402,17 @@ public class PetSitterController {
 		return resultMap;
 	}
 	
+	@RequestMapping(value="/petSitter/getPetSitterReservationInfo", method=RequestMethod.POST)
+	public @ResponseBody PetSitterDTO getPetSitterReservationInfo (@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getPetSitterReservationInfo start!!!");
+		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		
+		PetSitterDTO pDTO = petSitterService.getPetSitterInfo(userNo);
+		
+		log.info(this.getClass() + ".getPetSitterReservationInfo end!!!");
+		return pDTO;
+	}
+	
 }

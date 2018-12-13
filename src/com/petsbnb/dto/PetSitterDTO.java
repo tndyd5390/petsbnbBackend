@@ -28,11 +28,45 @@ public class PetSitterDTO {
 	private String refundAccountNumber;
 	private String necessaryItem;
 	private String petSitterIntroduce;
+	private String exposure;
+	private String nightCheckIn;
+	private String nightCheckOut;
+	private String dayCareStart;
+	private String dayCareEnd;
 	private String regDt;
 	private String regNo;
 	private String chgDt;
 	private String chgNo;
-	
+	public String getExposure() {
+		return exposure;
+	}
+	public void setExposure(String exposure) {
+		this.exposure = exposure;
+	}
+	public String getNightCheckIn() {
+		return nightCheckIn;
+	}
+	public void setNightCheckIn(String nightCheckIn) {
+		this.nightCheckIn = nightCheckIn;
+	}
+	public String getNightCheckOut() {
+		return nightCheckOut;
+	}
+	public void setNightCheckOut(String nightCheckOut) {
+		this.nightCheckOut = nightCheckOut;
+	}
+	public String getDayCareStart() {
+		return dayCareStart;
+	}
+	public void setDayCareStart(String dayCareStart) {
+		this.dayCareStart = dayCareStart;
+	}
+	public String getDayCareEnd() {
+		return dayCareEnd;
+	}
+	public void setDayCareEnd(String dayCareEnd) {
+		this.dayCareEnd = dayCareEnd;
+	}
 	public String getHaircareAvailable() {
 		return haircareAvailable;
 	}
