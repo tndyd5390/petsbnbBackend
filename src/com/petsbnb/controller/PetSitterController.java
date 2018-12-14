@@ -415,4 +415,52 @@ public class PetSitterController {
 		return pDTO;
 	}
 	
+	@RequestMapping(value="/petSitter/startReservationExposure", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> startReservationExposure(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".startReservationExposure start!!!");
+		
+		String petSitterNo = CmmUtil.nvl((String)param.get("petSitterNo"));
+		log.info("petSitterNo : " + petSitterNo);
+		String nightCheckIn = CmmUtil.nvl((String)param.get("nightCheckIn"));
+		log.info("nightCheckIn : "+ nightCheckIn);
+		String nightCheckOut = CmmUtil.nvl((String)param.get("nightCheckOut"));
+		log.info("nightCheckOut : " + nightCheckOut);
+		String dayCareStart = CmmUtil.nvl((String)param.get("dayCareStart"));
+		log.info("dayCareStart : " + dayCareStart);
+		String dayCareEnd = CmmUtil.nvl((String)param.get("dayCareEnd"));
+		log.info("dayCareEnd : " + dayCareEnd);
+		
+		PetSitterDTO pDTO = new PetSitterDTO();
+		pDTO.setPetSitterNo(petSitterNo);
+		pDTO.setNightCheckIn(nightCheckIn);
+		pDTO.setNightCheckOut(nightCheckOut);
+		pDTO.setDayCareStart(dayCareStart);
+		pDTO.setDayCareEnd(dayCareEnd);
+		pDTO.setExposure("true");
+		
+		boolean result = petSitterService.updateReservationExposureStart(pDTO);
+		
+		Map<Object, Object> resultMap = new HashMap<>();
+		resultMap.put("result", result);
+		
+		log.info(this.getClass() + ".startReservationExposure end!!!");
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/petSitter/stopReservationExposure", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> stopReservationExposure(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".stopReservationExposure start!!!");
+		
+		String petSitterNo = CmmUtil.nvl((String)param.get("petSitterNo"));
+		log.info("petSitterNo : " + petSitterNo);
+		
+		boolean result = petSitterService.updateReservationExposureStop(petSitterNo);
+		
+		Map<Object, Object> resultMap = new HashMap<>();
+		resultMap.put("result", result);
+		
+		log.info(this.getClass() + ".stopReservationExposure end!!!");
+		return resultMap;
+	}
+	
 }

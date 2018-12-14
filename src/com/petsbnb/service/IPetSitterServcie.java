@@ -13,4 +13,6 @@ public interface IPetSitterServcie {
 	public List<PetSitterFileDTO> insertAndGetPetSitterImage(PetSitterFileDTO pfDTO) throws Exception;
 	public List<PetSitterFileDTO> deleteAndGetPetSitterImage(String petSitterNo, String petSitterFileNo) throws Exception;
 	public boolean updatePetSitterInfo(PetSitterDTO p) throws Exception;
+	public boolean updateReservationExposureStart(PetSitterDTO pDTO) throws Exception;
+	public boolean updateReservationExposureStop(String petSitterNo) throws Exception;
 }
