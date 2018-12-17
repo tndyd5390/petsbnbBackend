@@ -415,52 +415,43 @@ public class PetSitterController {
 		return pDTO;
 	}
 	
-	@RequestMapping(value="/petSitter/startReservationExposure", method=RequestMethod.POST)
-	public @ResponseBody Map<Object, Object> startReservationExposure(@RequestBody Map<Object, Object> param) throws Exception{
-		log.info(this.getClass() + ".startReservationExposure start!!!");
+	@RequestMapping(value="/petSitter/getPetSitterExposure", method=RequestMethod.POST)
+	public @ResponseBody PetSitterDTO getPetSitterExposure(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getPetSitterExposure start!!!");
 		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		
+		PetSitterDTO pDTO = petSitterService.getPetSitterInfo(userNo);
+		
+		log.info(this.getClass() + ".getPetSitterExposure end!!!");
+		return pDTO;
+	}
+	
+	@RequestMapping(value="/petSitter/togglePetSitterReservationExposure", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> togglePetSitterReservationExposure(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".togglePetSitterReservationExposure start!!!");
+		
+		String exposure = CmmUtil.nvl((String)param.get("exposure"));
+		log.info("exposure : " + exposure);
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
 		String petSitterNo = CmmUtil.nvl((String)param.get("petSitterNo"));
 		log.info("petSitterNo : " + petSitterNo);
-		String nightCheckIn = CmmUtil.nvl((String)param.get("nightCheckIn"));
-		log.info("nightCheckIn : "+ nightCheckIn);
-		String nightCheckOut = CmmUtil.nvl((String)param.get("nightCheckOut"));
-		log.info("nightCheckOut : " + nightCheckOut);
-		String dayCareStart = CmmUtil.nvl((String)param.get("dayCareStart"));
-		log.info("dayCareStart : " + dayCareStart);
-		String dayCareEnd = CmmUtil.nvl((String)param.get("dayCareEnd"));
-		log.info("dayCareEnd : " + dayCareEnd);
 		
 		PetSitterDTO pDTO = new PetSitterDTO();
+		pDTO.setUserNo(userNo);
 		pDTO.setPetSitterNo(petSitterNo);
-		pDTO.setNightCheckIn(nightCheckIn);
-		pDTO.setNightCheckOut(nightCheckOut);
-		pDTO.setDayCareStart(dayCareStart);
-		pDTO.setDayCareEnd(dayCareEnd);
-		pDTO.setExposure("true");
+		pDTO.setExposure(exposure);
 		
-		boolean result = petSitterService.updateReservationExposureStart(pDTO);
+		boolean result = petSitterService.updateTogglePetSitterReservationExposure(pDTO);
 		
 		Map<Object, Object> resultMap = new HashMap<>();
 		resultMap.put("result", result);
+		resultMap.put("exposure", exposure);
 		
-		log.info(this.getClass() + ".startReservationExposure end!!!");
+		log.info(this.getClass() + ".togglePetSitterReservationExposure end!!!");
 		return resultMap;
+		
 	}
-	
-	@RequestMapping(value="/petSitter/stopReservationExposure", method=RequestMethod.POST)
-	public @ResponseBody Map<Object, Object> stopReservationExposure(@RequestBody Map<Object, Object> param) throws Exception{
-		log.info(this.getClass() + ".stopReservationExposure start!!!");
-		
-		String petSitterNo = CmmUtil.nvl((String)param.get("petSitterNo"));
-		log.info("petSitterNo : " + petSitterNo);
-		
-		boolean result = petSitterService.updateReservationExposureStop(petSitterNo);
-		
-		Map<Object, Object> resultMap = new HashMap<>();
-		resultMap.put("result", result);
-		
-		log.info(this.getClass() + ".stopReservationExposure end!!!");
-		return resultMap;
-	}
-	
 }

@@ -30,10 +30,6 @@
   			   NECESSARY_ITEM 					AS necessaryItem,
   			   PETSITTER_INTRODUCE 				AS petSitterIntroduce,
   			   EXPOSURE							AS exposure,
-  			   NIGHT_CHECK_IN					AS nightCheckIn,
-  			   NIGHT_CHECK_OUT					AS nightCheckOut,
-  			   DAYCARE_START					AS dayCareStart,
-  			   DAYCARE_END						AS dayCareEnd,
   			   REG_DT 							AS regDt,
   			   REG_NO  							AS regNo,
   			   CHG_DT  							AS chgDt,
@@ -165,10 +161,6 @@
   			   NECESSARY_ITEM 					AS necessaryItem,
   			   PETSITTER_INTRODUCE 				AS petSitterIntroduce,
   			   EXPOSURE							AS exposure,
-  			   NIGHT_CHECK_IN					AS nightCheckIn,
-  			   NIGHT_CHECK_OUT					AS nightCheckOut,
-  			   DAYCARE_START					AS dayCareStart,
-  			   DAYCARE_END						AS dayCareEnd,
   			   REG_DT 							AS regDt,
   			   REG_NO  							AS regNo,
   			   CHG_DT  							AS chgDt,
@@ -246,26 +238,9 @@
 			   CHG_NO = #{userNo}
 		 WHERE PETSITTER_NO = #{petSitterNo}
 	</update>
-	<update id="updateReservationExposureStart" parameterType="PetSitterDTO">
+	<update id="updateTogglePetSitterReservationExposure" parameterType="PetSitterDTO">
 		UPDATE PETSITTER_INFO
-		   SET EXPOSURE = #{exposure},
-		       NIGHT_CHECK_IN = #{nightCheckIn}, 
-			   NIGHT_CHECK_OUT = #{nightCheckOut},  
-			   DAYCARE_START = #{dayCareStart}, 
-			   DAYCARE_END = #{dayCareEnd},
-			   CHG_NO = #{petSitterNo},
-			   CHG_DT = NOW()
-		 WHERE PETSITTER_NO = #{petSitterNo} 
-	</update>
-	<update id="updateReservationExposureStop" parameterType="string">
-		UPDATE PETSITTER_INFO
-		   SET EXPOSURE = 'false',
-		       NIGHT_CHECK_IN = null, 
-			   NIGHT_CHECK_OUT = null,  
-			   DAYCARE_START = null, 
-			   DAYCARE_END = null,
-			   CHG_NO = #{petSitterNo},
-			   CHG_DT = NOW()
-		 WHERE PETSITTER_NO = #{petSitterNo} 
+		   SET EXPOSURE = #{exposure}
+		 WHERE USER_NO = #{userNo} AND PETSITTER_NO =#{petSitterNo}
 	</update>
 </mapper>
