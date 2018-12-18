@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- JAVA와 연결할 Mapper 파일 설정 -->
+<mapper namespace="com.petsbnb.persistance.mapper.BookingMapper">
+	<select id="getBookingList" parameterType="string" resultType="HashMap">
+		SELECT
+			P.PETSITTER_NO AS petsitterNo,
+			P.PETSITTER_NAME AS petsitterName,
+		 	P.PETSITTER_INTRODUCE_ONELINE AS petsitterIntroduceOneline,
+			ROUND(AVG(IFNULL(R.STARCOUNT,0)),1) AS starCount,
+			COUNT(R.REVIEW_NO) AS reviewCount,
+			F.PETSITTER_FILE_NAME AS petsitterFileName,
+			F.PETSITTER_FILE_PATH AS petsitterFilePath,
+			U.USER_ADDRESS AS userAddress,
+			U.USER_ADDRESS_DETAIL AS userAddressDetail
+		FROM
+			PETSITTER_INFO P 
+				LEFT OUTER JOIN 
+			PETSITTER_REVIEW R
+			ON P.PETSITTER_NO = R.PETSITTER_NO,
+			(
+				SELECT PETSITTER_NO,PETSITTER_FILE_NAME, PETSITTER_FILE_PATH
+				FROM PETSITTER_FILE_INFO
+				GROUP BY PETSITTER_NO
+				ORDER BY REG_DT
+			) F,
+			USER_INFO U
+		WHERE
+			P.PETSITTER_NO = F.PETSITTER_NO AND
+			P.USER_NO = U.USER_NO AND
+			P.EXPOSURE = 'true'
+		GROUP BY
+			P.PETSITTER_NO
+	</select>
+</mapper>
