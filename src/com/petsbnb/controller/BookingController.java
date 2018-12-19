@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -20,7 +21,7 @@ public class BookingController {
 	private IBookingService bookingService;
 	
 	@RequestMapping("/booking/getBookingList")
-	public @ResponseBody List<HashMap<Object, Object>> bookingList() throws Exception{
+	public @ResponseBody List<HashMap<Object, Object>> getBookingList() throws Exception{
 		log.info(this.getClass().getName() + "start!!");
 
 		
@@ -28,5 +29,18 @@ public class BookingController {
 		
 		log.info(this.getClass().getName() + "end!!");
 		return rsltList;
+	}
+	
+	@RequestMapping("/booking/getBookingDetail")
+	public @ResponseBody HashMap<Object, Object> getBookingDetail(@RequestBody HashMap<Object, Object> req) throws Exception{
+		log.info(this.getClass().getName() + "start!!");
+		
+		String petsitterNo = req.get("petsitterNo").toString();
+		System.out.println(petsitterNo);
+		
+		HashMap<Object, Object> rslt = bookingService.getBookingDetail(petsitterNo);
+		
+		log.info(this.getClass().getName() + "end!!");
+		return rslt;
 	}
 }
