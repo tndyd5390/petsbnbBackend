@@ -23,16 +23,22 @@ public class BookingService implements IBookingService{
 	}
 
 	@Override
-	public HashMap<Object, Object> getBookingDetail(String petsitterNo) throws Exception {
+	public HashMap<Object, Object> getBookingDetail(HashMap<Object, Object> req) throws Exception {
 		
 		HashMap<Object, Object> rslt = new HashMap<Object, Object>();
 		
-		rslt.put("images", bookingMapper.getBookingDetailImages(petsitterNo));
-		rslt.put("details", bookingMapper.getBookingDetail(petsitterNo));
-		rslt.put("reviews", DecodeUtil.decodeName(bookingMapper.getBookingDetailReviews(petsitterNo)));
+		rslt.put("images", bookingMapper.getBookingDetailImages(req.get("petsitterNo").toString()));
+		rslt.put("details", bookingMapper.getBookingDetail(req.get("petsitterNo").toString()));
+		rslt.put("reviews", DecodeUtil.decodeName(bookingMapper.getBookingDetailReviews(req)));
 		
 		
 		return rslt;
+	}
+
+	@Override
+	public List<HashMap<Object, Object>> getMoreReview(HashMap<Object, Object> req) throws Exception {
+		
+		return  DecodeUtil.decodeName(bookingMapper.getBookingDetailReviews(req));
 	};
 	
 }

@@ -35,12 +35,27 @@ public class BookingController {
 	public @ResponseBody HashMap<Object, Object> getBookingDetail(@RequestBody HashMap<Object, Object> req) throws Exception{
 		log.info(this.getClass().getName() + "start!!");
 		
-		String petsitterNo = req.get("petsitterNo").toString();
-		System.out.println(petsitterNo);
+		log.info("petsitterNo : "+ req.get("petsitterNo"));
+		log.info("reviewNow : "+ req.get("reviewNow"));
 		
-		HashMap<Object, Object> rslt = bookingService.getBookingDetail(petsitterNo);
+		HashMap<Object, Object> rslt = bookingService.getBookingDetail(req);
 		
 		log.info(this.getClass().getName() + "end!!");
 		return rslt;
+	}
+	
+	@RequestMapping("/booking/getMoreReview")
+	public @ResponseBody List<HashMap<Object,Object>> getMoreReview(@RequestBody HashMap<Object, Object> req) throws Exception{
+		log.info(this.getClass().getName() + " start!!");
+		
+		log.info("petsitterNo : "+ req.get("petsitterNo"));
+		log.info("reviewNow : "+ req.get("reviewNow"));
+		
+		
+		List<HashMap<Object, Object>> rsltList = bookingService.getMoreReview(req);
+		
+		
+		log.info(this.getClass().getName() + " end!!");
+		return rsltList;
 	}
 }

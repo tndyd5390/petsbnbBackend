@@ -7,6 +7,8 @@ public interface IBookingService {
 
 	List<HashMap<Object, Object>> getBookingList() throws Exception;
 
-	HashMap<Object, Object> getBookingDetail(String petsitterNo) throws Exception;
+	HashMap<Object, Object> getBookingDetail(HashMap<Object, Object> req) throws Exception;
+
+	List<HashMap<Object, Object>> getMoreReview(HashMap<Object, Object> req) throws Exception;
 	
 }

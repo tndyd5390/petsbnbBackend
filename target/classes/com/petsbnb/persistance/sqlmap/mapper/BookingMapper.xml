@@ -87,7 +87,7 @@
 			P.PETSITTER_NO
 	</select>
 	
-	<select id="getBookingDetailReviews" parameterType="string" resultType="HashMap">
+	<select id="getBookingDetailReviews" parameterType="HashMap" resultType="HashMap">
 		SELECT
 			R.REVIEW_NO AS reviewNo,
 			R.USER_NO AS userNo,
@@ -114,5 +114,7 @@
 		WHERE
 			R.USER_NO = U.USER_NO AND
 			R.PETSITTER_NO = #{petsitterNo}
+		LIMIT
+			#{reviewNow}, 3
 	</select>
 </mapper>
