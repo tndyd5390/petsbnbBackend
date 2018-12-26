@@ -46,7 +46,7 @@ public class UserController {
 	@Autowired
 	private EmailSender emailSender;
 	
-	String userImageFilePath = "C:\\Users\\DATA16\\git\\petsbnbBackend\\WebContent\\userImageFile\\";
+	String userImageFilePath = "C:\\Users\\Data3811-36\\git\\petsbnbBackend\\WebContent\\userImageFile\\";
 	
 	@RequestMapping(value="/user/daumPostView")
 	public ModelAndView daumPostView(HttpServletRequest req, HttpServletResponse resp, Model model, HttpSession session) throws Exception{
