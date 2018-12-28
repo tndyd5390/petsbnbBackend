@@ -1,6 +1,11 @@
 package com.petsbnb.controller;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -520,5 +525,47 @@ public class UserController {
 		log.info(this.getClass() + ".checkAppliedUser end!!!");
 		return resultMap;
 	}
+	
+	@RequestMapping(value="/user/fcmTest")
+	public void fcmTest(HttpServletRequest req, HttpServletResponse resp, Model model, HttpSession session) throws Exception{
+		log.info(this.getClass() + ".fcmTest start!!!");
+		
+		final String apiKey = "AAAAJuOsoX4:APA91bGVJeBud0Ski4Iba1nQxGMm842QsZ4xVKB7lPv_l82h6rqEbqbayPUnWN3RXntBOEgPrEhqhKyxRnuc_7xsrGIMJNLO5nyf5zgKo_2pms8v9QHMMbFH5wxxdQezwgV0wCO-YvZg";
+		
+		URL url = new URL("https://fcm.googleapis.com/fcm/send");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setDoOutput(true);
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestProperty("Authorization", "key=" + apiKey);
+        conn.setDoOutput(true);
+
+        String input = "{\"notification\" : {\"title\" : \" 새로운 펫시팅 요청 \", \"body\" : \"박수용님이 펫시팅을 요청했습니다.\"}, \"to\":\"cBSd29xvsiQ:APA91bEk58cenAXIJsUHgfWX6OlBSX3BQfqQDiX52epYb_C_OTU8F9DnvQ_hBWqkvYPq2Sxye-FOuK2e2BSaHGbLoWvapvMtW8_y1ojqU1sgiV5Ned_s7g8-ZAmqafSabUwbotjkrs0f\"}";
+
+        OutputStream os = conn.getOutputStream();
+        
+        // 서버에서 날려서 한글 깨지는 사람은 아래처럼  UTF-8로 인코딩해서 날려주자
+        os.write(input.getBytes("UTF-8"));
+        os.flush();
+        os.close();
+
+        int responseCode = conn.getResponseCode();
+        System.out.println("\nSending 'POST' request to URL : " + url);
+        System.out.println("Post parameters : " + input);
+        System.out.println("Response Code : " + responseCode);
+        
+        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        // print result
+        System.out.println(response.toString());        
+		log.info(this.getClass() + ".fcmTest end!!!");
+	}
+	
 	
 }
