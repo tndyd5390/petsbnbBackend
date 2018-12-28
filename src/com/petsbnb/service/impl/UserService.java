@@ -27,7 +27,11 @@ public class UserService implements IUserService {
 
 	@Override
 	public UserDTO getUserLogin(UserDTO uDTO) throws Exception {
-		return userMapper.getUserLogin(uDTO);
+		UserDTO userDTO = userMapper.getUserLogin(uDTO);
+		if(userDTO != null){
+			userMapper.updateDeviceToken(uDTO);
+		}
+		return userDTO;
 	}
 
 	@Override

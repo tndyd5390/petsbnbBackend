@@ -16,6 +16,14 @@ public class UserDTO {
 	private String filePath;
 	private String imageFileNo;
 	private String isPetSitter;
+	private String deviceToken;
+	
+	public String getDeviceToken() {
+		return deviceToken;
+	}
+	public void setDeviceToken(String deviceToken) {
+		this.deviceToken = deviceToken;
+	}
 	public String getIsPetSitter() {
 		return isPetSitter;
 	}

@@ -121,14 +121,15 @@ public class UserController {
 		log.info("email : " + email);
 		String password = CmmUtil.nvl((String)params.get("password"));
 		log.info("password : " + password);
-		
+		String deviceToken = CmmUtil.nvl((String)params.get("deviceToken"));
+		log.info("deviceToken : " + deviceToken);
 		email = AES256Util.strEncode(email);
 		password = AES256Util.strEncode(password);
 		
 		UserDTO uDTO = new UserDTO();
 		uDTO.setUserEmail(email);
 		uDTO.setUserPassword(password);
-		
+		uDTO.setDeviceToken(deviceToken);
 		uDTO = userService.getUserLogin(uDTO);
 		
 		
@@ -137,8 +138,6 @@ public class UserController {
 			userNo = uDTO.getUserNo() + "";
 			loginSuccess = true;
 		}
-		System.out.println("userNo : " + userNo);
-		System.out.println("loginSuccess : " + loginSuccess);
 		resultMap.put("userNo", userNo);
 		resultMap.put("loginSuccess", loginSuccess);
 		
@@ -540,7 +539,7 @@ public class UserController {
         conn.setRequestProperty("Authorization", "key=" + apiKey);
         conn.setDoOutput(true);
 
-        String input = "{\"notification\" : {\"title\" : \" 새로운 펫시팅 요청 \", \"body\" : \"박수용님이 펫시팅을 요청했습니다.\"}, \"to\":\"cBSd29xvsiQ:APA91bEk58cenAXIJsUHgfWX6OlBSX3BQfqQDiX52epYb_C_OTU8F9DnvQ_hBWqkvYPq2Sxye-FOuK2e2BSaHGbLoWvapvMtW8_y1ojqU1sgiV5Ned_s7g8-ZAmqafSabUwbotjkrs0f\"}";
+        String input = "{\"notification\" : {\"title\" : \" 새로운 펫시팅 요청 \", \"body\" : \"박수용님이 펫시팅을 요청했습니다.\"}, \"to\":\"cF3Gncbtshw:APA91bF1VsMz2k_l8FInsBmPIQ-Jecjido7F1qSH4KbAnCuK2SF1XgNUB4529JDVoiyY96TjAUJHibSF14eDQ3LhCcLi0Xn_y6048DhiAZ8Kq6_-GAswd-AHoDevSjLCFE5Ofic6uZIH\"}";
 
         OutputStream os = conn.getOutputStream();
         

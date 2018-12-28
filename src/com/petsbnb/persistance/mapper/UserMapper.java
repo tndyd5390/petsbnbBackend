@@ -25,4 +25,5 @@ public interface UserMapper {
 	public UserDTO getUserAddress(UserDTO uDTO) throws Exception;
 	public int insertPetSitterApply(PetSitterApplyDTO pDTO) throws Exception;
 	public PetSitterApplyDTO checkAppliedUser(String userNo) throws Exception;
+	public int updateDeviceToken(UserDTO uDTO) throws Exception;
 }
