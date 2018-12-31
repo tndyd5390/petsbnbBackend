@@ -210,8 +210,8 @@ public class UserController {
 			uDTO = new UserDTO();
 		}else{
 			uDTO.setUserName(AES256Util.strDecode(uDTO.getUserName()));
-			uDTO.setUserAddress(AES256Util.strDecode(uDTO.getUserAddress()));
-			uDTO.setUserAddressDetail(AES256Util.strDecode(uDTO.getUserAddressDetail()));
+			uDTO.setUserAddress(uDTO.getUserAddress());
+			uDTO.setUserAddressDetail(uDTO.getUserAddressDetail());
 			uDTO.setUserZipcode(AES256Util.strDecode(uDTO.getUserZipcode()));
 			uDTO.setUserPhone(AES256Util.strDecode(uDTO.getUserPhone()));
 			uDTO.setUserEmail(AES256Util.strDecode(uDTO.getUserEmail()));
@@ -445,8 +445,8 @@ public class UserController {
 		uDTO.setUserNo(userNo);
 		
 		uDTO = userService.getUserAddress(uDTO);
-		String userAddress = AES256Util.strDecode(uDTO.getUserAddress());
-		String userAddressDetail = AES256Util.strDecode(uDTO.getUserAddressDetail());
+		String userAddress = uDTO.getUserAddress();
+		String userAddressDetail = uDTO.getUserAddressDetail();
 		
 		userAddress += " " + userAddressDetail;
 		
