@@ -86,9 +86,6 @@ public class UserController {
 		phoneNumber = AES256Util.strEncode(phoneNumber);
 		password = AES256Util.strEncode(password);
 		zipCode = AES256Util.strEncode(zipCode);
-		address = AES256Util.strEncode(address);
-		addressDetail = AES256Util.strEncode(addressDetail);
-		
 		
 		UserDTO uDTO = new UserDTO();
 		uDTO.setUserEmail(email);

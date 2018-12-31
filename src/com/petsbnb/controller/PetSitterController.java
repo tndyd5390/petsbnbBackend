@@ -416,7 +416,7 @@ public class PetSitterController {
 	}
 	
 	@RequestMapping(value="/petSitter/getPetSitterExposure", method=RequestMethod.POST)
-	public @ResponseBody PetSitterDTO getPetSitterExposure(@RequestBody Map<Object, Object> param) throws Exception{
+	public @ResponseBody Map<Object, Object> getPetSitterExposure(@RequestBody Map<Object, Object> param) throws Exception{
 		log.info(this.getClass() + ".getPetSitterExposure start!!!");
 		
 		String userNo = CmmUtil.nvl((String)param.get("userNo"));
@@ -424,8 +424,10 @@ public class PetSitterController {
 		
 		PetSitterDTO pDTO = petSitterService.getPetSitterInfo(userNo);
 		
+		Map<Object, Object> resultMap = new HashMap<>();
+		resultMap.put("pDTO", pDTO);
 		log.info(this.getClass() + ".getPetSitterExposure end!!!");
-		return pDTO;
+		return resultMap;
 	}
 	
 	@RequestMapping(value="/petSitter/togglePetSitterReservationExposure", method=RequestMethod.POST)
