@@ -563,5 +563,12 @@ public class UserController {
 		log.info(this.getClass() + ".fcmTest end!!!");
 	}
 	
+	@RequestMapping(value="/user/auth")
+	public String auth(HttpServletRequest req, HttpServletResponse resp, Model model, HttpSession session)throws Exception{
+		log.info(this.getClass() + ".auth start!!!");
+		
+		log.info(this.getClass() + ".auth end!!!");
+		return "/user/auth";
+	}
 	
 }
