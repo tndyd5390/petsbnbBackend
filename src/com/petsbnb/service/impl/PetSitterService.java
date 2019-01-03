@@ -15,6 +15,7 @@ import com.petsbnb.dto.PetSitterFileDTO;
 import com.petsbnb.persistance.mapper.PetSitterMapper;
 import com.petsbnb.service.IPetSitterServcie;
 import com.petsbnb.util.AES256Util;
+import com.petsbnb.util.CmmUtil;
 
 @Service("PetSitterService")
 public class PetSitterService implements IPetSitterServcie {
@@ -77,4 +78,9 @@ public class PetSitterService implements IPetSitterServcie {
 		return update > 0;
 	}
 
+	@Override
+	public boolean updateTogglePetSitterReservationExposure(PetSitterDTO pDTO) throws Exception {
+		int result = petSitterMapper.updateTogglePetSitterReservationExposure(pDTO);
+		return result > 0;
+	}
 }

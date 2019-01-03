@@ -35,7 +35,7 @@ public class PetSitterController {
 	@Resource(name="PetSitterService")
 	private IPetSitterServcie petSitterService;
 	
-	String petSitterImageFilePath = "C:\\Users\\DATA16\\git\\petsbnbBackend\\WebContent\\petSitterImageFile\\";
+	String petSitterImageFilePath = "C:\\Users\\Data3811-36\\git\\petsbnbBackend\\WebContent\\petSitterImageFile\\";
 	
 	@RequestMapping(value="/petSitter/getPetSitterInfo", method=RequestMethod.POST)
 	public @ResponseBody Map<Object, Object> getPetSitterInfo(@RequestBody Map<Object, Object> param) throws Exception{
@@ -415,4 +415,45 @@ public class PetSitterController {
 		return pDTO;
 	}
 	
+	@RequestMapping(value="/petSitter/getPetSitterExposure", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> getPetSitterExposure(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getPetSitterExposure start!!!");
+		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		
+		PetSitterDTO pDTO = petSitterService.getPetSitterInfo(userNo);
+		
+		Map<Object, Object> resultMap = new HashMap<>();
+		resultMap.put("pDTO", pDTO);
+		log.info(this.getClass() + ".getPetSitterExposure end!!!");
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/petSitter/togglePetSitterReservationExposure", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> togglePetSitterReservationExposure(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".togglePetSitterReservationExposure start!!!");
+		
+		String exposure = CmmUtil.nvl((String)param.get("exposure"));
+		log.info("exposure : " + exposure);
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		String petSitterNo = CmmUtil.nvl((String)param.get("petSitterNo"));
+		log.info("petSitterNo : " + petSitterNo);
+		
+		PetSitterDTO pDTO = new PetSitterDTO();
+		pDTO.setUserNo(userNo);
+		pDTO.setPetSitterNo(petSitterNo);
+		pDTO.setExposure(exposure);
+		
+		boolean result = petSitterService.updateTogglePetSitterReservationExposure(pDTO);
+		
+		Map<Object, Object> resultMap = new HashMap<>();
+		resultMap.put("result", result);
+		resultMap.put("exposure", exposure);
+		
+		log.info(this.getClass() + ".togglePetSitterReservationExposure end!!!");
+		return resultMap;
+		
+	}
 }

@@ -30,10 +30,6 @@
   			   NECESSARY_ITEM 					AS necessaryItem,
   			   PETSITTER_INTRODUCE 				AS petSitterIntroduce,
   			   EXPOSURE							AS exposure,
-  			   NIGHT_CHECK_IN					AS nightCheckIn,
-  			   NIGHT_CHECK_OUT					AS nightCheckOut,
-  			   DAYCARE_START					AS dayCareStart,
-  			   DAYCARE_END						AS dayCareEnd,
   			   REG_DT 							AS regDt,
   			   REG_NO  							AS regNo,
   			   CHG_DT  							AS chgDt,
@@ -165,10 +161,6 @@
   			   NECESSARY_ITEM 					AS necessaryItem,
   			   PETSITTER_INTRODUCE 				AS petSitterIntroduce,
   			   EXPOSURE							AS exposure,
-  			   NIGHT_CHECK_IN					AS nightCheckIn,
-  			   NIGHT_CHECK_OUT					AS nightCheckOut,
-  			   DAYCARE_START					AS dayCareStart,
-  			   DAYCARE_END						AS dayCareEnd,
   			   REG_DT 							AS regDt,
   			   REG_NO  							AS regNo,
   			   CHG_DT  							AS chgDt,
@@ -245,5 +237,10 @@
 			   CHG_DT = NOW(),
 			   CHG_NO = #{userNo}
 		 WHERE PETSITTER_NO = #{petSitterNo}
+	</update>
+	<update id="updateTogglePetSitterReservationExposure" parameterType="PetSitterDTO">
+		UPDATE PETSITTER_INFO
+		   SET EXPOSURE = #{exposure}
+		 WHERE USER_NO = #{userNo} AND PETSITTER_NO =#{petSitterNo}
 	</update>
 </mapper>

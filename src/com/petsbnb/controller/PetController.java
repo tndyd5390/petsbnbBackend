@@ -35,7 +35,7 @@ public class PetController {
 	@Resource(name="PetService")
 	private IPetService petService;
 	
-	String petImageFilePath = "C:\\Users\\DATA16\\git\\petsbnbBackend\\WebContent\\petImageFile\\";
+	String petImageFilePath = "C:\\Users\\Data3811-36\\git\\petsbnbBackend\\WebContent\\petImageFile\\";
 	
 	@RequestMapping(value="/pet/petProfileRegProc")
 	public @ResponseBody Map<Object, Object> petProfileRegProc(MultipartHttpServletRequest req) throws Exception{
@@ -152,7 +152,7 @@ public class PetController {
 		log.info("userNo : " + userNo);
 		
 		List<PetDTO> pList = petService.getPetList(userNo);
-		
+		System.out.println("pList : " + pList.size());
 		log.info(this.getClass() + ".getList end!!!");
 		return pList;
 	}

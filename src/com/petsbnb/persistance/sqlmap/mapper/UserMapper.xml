@@ -192,4 +192,9 @@
 	      FROM PETSITTER_APPLY
 	     WHERE USER_NO = #{userNo}
 	</select>
+	<update id="updateDeviceToken" parameterType="UserDTO">
+		UPDATE USER_INFO 
+		   SET DEVICE_TOKEN = #{deviceToken}
+		 WHERE USER_EMAIL = #{userEmail} AND USER_PASSWORD=#{userPassword}
+	</update>
 </mapper>
