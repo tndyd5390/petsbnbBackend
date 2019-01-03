@@ -21,11 +21,13 @@ public class BookingController {
 	private IBookingService bookingService;
 	
 	@RequestMapping("/booking/getBookingList")
-	public @ResponseBody List<HashMap<Object, Object>> getBookingList() throws Exception{
+	public @ResponseBody List<HashMap<Object, Object>> getBookingList(@RequestBody HashMap<Object, Object> req) throws Exception{
 		log.info(this.getClass().getName() + "start!!");
 
+		log.info("page : "+req.get("page"));
+		log.info("search : "+req.get("search"));
 		
-		List<HashMap<Object,Object>> rsltList = bookingService.getBookingList();
+		List<HashMap<Object,Object>> rsltList = bookingService.getBookingList(req);
 		
 		log.info(this.getClass().getName() + "end!!");
 		return rsltList;

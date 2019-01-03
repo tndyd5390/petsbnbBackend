@@ -18,8 +18,8 @@ public class BookingService implements IBookingService{
 	private BookingMapper bookingMapper;
 
 	@Override
-	public List<HashMap<Object, Object>> getBookingList() throws Exception{
-		return bookingMapper.getBookingList();
+	public List<HashMap<Object, Object>> getBookingList(HashMap<Object, Object> req) throws Exception{
+		return bookingMapper.getBookingList(req);
 	}
 
 	@Override

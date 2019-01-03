@@ -8,7 +8,7 @@ import com.petsbnb.config.Mapper;
 @Mapper("BookingMapper")
 public interface BookingMapper {
 
-	List<HashMap<Object, Object>> getBookingList() throws Exception;
+	List<HashMap<Object, Object>> getBookingList(HashMap<Object, Object> req) throws Exception;
 
 	List<HashMap<Object, Object>> getBookingDetailImages(String petsitterNo) throws Exception;
 

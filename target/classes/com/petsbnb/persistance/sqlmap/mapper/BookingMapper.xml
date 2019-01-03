@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- JAVA와 연결할 Mapper 파일 설정 -->
 <mapper namespace="com.petsbnb.persistance.mapper.BookingMapper">
-	<select id="getBookingList" parameterType="string" resultType="HashMap">
+	<select id="getBookingList" parameterType="HashMap" resultType="HashMap">
 		SELECT
 			P.PETSITTER_NO AS petsitterNo,
 			P.PETSITTER_NAME AS petsitterName,
@@ -29,8 +29,13 @@
 			P.PETSITTER_NO = F.PETSITTER_NO AND
 			P.USER_NO = U.USER_NO AND
 			P.EXPOSURE = 'true'
+			<if test = "search != ''">
+			AND U.USER_ADDRESS LIKE '*' + #{search} + '*'
+			</if>
 		GROUP BY
 			P.PETSITTER_NO
+		LIMIT
+			#{page}, 2
 	</select>
 	
 	<select id="getBookingDetailImages" parameterType="string" resultType="HashMap">

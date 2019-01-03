@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface IBookingService {
 
-	List<HashMap<Object, Object>> getBookingList() throws Exception;
+	List<HashMap<Object, Object>> getBookingList(HashMap<Object, Object> req) throws Exception;
 
 	HashMap<Object, Object> getBookingDetail(HashMap<Object, Object> req) throws Exception;
 
