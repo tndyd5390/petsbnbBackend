@@ -300,10 +300,6 @@ public class UserController {
 		String userNo = CmmUtil.nvl((String)param.get("userNo"));
 		log.info("userNo : " + userNo);
 		
-		zipcode = AES256Util.strEncode(zipcode);
-		address = AES256Util.strEncode(address);
-		addressDetail = AES256Util.strEncode(addressDetail);
-		
 		UserDTO uDTO = new UserDTO();
 		uDTO.setUserZipcode(zipcode);
 		uDTO.setUserAddress(address);
