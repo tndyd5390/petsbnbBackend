@@ -30,6 +30,8 @@
   			   NECESSARY_ITEM 					AS necessaryItem,
   			   PETSITTER_INTRODUCE 				AS petSitterIntroduce,
   			   EXPOSURE							AS exposure,
+  			   NIGHT_CHECKIN					AS nightCheckin,
+  			   NIGHT_CHECKOUT					AS nightCheckout,
   			   REG_DT 							AS regDt,
   			   REG_NO  							AS regNo,
   			   CHG_DT  							AS chgDt,
@@ -243,4 +245,56 @@
 		   SET EXPOSURE = #{exposure}
 		 WHERE USER_NO = #{userNo} AND PETSITTER_NO =#{petSitterNo}
 	</update>
+	<update id="updateStartReservationExposure" parameterType="PetSitterDTO">
+		UPDATE PETSITTER_INFO
+		   SET EXPOSURE = 'true',
+		       NIGHT_CHECKIN = #{nightCheckin},
+		       NIGHT_CHECKOUT = #{nightCheckout}
+		 WHERE USER_NO = #{userNo} AND PETSITTER_NO = #{petSitterNo}
+	</update>
+	<update id="updateStopReservationExposure" parameterType="PetSitterDTO">
+		UPDATE PETSITTER_INFO
+		   SET EXPOSURE = 'false',
+		   	   NIGHT_CHECKIN = NULL,
+		       NIGHT_CHECKOUT = NULL
+		 WHERE USER_NO = #{userNo} AND PETSITTER_NO = #{petSitterNo}
+	</update>
+	<select id="getPDTO" parameterType="string" resultType="PetSitterDTO">
+		SELECT PETSITTER_NO						AS petSitterNo,
+			   USER_NO							AS userNo,
+			   PETSITTER_NAME					AS petSitterName,
+  			   PETSITTER_INTRODUCE_ONELINE		AS petSitterIntroduceOneLine,
+  			   PETSITTERENV						AS petSitterEnv,
+  			   PETSITTER_HAS_PET 				AS petSitterHasPet,
+  			   LONGTERM_AVAILABLE 				AS longTermAvailable,
+  			   WALK_AVAILABLE 					AS walkAvailable,
+  			   BATH_AVAILABLE 					AS bathAvailable,
+  			   FIRSTAID_AVAILABLE 				AS firstAidAvailable,
+  			   MARKING_IMPOSSIBLE 				AS markingImpossible,
+  			   BOWEL_IMPOSSIBLE 				AS bowelImpossible,
+  			   ATTACK_IMPOSSIBLE  				AS attackImpossible,
+  			   SEPARATION_IMPOSSIBLE 			AS separationImpossible,
+  			   BITE_IMPOSSIBLE 					AS biteImpossible,
+  			   SMALLPET_NIGHT_PRICE 			AS smallPetNightPrice,
+  			   SMALLPET_DAY_PRICE 				AS smallPetDayPrice,
+  			   MIDDLEPET_NIGHT_PRICE 			AS middlePetNightPrice,
+  			   MIDDLEPET_DAY_PRICE 				AS middlePetDayPrice,
+  			   BIGPET_NIGHT_PRICE 				AS bigPetNightPrice,
+  			   BIGPET_DAY_PRICE 				AS bigPetDayPrice,
+  			   REFUND_ACCOUNT_NAME 				AS refundAccountName,
+  			   REFUND_BANK 						AS refundBank,
+  			   REFUND_ACCOUNT_NUMBER 			AS refundAccountNumber,
+  			   NECESSARY_ITEM 					AS necessaryItem,
+  			   PETSITTER_INTRODUCE 				AS petSitterIntroduce,
+  			   EXPOSURE							AS exposure,
+  			   NIGHT_CHECKIN					AS nightCheckin,
+  			   NIGHT_CHECKOUT					AS nightCheckout,
+  			   REG_DT 							AS regDt,
+  			   REG_NO  							AS regNo,
+  			   CHG_DT  							AS chgDt,
+  			   CHG_NO  							AS chgNo
+  		  FROM PETSITTER_INFO
+  		 WHERE PETSITTER_NO = #{petSitterNo}
+	
+	</select>
 </mapper>

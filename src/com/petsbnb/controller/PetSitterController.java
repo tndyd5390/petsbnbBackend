@@ -456,4 +456,73 @@ public class PetSitterController {
 		return resultMap;
 		
 	}
+	
+	@RequestMapping(value="/petSitter/startReservationExposure", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> startReservationExposure(@RequestBody Map<Object, Object> param) throws Exception {
+		log.info(this.getClass() + ".startReservationExposure start");
+		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		String petSitterNo = CmmUtil.nvl((String)param.get("petSitterNo"));
+		log.info("petSitterNo : " + petSitterNo);
+		String nightCheckin = CmmUtil.nvl((String)param.get("nightCheckin"));
+		log.info("nightCheckin : " + nightCheckin);
+		String nightCheckout = CmmUtil.nvl((String)param.get("nightCheckout"));
+		log.info("nightCheckout : " + nightCheckout);
+		
+		PetSitterDTO pDTO = new PetSitterDTO();
+		pDTO.setUserNo(userNo);
+		pDTO.setPetSitterNo(petSitterNo);
+		pDTO.setNightCheckin(nightCheckin);
+		pDTO.setNightCheckout(nightCheckout);
+		
+		int result = petSitterService.updateStartReservationExposure(pDTO);
+		Map<Object, Object> resultMap = new HashMap<>();
+		if(result != 0){
+			resultMap.put("result", true);
+		}else{
+			resultMap.put("result", false);
+		}
+		
+		log.info(this.getClass() + ".startReservationExposure end");
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/petSitter/stopReservationExposure", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> stopReservationExposure(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".stopReservationExposure start!!!");
+		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		String petSitterNo = CmmUtil.nvl((String)param.get("petSitterNo"));
+		log.info("petSitterNo : " + petSitterNo);
+		
+		PetSitterDTO pDTO = new PetSitterDTO();
+		pDTO.setUserNo(userNo);
+		pDTO.setPetSitterNo(petSitterNo);
+		
+		int result = petSitterService.updateStopReservationExposure(pDTO);
+		Map<Object, Object> resultMap = new HashMap<>();
+		if(result != 0){
+			resultMap.put("result", true);
+		}else{
+			resultMap.put("result", false);
+		}
+		
+		log.info(this.getClass() + ".stopReservation end!!!");
+		
+		return resultMap;
+	}
+	@RequestMapping(value="/petSitter/getPDTO", method=RequestMethod.POST)
+	public @ResponseBody PetSitterDTO getPDTO(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getPDTO start!!!");
+		
+		String petSitterNo = CmmUtil.nvl((String)param.get("petSitterNo"));
+		log.info("petSitterNo : " + petSitterNo);
+		
+		PetSitterDTO pDTO = petSitterService.getPDTO(petSitterNo);
+		
+		log.info(this.getClass() + ".getPDTO end!!!");
+		return pDTO;
+	}
 }
