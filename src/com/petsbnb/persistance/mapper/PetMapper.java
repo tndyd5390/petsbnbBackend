@@ -20,4 +20,5 @@ public interface PetMapper {
 	public int updatePetProfile(PetDTO pDTO) throws Exception;
 	public int deletePetImage(PetDTO pDTO) throws Exception;
 	public int deletePetProfile(PetDTO pDTO) throws Exception;
+	public List<PetDTO> getSelectedPetList(Map<String, Object> selectedPetMap) throws Exception;
 }

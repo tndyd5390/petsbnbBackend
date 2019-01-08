@@ -14,4 +14,5 @@ public interface IPetService {
 	public List<PetFileDTO> insertImageAndGetImage(PetFileDTO pfDTO) throws Exception;
 	public int updatePetProfile(PetDTO pDTO) throws Exception;
 	public boolean deletePetProfile(PetDTO pDTO) throws Exception;
+	public List<PetDTO> getSelectedPetList(Map<String, Object> selectedPetMap) throws Exception;
 }

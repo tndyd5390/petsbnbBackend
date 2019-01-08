@@ -89,4 +89,9 @@ public class PetService implements IPetService{
 		}
 		return result;
 	}
+
+	@Override
+	public List<PetDTO> getSelectedPetList(Map<String, Object> selectedPetMap) throws Exception {
+		return petMapper.getSelectedPetList(selectedPetMap);
+	}
 }

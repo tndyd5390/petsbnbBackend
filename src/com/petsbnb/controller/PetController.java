@@ -152,7 +152,6 @@ public class PetController {
 		log.info("userNo : " + userNo);
 		
 		List<PetDTO> pList = petService.getPetList(userNo);
-		System.out.println("pList : " + pList.size());
 		log.info(this.getClass() + ".getList end!!!");
 		return pList;
 	}
@@ -333,5 +332,20 @@ public class PetController {
 		resultMap.put("result", result);
 		log.info(this.getClass() + ".deletePetProfile end!!!");
 		return resultMap;
+	}
+	
+	@RequestMapping(value="/pet/getSelectedPetList", method=RequestMethod.POST)
+	public @ResponseBody List<PetDTO> getSelectedPetList(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getSelectedPetList start!!!");
+		
+		List<String> selectedPetNo = (List<String>)param.get("petNoArr");
+		
+		Map<String, Object> selectedPetMap = new HashMap<>();
+		selectedPetMap.put("selectedPetNo", selectedPetNo);
+		
+		List<PetDTO> pList = petService.getSelectedPetList(selectedPetMap);
+		
+		log.info(this.getClass() + ".getSelectedPetList end!!!");
+		return pList;
 	}
 }
