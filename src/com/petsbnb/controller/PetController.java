@@ -348,4 +348,24 @@ public class PetController {
 		log.info(this.getClass() + ".getSelectedPetList end!!!");
 		return pList;
 	}
+	
+	@RequestMapping(value="/pet/getAvaliablePetList", method=RequestMethod.POST)
+	public @ResponseBody List<PetDTO> getAvaliablePetList(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getAvaliablePetList start!!!");
+		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		List<String> avaliablePetKindList = (List<String>)param.get("availablePetKind");
+		if(avaliablePetKindList.size() == 0){
+			avaliablePetKindList.add("NONE");
+		}
+		Map<String, Object> avaliablePetKind = new HashMap<>();
+		avaliablePetKind.put("avaliablePetKindList", avaliablePetKindList);
+		avaliablePetKind.put("userNo", userNo);
+		
+		List<PetDTO> pList = petService.getAvaliablePetList(avaliablePetKind);
+		
+		log.info(this.getClass() + ".getAvaliablePetList end!!!");
+		return pList;
+	}
 }
