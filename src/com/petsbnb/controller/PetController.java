@@ -35,7 +35,7 @@ public class PetController {
 	@Resource(name="PetService")
 	private IPetService petService;
 	
-	String petImageFilePath = "C:\\Users\\Data3811-36\\git\\petsbnbBackend\\WebContent\\petImageFile\\";
+	String petImageFilePath = "C:\\Users\\DATA16\\git\\petsbnbBackend\\WebContent\\petImageFile\\";
 	
 	@RequestMapping(value="/pet/petProfileRegProc")
 	public @ResponseBody Map<Object, Object> petProfileRegProc(MultipartHttpServletRequest req) throws Exception{

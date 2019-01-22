@@ -35,6 +35,14 @@ public class PetSitterDTO {
 	private String regNo;
 	private String chgDt;
 	private String chgNo;
+	private String petSitterFileName;
+	
+	public String getPetSitterFileName() {
+		return petSitterFileName;
+	}
+	public void setPetSitterFileName(String petSitterFileName) {
+		this.petSitterFileName = petSitterFileName;
+	}
 	public String getNightCheckin() {
 		return nightCheckin;
 	}

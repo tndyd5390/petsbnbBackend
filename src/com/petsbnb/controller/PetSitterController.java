@@ -35,7 +35,7 @@ public class PetSitterController {
 	@Resource(name="PetSitterService")
 	private IPetSitterServcie petSitterService;
 	
-	String petSitterImageFilePath = "C:\\Users\\Data3811-36\\git\\petsbnbBackend\\WebContent\\petSitterImageFile\\";
+	String petSitterImageFilePath = "C:\\Users\\DATA16\\git\\petsbnbBackend\\WebContent\\petSitterImageFile\\";
 	
 	@RequestMapping(value="/petSitter/getPetSitterInfo", method=RequestMethod.POST)
 	public @ResponseBody Map<Object, Object> getPetSitterInfo(@RequestBody Map<Object, Object> param) throws Exception{
