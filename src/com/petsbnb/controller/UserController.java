@@ -210,9 +210,6 @@ public class UserController {
 			uDTO = new UserDTO();
 		}else{
 			uDTO.setUserName(AES256Util.strDecode(uDTO.getUserName()));
-			uDTO.setUserAddress(uDTO.getUserAddress());
-			uDTO.setUserAddressDetail(uDTO.getUserAddressDetail());
-			uDTO.setUserZipcode(AES256Util.strDecode(uDTO.getUserZipcode()));
 			uDTO.setUserPhone(AES256Util.strDecode(uDTO.getUserPhone()));
 			uDTO.setUserEmail(AES256Util.strDecode(uDTO.getUserEmail()));
 		}

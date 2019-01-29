@@ -1,15 +1,23 @@
 package com.petsbnb.controller;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.petsbnb.util.CmmUtil;
+import com.petsbnb.util.HttpUtil;
 
 @Controller
 public class PaymentController {
@@ -52,5 +60,23 @@ public class PaymentController {
 		
 		log.info(this.getClass() + ".networkCheck end!!!");
 		return true;
+	}
+	
+	@RequestMapping(value="/payment/getToken", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> getToken(HttpServletRequest req) throws Exception{
+		log.info(this.getClass() + ".getToken start!!");
+		
+		Map<Object, Object> result = new HashMap<Object, Object>();
+		
+		String token = HttpUtil.getIamportToken();
+		
+		if (!"".equals(token)) {
+			result.put("token", token);
+			result.put("success", true);
+		} else {
+			result.put("success", false);
+		}
+		log.info(this.getClass() + ".getToken end!!!");
+		return result;
 	}
 }
