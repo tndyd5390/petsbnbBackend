@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.annotations.ResultMap;
@@ -16,13 +17,58 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.petsbnb.service.IReservationService;
 import com.petsbnb.util.CmmUtil;
 import com.petsbnb.util.HttpUtil;
 
 @Controller
-public class PaymentController {
+public class ReservationController {
 
 	private Logger log = Logger.getLogger(this.getClass());
+	
+	@Resource(name="ReservationService")
+	private IReservationService reservationService;
+	
+	@RequestMapping(value="/reservation/insertReservationInfo", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> insertReservationInfo(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".insertReservationInfo start!!!");
+		
+		String imp_uid = CmmUtil.nvl((String)param.get("imp_uid"));
+		log.info("imp_uid : " + imp_uid);
+		String merchant_uid = CmmUtil.nvl((String)param.get("merchant_uid"));
+		log.info("merchant_uid : " + merchant_uid);
+		String amount = CmmUtil.nvl((String)param.get("amount"));
+		log.info("amount : " + amount);
+		String buyerAddr = CmmUtil.nvl((String)param.get("buyer_addr"));
+		log.info("buyerAddr : " + buyerAddr);
+		String buyerEmail = CmmUtil.nvl((String)param.get("buyer_email"));
+		log.info("buyerEmail : " + buyerEmail);
+		String buyerName = CmmUtil.nvl((String)param.get("buyer_name"));
+		log.info("buyerName : " + buyerName);
+		String buyerPostcode = CmmUtil.nvl((String)param.get("buyer_postcode"));
+		log.info("buyerPostcode : " + buyerPostcode);
+		String buyerTel = CmmUtil.nvl((String)param.get("buyer_tel"));
+		log.info("buyerTel : " + buyerTel);
+		String petNo = CmmUtil.nvl((String)param.get("petNo"));
+		log.info("petNo : " + petNo);
+		String checkin = CmmUtil.nvl((String)param.get("checkin"));
+		log.info("checkin : " + checkin);
+		String checkout = CmmUtil.nvl((String)param.get("checkout"));
+		log.info("checkout : " + checkout);
+		String serviceProvider = CmmUtil.nvl((String)param.get("serviceProvider"));
+		log.info("serviceProvider : " + serviceProvider);
+		String serviceReceiver = CmmUtil.nvl((String)param.get("serviceReceiver"));
+		log.info("serviceReceiver : " + serviceReceiver);
+		String stDate = CmmUtil.nvl((String)param.get("stDate"));
+		log.info("stDate : " + stDate);
+		String edDate = CmmUtil.nvl((String)param.get("edDate"));
+		log.info("edDate : " + edDate);
+		
+		
+		
+		log.info(this.getClass() + ".insertReservationInfo end!!!");
+		return null;
+	}
 	
 	@RequestMapping(value="/pay/paymentResult")
 	public void paymentResult(@RequestBody Map<Object, Object> param) throws Exception{
