@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <typeAliases>
+    	<!-- 사용할 DTO 등록  -->
+		<typeAlias type="com.petsbnb.dto.UserDTO" alias="UserDTO"/>
+		<typeAlias type="com.petsbnb.dto.FileDTO" alias="FileDTO"/>
+		<typeAlias type="com.petsbnb.dto.PetDTO" alias="PetDTO"/>
+		<typeAlias type="com.petsbnb.dto.PetFileDTO" alias="PetFileDTO"/>
+		<typeAlias type="com.petsbnb.dto.PetSitterApplyDTO" alias="PetSitterApplyDTO"/>
+		<typeAlias type="com.petsbnb.dto.PetSitterDTO" alias="PetSitterDTO"/>
+		<typeAlias type="com.petsbnb.dto.PetSitterFileDTO" alias="PetSitterFileDTO"/>
+		<typeAlias type="com.petsbnb.dto.ChatDTO" alias="ChatDTO"/>
+		<typeAlias type="com.petsbnb.dto.ReservationInfoDTO" alias="ReservationInfoDTO"/>
+		<typeAlias type="com.petsbnb.dto.ReservationPetInfoDTO" alias="ReservationPetInfoDTO"/>
+    </typeAliases>
+</configuration>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- JAVA와 연결할 Mapper 파일 설정 -->
+<mapper namespace="com.petsbnb.persistance.mapper.PetMapper">
+	
+	<insert id="insertPetProfile" parameterType="PetDTO">
+		INSERT INTO PET_INFO
+		(
+			USER_NO,
+			PET_NAME,
+			PET_GENDER,
+			PET_KIND,
+			PET_BIRTHDAY,
+			PET_WEIGHT,
+			PET_NEUTRALIZATION,
+			PET_MEETANOTHERPET,
+			PET_BARKS,
+			PET_BOWELTRAINING,
+			PET_COMPREHENSIVE_VACCINE,
+			PET_RABIESVACCINATION,
+			PET_HEARTWORM,
+			PET_CORONAENTERITIS,
+			PET_KENNELKOV,
+			PET_NONEVACCINE,
+			PET_UNFAMILIAR,
+			PET_SPECIALMATTERS,
+			PET_REFERENCE,
+			REG_NO,
+			REG_DT
+		)
+		VALUES
+		(
+			 #{userNo},
+			 #{petName},
+			 #{petGender},
+			 #{petKind},
+			 #{petBirthday},
+			 #{petWeight},
+			 #{petNeutralization},
+			 #{petMeetAnotherPet},
+			 #{petBarks},
+			 #{petBowelTraining},
+			 #{petComprehensiveVaccine},
+			 #{petRabiesvaccination},
+			 #{petHeartworm},
+			 #{petCoronaenteritis},
+			 #{petKennelkov},
+			 #{petNonevaccine},
+			 #{petUnfamiliar},
+			 #{petSpecialMatters},
+			 #{petReference},
+			 #{userNo},
+			 NOW()
+		)
+		<selectKey resultType="string" keyProperty="petNo" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+	<insert id="insertPetImageFile" parameterType="java.util.Map">
+		INSERT INTO PET_FILE_INFO
+		(
+			PET_NO,
+			USER_NO,
+			PET_FILE_ORG_NAME,
+			PET_FILE_NAME,
+			PET_FILE_PATH,
+			REG_NO,
+			REG_DT
+		)
+		VALUE
+		<foreach collection="petImages" item="item" index="index" separator=",">
+		(
+			#{item.petNo},
+			#{item.userNo},
+			#{item.petFileOrgName},
+			#{item.petFileName},
+			#{item.petFilePath},
+			#{item.regNo},
+			NOW()
+		)
+		</foreach>
+	</insert>
+	
+	<select id="getPetList" parameterType="string" resultType="PetDTO">
+		SELECT PET_INFO.PET_NO								   AS petNo,
+			   PET_INFO.PET_NAME								   AS petName,
+		       PET_INFO.PET_GENDER								   AS petGender,
+		       PET_INFO.PET_KIND								   AS petKind,
+		       (YEAR(CURDATE()) - YEAR(PET_INFO.PET_BIRTHDAY)) + 1 AS age,
+		       PET_FILE_INFO.PET_FILE_NAME						   AS petFileName,
+		       PET_INFO.PET_WEIGHT								   AS petWeight
+		  FROM PET_INFO
+		 LEFT OUTER JOIN PET_FILE_INFO 
+		    ON PET_INFO.PET_NO = PET_FILE_INFO.PET_NO
+		 WHERE PET_INFO.USER_NO = #{userNo}
+		  GROUP BY PET_INFO.PET_NO;
+	</select>
+	
+	<select id="getPetDTO" parameterType="PetDTO" resultType="PetDTO">
+		 SELECT PET_NO						AS petNo,
+				USER_NO						AS userNo,
+				PET_NAME					AS petName,
+				PET_GENDER					AS petGender,
+				PET_KIND					AS petKind,
+				PET_WEIGHT					AS petWeight,
+				PET_NEUTRALIZATION			AS petNeutralization,
+				PET_MEETANOTHERPET			AS petMeetAnotherpet,
+				PET_BARKS					AS petBarks,
+				PET_BOWELTRAINING			AS petBoweltraining,
+				PET_COMPREHENSIVE_VACCINE	AS petComprehensiveVaccine,
+				PET_RABIESVACCINATION		AS petRabiesvaccination,
+				PET_HEARTWORM				AS petHeartworm,
+				PET_CORONAENTERITIS			AS petCoronaenteritis,
+				PET_KENNELKOV				AS petKennelkov,
+				PET_NONEVACCINE				AS petNonevaccine,
+				REG_NO						AS regNo,
+				REG_DT						AS regDt,
+				CHG_NO						AS chgNo,
+				CHG_DT						AS chgDt,
+				PET_UNFAMILIAR				AS petUnfamiliar,
+				PET_SPECIALMATTERS			AS petSpecialmatters,
+				PET_REFERENCE				AS petReference,
+				PET_BIRTHDAY				AS petBirthday
+		   FROM PET_INFO
+		  WHERE PET_NO = #{petNo} and user_no=#{userNo}
+	</select>
+	
+	<select id="getPetFileDTO" parameterType="PetDTO" resultType="PetFileDTO">
+		SELECT PET_FILE_NO			AS petFileNo,
+   			   PET_NO				AS petNo,
+			   PET_FILE_ORG_NAME	AS petFileOrgName,
+			   PET_FILE_NAME		AS petFileName,
+			   PET_FILE_PATH		AS petFilePath,
+			   REG_NO				AS regNo,
+			   REG_DT				AS regDt,
+			   CHG_NO				AS chgNo,
+			   CHG_DT				AS chgDt,
+			   USER_NO				AS userNo
+		  FROM PET_FILE_INFO
+		 WHERE PET_NO = #{petNo} and USER_NO=#{userNo}
+	
+	</select>
+	<delete id="deletePetFile" parameterType="PetFileDTO">
+		DELETE FROM PET_FILE_INFO WHERE PET_FILE_NO = #{petFileNo}
+	</delete>
+	<select id="getPetFileList" parameterType="PetFileDTO" resultType="PetFileDTO">
+		SELECT PET_FILE_NO			AS petFileNo,
+   			   PET_NO				AS petNo,
+			   PET_FILE_ORG_NAME	AS petFileOrgName,
+			   PET_FILE_NAME		AS petFileName,
+			   PET_FILE_PATH		AS petFilePath,
+			   REG_NO				AS regNo,
+			   REG_DT				AS regDt,
+			   CHG_NO				AS chgNo,
+			   CHG_DT				AS chgDt,
+			   USER_NO				AS userNo
+		  FROM PET_FILE_INFO
+		 WHERE PET_NO = #{petNo} and USER_NO=#{userNo}
+	</select>
+	<insert id="insertPetFile" parameterType="PetFileDTO">
+		INSERT INTO PET_FILE_INFO
+		(
+			PET_NO,
+			USER_NO,
+			PET_FILE_ORG_NAME,
+			PET_FILE_NAME,
+			PET_FILE_PATH,
+			REG_NO,
+			REG_DT
+		)
+		VALUE
+		(
+			#{petNo},
+			#{userNo},
+			#{petFileOrgName},
+			#{petFileName},
+			#{petFilePath},
+			#{regNo},
+			NOW()
+		)
+	</insert>
+	<update id="updatePetProfile" parameterType="PetDTO">
+		UPDATE PET_INFO
+		   SET PET_BIRTHDAY = #{petBirthday},
+			   PET_NAME = #{petName},
+			   PET_GENDER = #{petGender},
+			   PET_KIND = #{petKind},
+			   PET_WEIGHT = #{petWeight},
+			   PET_NEUTRALIZATION = #{petNeutralization},
+			   PET_UNFAMILIAR = #{petUnfamiliar},
+			   PET_MEETANOTHERPET = #{petMeetAnotherPet},
+			   PET_BARKS = #{petBarks},
+			   PET_BOWELTRAINING = #{petBowelTraining},
+			   PET_COMPREHENSIVE_VACCINE = #{petComprehensiveVaccine},
+			   PET_RABIESVACCINATION = #{petRabiesvaccination},
+			   PET_HEARTWORM = #{petHeartworm},
+			   PET_CORONAENTERITIS = #{petCoronaenteritis},
+			   PET_KENNELKOV = #{petKennelkov},
+			   PET_NONEVACCINE = #{petNonevaccine},
+			   PET_SPECIALMATTERS = #{petSpecialMatters},
+			   PET_REFERENCE = #{petReference},
+			   CHG_NO = #{userNo},
+			   CHG_DT = NOW()
+	     WHERE PET_NO = #{petNo}
+	</update>
+	<delete id="deletePetImage" parameterType="PetDTO">
+		DELETE FROM PET_FILE_INFO WHERE USER_NO = #{userNo} AND PET_NO = #{petNo}
+	
+	</delete>
+	<delete id="deletePetProfile" parameterType="PetDTO">
+		DELETE FROM PET_INFO WHERE PET_NO = #{petNo} AND USER_NO = #{userNo}
+	</delete>
+	
+	<select id="getSelectedPetList" parameterType="java.util.Map" resultType="PetDTO">
+		SELECT PET_INFO.PET_NO								   AS petNo,
+			   PET_INFO.PET_NAME								   AS petName,
+		       PET_INFO.PET_GENDER								   AS petGender,
+		       PET_INFO.PET_KIND								   AS petKind,
+		       (YEAR(CURDATE()) - YEAR(PET_INFO.PET_BIRTHDAY)) + 1 AS age,
+		       PET_FILE_INFO.PET_FILE_NAME						   AS petFileName,
+		       PET_INFO.PET_WEIGHT								   AS petWeight
+		  FROM PET_INFO
+		 LEFT OUTER JOIN PET_FILE_INFO 
+		    ON PET_INFO.PET_NO = PET_FILE_INFO.PET_NO
+		 WHERE PET_INFO.PET_NO IN
+		 <foreach collection="selectedPetNo" item="item" index="index" separator="," open="(" close=")">
+		 	#{item}
+		 </foreach>
+		 GROUP BY PET_INFO.PET_NO;
+	</select>
+	<select id="getAvaliablePetList" parameterType="java.util.Map" resultType="PetDTO">
+		SELECT PET_INFO.PET_NO								   		AS petNo,
+			   PET_INFO.PET_NAME								   	AS petName,
+		       PET_INFO.PET_GENDER								   	AS petGender,
+		       PET_INFO.PET_KIND								   	AS petKind,
+		       (YEAR(CURDATE()) - YEAR(PET_INFO.PET_BIRTHDAY)) + 1 	AS age,
+		       PET_FILE_INFO.PET_FILE_NAME						   	AS petFileName,
+               PET_INFO.PET_WEIGHT									AS petWeight
+		  FROM PET_INFO
+		  LEFT OUTER JOIN PET_FILE_INFO 
+		    ON PET_INFO.PET_NO = PET_FILE_INFO.PET_NO
+		 WHERE PET_INFO.USER_NO = #{userNo} AND 
+              (
+				IF(
+					PET_WEIGHT <![CDATA[>]]> 0 AND PET_WEIGHT <![CDATA[<=]]> 6, 
+					'SMALL', 
+					IF(
+						PET_WEIGHT <![CDATA[>]]> 6 AND PET_WEIGHT <![CDATA[<=]]> 15, 
+						'MIDDLE',
+						'BIG'
+					)
+				)
+			  ) in 
+			  <foreach collection="avaliablePetKindList" item="item" index="index" separator="," open="(" close=")">
+		 		#{item}
+		 	  </foreach>
+		 GROUP BY PET_INFO.PET_NO
+	</select>
+</mapper>

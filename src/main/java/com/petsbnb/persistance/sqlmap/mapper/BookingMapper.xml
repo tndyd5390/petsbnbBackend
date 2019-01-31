@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- JAVA와 연결할 Mapper 파일 설정 -->
+<mapper namespace="com.petsbnb.persistance.mapper.BookingMapper">
+	<select id="getBookingList" parameterType="HashMap" resultType="HashMap">
+		SELECT
+			P.PETSITTER_NO AS petsitterNo,
+			P.PETSITTER_NAME AS petsitterName,
+			P.USER_NO AS petsitterUserNo,
+		 	P.PETSITTER_INTRODUCE_ONELINE AS petsitterIntroduceOneline,
+			ROUND(AVG(IFNULL(R.STARCOUNT,0)),1) AS starCount,
+			COUNT(R.REVIEW_NO) AS reviewCount,
+			F.PETSITTER_FILE_NAME AS petsitterFileName,
+			F.PETSITTER_FILE_PATH AS petsitterFilePath,
+			U.USER_ADDRESS AS userAddress,
+			U.USER_ADDRESS_DETAIL AS userAddressDetail
+		FROM
+			PETSITTER_INFO P 
+				LEFT OUTER JOIN 
+			PETSITTER_REVIEW R
+			ON P.PETSITTER_NO = R.PETSITTER_NO,
+			(
+				SELECT PETSITTER_NO,PETSITTER_FILE_NAME, PETSITTER_FILE_PATH
+				FROM PETSITTER_FILE_INFO
+				GROUP BY PETSITTER_NO
+				ORDER BY REG_DT 
+			) F,
+			USER_INFO U
+		WHERE
+			P.PETSITTER_NO = F.PETSITTER_NO AND
+			P.USER_NO = U.USER_NO AND
+			P.EXPOSURE = 'true'
+			<if test = "search != ''">
+			AND U.USER_ADDRESS LIKE '*' + #{search} + '*'
+			</if>
+		GROUP BY
+			P.PETSITTER_NO
+		LIMIT
+			#{page}, 2
+	</select>
+	
+	<select id="getBookingDetailImages" parameterType="string" resultType="HashMap">
+		SELECT 
+			PETSITTER_FILE_NO AS petsitterFileNo,
+			PETSITTER_FILE_PATH AS petsitterFilePath,
+			PETSITTER_FILE_NAME AS petsitterFileName
+		FROM 
+			PETSITTER_FILE_INFO 
+		WHERE 
+			PETSITTER_NO = #{petsitterNo}
+		ORDER BY
+			REG_DT DESC
+	</select>
+	
+	<select id="getBookingDetail" parameterType="string" resultType="HashMap">
+		SELECT
+			P.PETSITTER_NO AS petsitterNo,
+			P.USER_NO AS petsitterUserNo,
+			P.PETSITTER_NAME AS petsitterName,
+			U.USER_ADDRESS AS userAddress,
+			U.USER_ADDRESS_DETAIL AS userAddressDetail,
+		 	P.PETSITTER_INTRODUCE_ONELINE AS petsitterIntroduceOneline,
+		    P.PETSITTER_INTRODUCE AS petsitterIntroduce,
+		    SMALLPET_DAY_PRICE AS smallpetDayPrice,
+		    SMALLPET_NIGHT_PRICE AS smallpetNightPrice,
+		    MIDDLEPET_DAY_PRICE AS middlepetDayPrice,
+		    MIDDLEPET_NIGHT_PRICE AS middlepetNightPrice,
+		    BIGPET_DAY_PRICE AS bigpetDayPrice,
+		    BIGPET_NIGHT_PRICE AS bigpetNightPrice,
+		    NECESSARY_ITEM AS necessaryItem,
+		    PETSITTERENV AS petsitterEnv,
+		    PETSITTER_HAS_PET AS petsitterHasPet,
+		    WALK_AVAILABLE AS walkAvailable,
+		    BATH_AVAILABLE bathAvailable,
+		    LONGTERM_AVAILABLE AS longtermAvailable,
+		    FIRSTAID_AVAILABLE AS firstaidAvailable,
+		    MARKING_IMPOSSIBLE markingImpossible,
+		    BOWEL_IMPOSSIBLE bowelImpossible,
+		    ATTACK_IMPOSSIBLE attackImpossible,
+		   	SEPARATION_IMPOSSIBLE separationImpossible,
+		    BITE_IMPOSSIBLE biteImpossible,
+			ROUND(AVG(IFNULL(R.STARCOUNT,0)),1) AS starCount,
+			COUNT(R.REVIEW_NO) AS reviewCount
+		FROM
+			PETSITTER_INFO P 
+				LEFT OUTER JOIN
+			PETSITTER_REVIEW R
+			ON P.PETSITTER_NO = R.PETSITTER_NO,
+			USER_INFO U
+		WHERE
+			P.USER_NO = U.USER_NO AND
+      		P.PETSITTER_NO = #{petsitterNo}
+		GROUP BY
+			P.PETSITTER_NO
+	</select>
+	
+	<select id="getBookingDetailReviews" parameterType="HashMap" resultType="HashMap">
+		SELECT
+			R.REVIEW_NO AS reviewNo,
+			R.USER_NO AS userNo,
+			U.USER_NAME AS userName,
+			R.STARCOUNT AS starCount,
+			R.REVIEW_TEXT AS reviewText,
+			F.FILE_PATH AS filePath,
+			F.FILE_NAME AS fileName
+		FROM
+			PETSITTER_REVIEW R,
+			USER_INFO U LEFT OUTER JOIN
+			(
+			  SELECT
+			    FILE_PATH,
+			    FILE_NAME,
+			    REG_NO
+			  FROM
+			    FILE_INFO
+			  GROUP BY
+			    REG_NO
+			  ORDER BY REG_DT
+			) F
+			ON U.USER_NO = F.REG_NO 
+		WHERE
+			R.USER_NO = U.USER_NO AND
+			R.PETSITTER_NO = #{petsitterNo}
+		LIMIT
+			#{reviewNow}, 3
+	</select>
+	<select id="getPetsitterUserImage" parameterType="string" resultType="HashMap">
+		SELECT FILE_NAME AS petsitterUserImage
+		  FROM FILE_INFO 
+		 WHERE FILE_NO = (
+						  SELECT IMAGE_FILE_NO 
+						    FROM USER_INFO 
+						   WHERE USER_NO = (
+											SELECT USER_NO 
+											  FROM PETSITTER_INFO 
+											 WHERE PETSITTER_NO = #{petsitterNo}
+										   )
+						 )
+	</select>
+	
+</mapper>

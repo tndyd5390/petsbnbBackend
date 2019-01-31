@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- JAVA와 연결할 Mapper 파일 설정 -->
+<mapper namespace="com.petsbnb.persistance.mapper.UserMapper">
+
+	<insert id="insertUserReg" parameterType="UserDTO">
+		INSERT INTO USER_INFO 
+		(
+			USER_NAME, 
+			USER_PHONE, 
+			USER_EMAIL, 
+			USER_ZIPCODE, 
+			USER_ADDRESS, 
+			USER_ADDRESS_DETAIL, 
+			USER_PASSWORD,
+			REG_DT
+		)
+		values
+		(
+			#{userName},
+			#{userPhone},
+			#{userEmail},
+			#{userZipcode},
+			#{userAddress},
+			#{userAddressDetail},
+			#{userPassword},
+			now()
+		);
+		<selectKey resultType="string" keyProperty="userNo" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+	<select id="getUserLogin" parameterType="UserDTO" resultType="UserDTO">
+		SELECT USER_NAME			AS userName,
+		       USER_EMAIL			AS userEmail,
+		       USER_ZIPCODE			AS userZipcode,
+		       USER_ADDRESS			AS userAddress,
+		       USER_ADDRESS_DETAIL	AS userAddressDetail,
+		       USER_NO				AS userNo
+		  FROM USER_INFO
+		 WHERE USER_EMAIL = #{userEmail} AND USER_PASSWORD = #{userPassword}
+	</select>
+	<select id="getEmailCheck" parameterType="UserDTO" resultType="UserDTO">
+		SELECT USER_NAME			AS userName,
+		       USER_EMAIL			AS userEmail,
+		       USER_ZIPCODE			AS userZipcode,
+		       USER_ADDRESS			AS userAddress,
+		       USER_ADDRESS_DETAIL	AS userAddressDetail,
+		       USER_NO				AS userNo
+		  FROM USER_INFO
+		 WHERE USER_EMAIL = #{userEmail}
+	</select>
+	<select id="getCheckPassword" parameterType="UserDTO" resultType="UserDTO">
+		SELECT USER_NAME			AS userName,
+		       USER_EMAIL			AS userEmail,
+		       USER_ZIPCODE			AS userZipcode,
+		       USER_ADDRESS			AS userAddress,
+		       USER_ADDRESS_DETAIL	AS userAddressDetail,
+		       USER_NO				AS userNo
+		  FROM USER_INFO
+		 WHERE USER_PASSWORD = #{userPassword} AND USER_NO = #{userNo}
+	</select>
+	<select id="getUserInfo" parameterType="UserDTO" resultType="UserDTO">
+		SELECT U.USER_NAME				AS userName,
+	   		   U.USER_EMAIL				AS userEmail,
+       		   U.USER_ZIPCODE			AS userZipcode,
+       		   U.USER_ADDRESS			AS userAddress,
+       		   U.USER_ADDRESS_DETAIL	AS userAddressDetail,
+       		   U.USER_NO				AS userNo,
+       		   U.USER_PHONE				AS userPhone,
+       		   U.IMAGE_FILE_NO			AS imageFileNo,
+       		   F.FILE_NO				AS fileNo,
+       		   F.FILE_ORG_NAME			AS fileOrgName,
+       		   F.FILE_NAME				AS fileName,
+       		   F.FILE_PATH				AS filePath
+  		  FROM USER_INFO U
+ 		  LEFT JOIN FILE_INFO F
+    		ON U.IMAGE_FILE_NO = F.FILE_NO
+		 WHERE USER_NO = #{userNo}
+	</select>
+	<update id="updateUserPassword" parameterType="UserDTO">
+		UPDATE USER_INFO SET USER_PASSWORD = #{userPassword} WHERE USER_NO = #{userNo}
+	</update>
+	<insert id="insertUserImage" parameterType="FileDTO">
+		INSERT INTO FILE_INFO
+		(
+			FILE_ORG_NAME,
+			FILE_NAME,
+			FILE_PATH,
+			REG_NO,
+			REG_DT
+		)
+		VALUES
+		(
+			#{fileOrgName},
+			#{fileName},
+			#{filePath},
+			#{regUserNo},
+			NOW()
+		)
+		<selectKey resultType="string" keyProperty="fileNo" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+	<update id="updateUserImage" parameterType="FileDTO">
+		UPDATE USER_INFO
+		   SET IMAGE_FILE_NO = #{fileNo}
+		 WHERE USER_NO = #{regUserNo}
+	</update>
+	<update id="updateUserAddress" parameterType="UserDTO">
+		UPDATE USER_INFO 
+		   SET USER_ZIPCODE = #{userZipcode},
+		       USER_ADDRESS = #{userAddress},
+		       USER_ADDRESS_DETAIL = #{userAddressDetail}
+		 WHERE USER_NO = #{userNo}
+	</update>
+	<select id="getUserImage" parameterType="UserDTO" resultType="FileDTO">
+		SELECT FILE_NO			AS fileNo,
+			   FILE_ORG_NAME	AS fileOrgName,
+		       FILE_NAME		AS fileName,
+		       FILE_PATH		AS filePath
+		  FROM FILE_INFO
+		 WHERE FILE_NO = (SELECT IMAGE_FILE_NO 
+		  					FROM USER_INFO 
+		  				   WHERE USER_NO = #{userNo});
+	
+	</select>
+	<select id="getUserFindEmail" parameterType="UserDTO" resultType="UserDTO">
+		SELECT USER_EMAIL AS userEmail FROM USER_INFO WHERE USER_NAME = #{userName} AND USER_PHONE=#{userPhone}
+	</select>
+	<select id="getUserFindPassword" parameterType="UserDTO" resultType="UserDTO">
+		SELECT USER_PASSWORD AS userPassword,
+			   USER_EMAIL as userEmail
+		  FROM USER_INFO 
+		 WHERE USER_NAME = #{userName} AND USER_PHONE=#{userPhone} AND USER_EMAIL=#{userEmail}
+	</select>
+	<update id="updateUserTmpPassword" parameterType="UserDTO">
+		UPDATE USER_INFO 
+		   SET USER_PASSWORD = #{userPassword}
+		 WHERE USER_NAME = #{userName} AND USER_PHONE=#{userPhone} AND USER_EMAIL=#{userEmail}
+	</update>
+	<select id="getCheckPetSitter" parameterType="UserDTO" resultType="UserDTO">
+		SELECT IS_PET_SITTER AS isPetSitter
+		  FROM USER_INFO
+		 WHERE USER_NO = #{userNo}
+	</select>
+	<select id="getUserAddress" parameterType="UserDTO" resultType="UserDTO">
+		SELECT USER_ADDRESS AS userAddress,
+		       USER_ADDRESS_DETAIL AS userAddressDetail
+		  FROM USER_INFO
+		 WHERE USER_NO = #{userNo}
+	</select>
+	<insert id="insertPetSitterApply" parameterType="PetSitterApplyDTO">
+		INSERT INTO PETSITTER_APPLY
+		(
+			USER_NO,
+			APPLY_NAME,
+			APPLY_GENDER,
+			APPLY_BIRTHDAY,
+			APPLY_PHONE,
+			APPLY_EMAIL,
+			APPLY_JOB,
+			ACK,
+			REG_DT,
+			REG_NO
+		)
+		VALUES
+		(
+			#{userNo},
+			#{applyName},
+			#{applyGender},
+			#{applyBirthday},
+			#{applyPhone},
+			#{applyEmail},
+			#{applyJob},
+			'N',
+			NOW(),
+			#{userNo}
+		)
+	</insert>
+	<select id="checkAppliedUser" parameterType="string" resultType="PetSitterApplyDTO">
+		SELECT USER_NO				AS userNo,
+			   APPLY_NAME			AS applyName,
+			   APPLY_GENDER			AS applyGender,
+			   APPLY_BIRTHDAY		AS applyBirthday,
+			   APPLY_PHONE			AS applyPhone,
+			   APPLY_EMAIL			AS applyEmail,
+			   APPLY_JOB			AS applyJob,
+			   ACK					AS ack, 
+			   REG_DT				AS regDt,
+			   REG_NO				AS regNo
+	      FROM PETSITTER_APPLY
+	     WHERE USER_NO = #{userNo}
+	</select>
+	<update id="updateDeviceToken" parameterType="UserDTO">
+		UPDATE USER_INFO 
+		   SET DEVICE_TOKEN = #{deviceToken}
+		 WHERE USER_EMAIL = #{userEmail} AND USER_PASSWORD=#{userPassword}
+	</update>
+</mapper>
