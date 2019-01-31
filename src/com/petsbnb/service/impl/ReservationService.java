@@ -43,5 +43,10 @@ public class ReservationService implements IReservationService {
 		return insertReservation != 0 && insertReservationPet != 0;
 	}
 
+	@Override
+	public String getServiceProviderToken(String serviceProvider) throws Exception {
+		return reservationMapper.getServiceProviderToken(serviceProvider);
+	}
+
 	
 }

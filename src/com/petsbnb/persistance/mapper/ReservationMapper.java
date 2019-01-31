@@ -9,4 +9,5 @@ import com.petsbnb.dto.ReservationInfoDTO;
 public interface ReservationMapper {
 	public int insertReservationInfo(ReservationInfoDTO rDTO) throws Exception;
 	public int insertReservationPetInfo(Map<String, Object> reservationPetInfoMap) throws Exception;
+	public String getServiceProviderToken(String serviceProvider) throws Exception;
 }

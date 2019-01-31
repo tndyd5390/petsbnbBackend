@@ -67,4 +67,7 @@
 			)
 		</foreach>
 	</insert>
+	<select id="getServiceProviderToken" parameterType="string" resultType="string">
+		SELECT DEVICE_TOKEN FROM USER_INFO WHERE USER_NO = #{serviceProvider}
+	</select>
 </mapper>

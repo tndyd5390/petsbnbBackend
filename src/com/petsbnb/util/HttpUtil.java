@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -196,5 +197,40 @@ public class HttpUtil {
 		}
 		return result;
 	}
+	
+	public static boolean sendFcm(String title, String body, String token) throws Exception{
+		final String apiKey = "AAAAJuOsoX4:APA91bGVJeBud0Ski4Iba1nQxGMm842QsZ4xVKB7lPv_l82h6rqEbqbayPUnWN3RXntBOEgPrEhqhKyxRnuc_7xsrGIMJNLO5nyf5zgKo_2pms8v9QHMMbFH5wxxdQezwgV0wCO-YvZg";
+		
+		URL url = new URL("https://fcm.googleapis.com/fcm/send");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setDoOutput(true);
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestProperty("Authorization", "key=" + apiKey);
+        conn.setDoOutput(true);
+
+        String input = "{\"notification\" : {\"title\" : \"" + title + " \", \"body\" : \"" + body + "\"}, \"to\":\"" + token + "\"}";
+
+        OutputStream os = conn.getOutputStream();
+        
+        // 서버에서 날려서 한글 깨지는 사람은 아래처럼  UTF-8로 인코딩해서 날려주자
+        os.write(input.getBytes("UTF-8"));
+        os.flush();
+        os.close();
+
+        int responseCode = conn.getResponseCode();
+        
+        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+		return 200 == responseCode;
+	}
+	
+	
 	
 }

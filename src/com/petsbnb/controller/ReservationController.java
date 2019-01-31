@@ -106,6 +106,9 @@ public class ReservationController {
 		
 		boolean result = reservationService.insertReservationInfo(rDTO, petNoList);
 		
+		String token = reservationService.getServiceProviderToken(serviceProvider);
+		HttpUtil.sendFcm("새로운 펫시팅 요청", "새로운 펫시팅 요청이 있습니다. 확인해주세요.", token);
+		
 		Map<Object, Object> resultMap = new HashMap<>();
 		resultMap.put("result", result);
 		
