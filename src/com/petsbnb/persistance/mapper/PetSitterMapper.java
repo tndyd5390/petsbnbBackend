@@ -18,4 +18,7 @@ public interface PetSitterMapper {
 	public int deletePetSitterImage(String petSitterFileNo) throws Exception;
 	public int updatePetSitterInfo(PetSitterDTO p) throws Exception;
 	public int updateTogglePetSitterReservationExposure(PetSitterDTO pDTO) throws Exception;
+	public int updateStartReservationExposure(PetSitterDTO pDTO) throws Exception;
+	public int updateStopReservationExposure(PetSitterDTO pDTO) throws Exception;
+	public PetSitterDTO getPDTO(String petSitterNo) throws Exception;
 }

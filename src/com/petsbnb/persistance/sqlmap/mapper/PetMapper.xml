@@ -87,7 +87,8 @@
 		       PET_INFO.PET_GENDER								   AS petGender,
 		       PET_INFO.PET_KIND								   AS petKind,
 		       (YEAR(CURDATE()) - YEAR(PET_INFO.PET_BIRTHDAY)) + 1 AS age,
-		       PET_FILE_INFO.PET_FILE_NAME						   AS petFileName
+		       PET_FILE_INFO.PET_FILE_NAME						   AS petFileName,
+		       PET_INFO.PET_WEIGHT								   AS petWeight
 		  FROM PET_INFO
 		 LEFT OUTER JOIN PET_FILE_INFO 
 		    ON PET_INFO.PET_NO = PET_FILE_INFO.PET_NO
@@ -209,4 +210,50 @@
 	<delete id="deletePetProfile" parameterType="PetDTO">
 		DELETE FROM PET_INFO WHERE PET_NO = #{petNo} AND USER_NO = #{userNo}
 	</delete>
+	
+	<select id="getSelectedPetList" parameterType="java.util.Map" resultType="PetDTO">
+		SELECT PET_INFO.PET_NO								   AS petNo,
+			   PET_INFO.PET_NAME								   AS petName,
+		       PET_INFO.PET_GENDER								   AS petGender,
+		       PET_INFO.PET_KIND								   AS petKind,
+		       (YEAR(CURDATE()) - YEAR(PET_INFO.PET_BIRTHDAY)) + 1 AS age,
+		       PET_FILE_INFO.PET_FILE_NAME						   AS petFileName,
+		       PET_INFO.PET_WEIGHT								   AS petWeight
+		  FROM PET_INFO
+		 LEFT OUTER JOIN PET_FILE_INFO 
+		    ON PET_INFO.PET_NO = PET_FILE_INFO.PET_NO
+		 WHERE PET_INFO.PET_NO IN
+		 <foreach collection="selectedPetNo" item="item" index="index" separator="," open="(" close=")">
+		 	#{item}
+		 </foreach>
+		 GROUP BY PET_INFO.PET_NO;
+	</select>
+	<select id="getAvaliablePetList" parameterType="java.util.Map" resultType="PetDTO">
+		SELECT PET_INFO.PET_NO								   		AS petNo,
+			   PET_INFO.PET_NAME								   	AS petName,
+		       PET_INFO.PET_GENDER								   	AS petGender,
+		       PET_INFO.PET_KIND								   	AS petKind,
+		       (YEAR(CURDATE()) - YEAR(PET_INFO.PET_BIRTHDAY)) + 1 	AS age,
+		       PET_FILE_INFO.PET_FILE_NAME						   	AS petFileName,
+               PET_INFO.PET_WEIGHT									AS petWeight
+		  FROM PET_INFO
+		  LEFT OUTER JOIN PET_FILE_INFO 
+		    ON PET_INFO.PET_NO = PET_FILE_INFO.PET_NO
+		 WHERE PET_INFO.USER_NO = #{userNo} AND 
+              (
+				IF(
+					PET_WEIGHT <![CDATA[>]]> 0 AND PET_WEIGHT <![CDATA[<=]]> 6, 
+					'SMALL', 
+					IF(
+						PET_WEIGHT <![CDATA[>]]> 6 AND PET_WEIGHT <![CDATA[<=]]> 15, 
+						'MIDDLE',
+						'BIG'
+					)
+				)
+			  ) in 
+			  <foreach collection="avaliablePetKindList" item="item" index="index" separator="," open="(" close=")">
+		 		#{item}
+		 	  </foreach>
+		 GROUP BY PET_INFO.PET_NO
+	</select>
 </mapper>

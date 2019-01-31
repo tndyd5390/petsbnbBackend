@@ -29,10 +29,32 @@ public class PetSitterDTO {
 	private String necessaryItem;
 	private String petSitterIntroduce;
 	private String exposure;
+	private String nightCheckin;
+	private String nightCheckout;
 	private String regDt;
 	private String regNo;
 	private String chgDt;
 	private String chgNo;
+	private String petSitterFileName;
+	
+	public String getPetSitterFileName() {
+		return petSitterFileName;
+	}
+	public void setPetSitterFileName(String petSitterFileName) {
+		this.petSitterFileName = petSitterFileName;
+	}
+	public String getNightCheckin() {
+		return nightCheckin;
+	}
+	public void setNightCheckin(String nightCheckin) {
+		this.nightCheckin = nightCheckin;
+	}
+	public String getNightCheckout() {
+		return nightCheckout;
+	}
+	public void setNightCheckout(String nightCheckout) {
+		this.nightCheckout = nightCheckout;
+	}
 	public String getExposure() {
 		return exposure;
 	}

@@ -30,7 +30,7 @@ public class BookingService implements IBookingService{
 		rslt.put("images", bookingMapper.getBookingDetailImages(req.get("petsitterNo").toString()));
 		rslt.put("details", bookingMapper.getBookingDetail(req.get("petsitterNo").toString()));
 		rslt.put("reviews", DecodeUtil.decodeName(bookingMapper.getBookingDetailReviews(req)));
-		
+		rslt.put("petsitterUserProfileImage", bookingMapper.getPetsitterUserImage(req.get("petsitterNo").toString()));
 		
 		return rslt;
 	}

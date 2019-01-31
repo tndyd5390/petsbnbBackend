@@ -30,6 +30,8 @@
   			   NECESSARY_ITEM 					AS necessaryItem,
   			   PETSITTER_INTRODUCE 				AS petSitterIntroduce,
   			   EXPOSURE							AS exposure,
+  			   NIGHT_CHECKIN					AS nightCheckin,
+  			   NIGHT_CHECKOUT					AS nightCheckout,
   			   REG_DT 							AS regDt,
   			   REG_NO  							AS regNo,
   			   CHG_DT  							AS chgDt,
@@ -243,4 +245,65 @@
 		   SET EXPOSURE = #{exposure}
 		 WHERE USER_NO = #{userNo} AND PETSITTER_NO =#{petSitterNo}
 	</update>
+	<update id="updateStartReservationExposure" parameterType="PetSitterDTO">
+		UPDATE PETSITTER_INFO
+		   SET EXPOSURE = 'true',
+		       NIGHT_CHECKIN = #{nightCheckin},
+		       NIGHT_CHECKOUT = #{nightCheckout}
+		 WHERE USER_NO = #{userNo} AND PETSITTER_NO = #{petSitterNo}
+	</update>
+	<update id="updateStopReservationExposure" parameterType="PetSitterDTO">
+		UPDATE PETSITTER_INFO
+		   SET EXPOSURE = 'false',
+		   	   NIGHT_CHECKIN = NULL,
+		       NIGHT_CHECKOUT = NULL
+		 WHERE USER_NO = #{userNo} AND PETSITTER_NO = #{petSitterNo}
+	</update>
+	<select id="getPDTO" parameterType="string" resultType="PetSitterDTO">
+		SELECT P.PETSITTER_NO						AS petSitterNo,
+			   P.USER_NO							AS userNo,
+			   P.PETSITTER_NAME						AS petSitterName,
+  			   P.PETSITTER_INTRODUCE_ONELINE		AS petSitterIntroduceOneLine,
+  			   P.PETSITTERENV						AS petSitterEnv,
+  			   P.PETSITTER_HAS_PET 					AS petSitterHasPet,
+  			   P.LONGTERM_AVAILABLE 				AS longTermAvailable,
+  			   P.WALK_AVAILABLE 					AS walkAvailable,
+  			   P.BATH_AVAILABLE 					AS bathAvailable,
+  			   P.FIRSTAID_AVAILABLE 				AS firstAidAvailable,
+  			   P.MARKING_IMPOSSIBLE 				AS markingImpossible,
+  			   P.BOWEL_IMPOSSIBLE 					AS bowelImpossible,
+  			   P.ATTACK_IMPOSSIBLE  				AS attackImpossible,
+  			   P.SEPARATION_IMPOSSIBLE 				AS separationImpossible,
+  			   P.BITE_IMPOSSIBLE 					AS biteImpossible,
+  			   P.SMALLPET_NIGHT_PRICE 				AS smallPetNightPrice,
+  			   P.SMALLPET_DAY_PRICE 				AS smallPetDayPrice,
+  			   P.MIDDLEPET_NIGHT_PRICE 				AS middlePetNightPrice,
+  			   P.MIDDLEPET_DAY_PRICE 				AS middlePetDayPrice,
+  			   P.BIGPET_NIGHT_PRICE 				AS bigPetNightPrice,
+  			   P.BIGPET_DAY_PRICE 					AS bigPetDayPrice,
+  			   P.REFUND_ACCOUNT_NAME 				AS refundAccountName,
+  			   P.REFUND_BANK 						AS refundBank,
+  			   P.REFUND_ACCOUNT_NUMBER 				AS refundAccountNumber,
+  			   P.NECESSARY_ITEM 					AS necessaryItem,
+  			   P.PETSITTER_INTRODUCE 				AS petSitterIntroduce,
+  			   P.EXPOSURE							AS exposure,
+  			   P.NIGHT_CHECKIN						AS nightCheckin,
+  			   P.NIGHT_CHECKOUT						AS nightCheckout,
+  			   F.PETSITTER_FILE_NAME				AS petSitterFileName,
+  			   P.REG_DT 							AS regDt,
+  			   P.REG_NO  							AS regNo,
+  			   P.CHG_DT  							AS chgDt,
+  			   P.CHG_NO  							AS chgNo
+  		  FROM PETSITTER_INFO P
+  		  LEFT OUTER JOIN (
+			SELECT PETSITTER_NO,
+                   PETSITTER_FILE_NAME
+			  FROM PETSITTER_FILE_INFO
+			 WHERE PETSITTER_NO = #{petSitterNo}
+			 ORDER BY REG_DT
+             LIMIT 1
+          ) F
+  		    ON P.PETSITTER_NO = F.PETSITTER_NO
+  		 WHERE P.PETSITTER_NO = #{petSitterNo}
+	</select>
 </mapper>

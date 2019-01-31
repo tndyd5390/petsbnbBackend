@@ -36,8 +36,6 @@ public class PetService implements IPetService{
 		int insertPetImages = petMapper.insertPetImageFile(pfMap);
 		
 		boolean result = false;
-		System.out.println("inserPetProfile : " + insertPetProfile);
-		System.out.println("insertPetImages : " + insertPetImages);
 		if(insertPetProfile > 0 && insertPetImages > 0){
 			result = true;
 		}
@@ -88,5 +86,15 @@ public class PetService implements IPetService{
 			result = true;
 		}
 		return result;
+	}
+
+	@Override
+	public List<PetDTO> getSelectedPetList(Map<String, Object> selectedPetMap) throws Exception {
+		return petMapper.getSelectedPetList(selectedPetMap);
+	}
+
+	@Override
+	public List<PetDTO> getAvaliablePetList(Map<String, Object> avaliablePetKind) throws Exception {
+		return petMapper.getAvaliablePetList(avaliablePetKind);
 	}
 }

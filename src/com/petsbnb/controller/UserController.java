@@ -51,7 +51,7 @@ public class UserController {
 	@Autowired
 	private EmailSender emailSender;
 	
-	String userImageFilePath = "C:\\Users\\Data3811-36\\git\\petsbnbBackend\\WebContent\\userImageFile\\";
+	String userImageFilePath = "C:\\Users\\DATA16\\git\\petsbnbBackend\\WebContent\\userImageFile\\";
 	
 	@RequestMapping(value="/user/daumPostView")
 	public ModelAndView daumPostView(HttpServletRequest req, HttpServletResponse resp, Model model, HttpSession session) throws Exception{
@@ -210,9 +210,6 @@ public class UserController {
 			uDTO = new UserDTO();
 		}else{
 			uDTO.setUserName(AES256Util.strDecode(uDTO.getUserName()));
-			uDTO.setUserAddress(uDTO.getUserAddress());
-			uDTO.setUserAddressDetail(uDTO.getUserAddressDetail());
-			uDTO.setUserZipcode(AES256Util.strDecode(uDTO.getUserZipcode()));
 			uDTO.setUserPhone(AES256Util.strDecode(uDTO.getUserPhone()));
 			uDTO.setUserEmail(AES256Util.strDecode(uDTO.getUserEmail()));
 		}
@@ -299,10 +296,6 @@ public class UserController {
 		log.info("addressDetail : " + addressDetail);
 		String userNo = CmmUtil.nvl((String)param.get("userNo"));
 		log.info("userNo : " + userNo);
-		
-		zipcode = AES256Util.strEncode(zipcode);
-		address = AES256Util.strEncode(address);
-		addressDetail = AES256Util.strEncode(addressDetail);
 		
 		UserDTO uDTO = new UserDTO();
 		uDTO.setUserZipcode(zipcode);

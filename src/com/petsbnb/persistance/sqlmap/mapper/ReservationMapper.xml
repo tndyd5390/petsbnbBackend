@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- JAVA와 연결할 Mapper 파일 설정 -->
+<mapper namespace="com.petsbnb.persistance.mapper.ReservationMapper">
+	<insert id="insertReservationInfo" parameterType="ReservationInfoDTO">
+		INSERT INTO RESERVATION_INFO
+		(
+			IMP_UID,
+			MERCHANT_UID,
+			AMOUNT,
+			BUYER_ADDR,
+			BUYER_EMAIL,
+			BUYER_NAME,
+			BUYER_POSTCODE,
+			BUYER_TEL,
+			CHECKIN,
+			CHECKOUT,
+			SERVICE_PROVIDER,
+			SERVICE_RECEIVER,
+			STDATE,
+			EDDATE,
+			STATUS,
+			DEPOSIT_REFUND,
+			REG_DT,
+			REG_NO
+		)
+		VALUES
+		(
+			#{imp_uid},
+			#{merchant_uid},
+			#{amount},
+			#{buyerAddr},
+			#{buyerEmail},
+			#{buyerName},
+			#{buyerPostcode},
+			#{buyerTel},
+			#{checkin},
+			#{checkout},
+			#{serviceProvider},
+			#{serviceReceiver},
+			#{stDate},
+			#{edDate},
+			#{status},
+			#{depositRefund},
+			NOW(),
+			#{serviceReceiver}
+		)
+		<selectKey resultType="string" keyProperty="reservationInfoNo" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+	<insert id="insertReservationPetInfo" parameterType="java.util.Map">
+		INSERT INTO RESERVATION_PET_INFO
+		(
+			RESERVATION_INFO_NO,
+			PET_NO,
+			REG_DT,
+			REG_NO
+		)
+		VALUES
+		<foreach collection="reservationPetInfo" item="item" index="index" separator=",">
+			(
+				#{item.reservationInfoNo},
+				#{item.petNo},
+				NOW(),
+				#{item.regNo}
+			)
+		</foreach>
+	</insert>
+</mapper>

@@ -23,7 +23,7 @@
 				SELECT PETSITTER_NO,PETSITTER_FILE_NAME, PETSITTER_FILE_PATH
 				FROM PETSITTER_FILE_INFO
 				GROUP BY PETSITTER_NO
-				ORDER BY REG_DT
+				ORDER BY REG_DT 
 			) F,
 			USER_INFO U
 		WHERE
@@ -124,4 +124,18 @@
 		LIMIT
 			#{reviewNow}, 3
 	</select>
+	<select id="getPetsitterUserImage" parameterType="string" resultType="HashMap">
+		SELECT FILE_NAME AS petsitterUserImage
+		  FROM FILE_INFO 
+		 WHERE FILE_NO = (
+						  SELECT IMAGE_FILE_NO 
+						    FROM USER_INFO 
+						   WHERE USER_NO = (
+											SELECT USER_NO 
+											  FROM PETSITTER_INFO 
+											 WHERE PETSITTER_NO = #{petsitterNo}
+										   )
+						 )
+	</select>
+	
 </mapper>

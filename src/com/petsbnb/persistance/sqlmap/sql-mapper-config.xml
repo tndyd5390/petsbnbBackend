@@ -12,5 +12,7 @@
 		<typeAlias type="com.petsbnb.dto.PetSitterDTO" alias="PetSitterDTO"/>
 		<typeAlias type="com.petsbnb.dto.PetSitterFileDTO" alias="PetSitterFileDTO"/>
 		<typeAlias type="com.petsbnb.dto.ChatDTO" alias="ChatDTO"/>
+		<typeAlias type="com.petsbnb.dto.ReservationInfoDTO" alias="ReservationInfoDTO"/>
+		<typeAlias type="com.petsbnb.dto.ReservationPetInfoDTO" alias="ReservationPetInfoDTO"/>
     </typeAliases>
 </configuration>
