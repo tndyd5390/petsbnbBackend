@@ -1,7 +1,7 @@
 package com.petsbnb.dto;
 
-public class ReservationDTO {
-	private String paymentNo;
+public class ReservationInfoDTO {
+	private String reservationInfoNo;
 	private String imp_uid;
 	private String merchant_uid;
 	private String amount;
@@ -18,19 +18,53 @@ public class ReservationDTO {
 	private String serviceReceiver;
 	private String stDate;
 	private String edDate;
-	private String reservationStatus;
-	
-	public String getReservationStatus() {
-		return reservationStatus;
+	private String status;
+	private String depositRefund;
+	private String regDt;
+	private String regNo;
+	private String chgDt;
+	private String chgNo;
+	public String getReservationInfoNo() {
+		return reservationInfoNo;
 	}
-	public void setReservationStatus(String reservationStatus) {
-		this.reservationStatus = reservationStatus;
+	public void setReservationInfoNo(String reservationInfoNo) {
+		this.reservationInfoNo = reservationInfoNo;
 	}
-	public String getPaymentNo() {
-		return paymentNo;
+	public String getRegDt() {
+		return regDt;
 	}
-	public void setPaymentNo(String paymentNo) {
-		this.paymentNo = paymentNo;
+	public void setRegDt(String regDt) {
+		this.regDt = regDt;
+	}
+	public String getRegNo() {
+		return regNo;
+	}
+	public void setRegNo(String regNo) {
+		this.regNo = regNo;
+	}
+	public String getChgDt() {
+		return chgDt;
+	}
+	public void setChgDt(String chgDt) {
+		this.chgDt = chgDt;
+	}
+	public String getChgNo() {
+		return chgNo;
+	}
+	public void setChgNo(String chgNo) {
+		this.chgNo = chgNo;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getDepositRefund() {
+		return depositRefund;
+	}
+	public void setDepositRefund(String depositRefund) {
+		this.depositRefund = depositRefund;
 	}
 	public String getImp_uid() {
 		return imp_uid;

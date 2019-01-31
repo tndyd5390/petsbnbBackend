@@ -36,8 +36,6 @@ public class PetService implements IPetService{
 		int insertPetImages = petMapper.insertPetImageFile(pfMap);
 		
 		boolean result = false;
-		System.out.println("inserPetProfile : " + insertPetProfile);
-		System.out.println("insertPetImages : " + insertPetImages);
 		if(insertPetProfile > 0 && insertPetImages > 0){
 			result = true;
 		}
