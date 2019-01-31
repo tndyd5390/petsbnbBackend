@@ -35,7 +35,7 @@ public class PetController {
 	@Resource(name="PetService")
 	private IPetService petService;
 	
-	String petImageFilePath = "C:\\Users\\Data3811-36\\git\\petsbnbBackend\\WebContent\\petImageFile\\";
+	String petImageFilePath = "C:\\Users\\DATA16\\git\\petsbnbBackend\\WebContent\\petImageFile\\";
 	
 	@RequestMapping(value="/pet/petProfileRegProc")
 	public @ResponseBody Map<Object, Object> petProfileRegProc(MultipartHttpServletRequest req) throws Exception{
@@ -152,7 +152,6 @@ public class PetController {
 		log.info("userNo : " + userNo);
 		
 		List<PetDTO> pList = petService.getPetList(userNo);
-		System.out.println("pList : " + pList.size());
 		log.info(this.getClass() + ".getList end!!!");
 		return pList;
 	}
@@ -333,5 +332,40 @@ public class PetController {
 		resultMap.put("result", result);
 		log.info(this.getClass() + ".deletePetProfile end!!!");
 		return resultMap;
+	}
+	
+	@RequestMapping(value="/pet/getSelectedPetList", method=RequestMethod.POST)
+	public @ResponseBody List<PetDTO> getSelectedPetList(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getSelectedPetList start!!!");
+		
+		List<String> selectedPetNo = (List<String>)param.get("petNoArr");
+		
+		Map<String, Object> selectedPetMap = new HashMap<>();
+		selectedPetMap.put("selectedPetNo", selectedPetNo);
+		
+		List<PetDTO> pList = petService.getSelectedPetList(selectedPetMap);
+		
+		log.info(this.getClass() + ".getSelectedPetList end!!!");
+		return pList;
+	}
+	
+	@RequestMapping(value="/pet/getAvaliablePetList", method=RequestMethod.POST)
+	public @ResponseBody List<PetDTO> getAvaliablePetList(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getAvaliablePetList start!!!");
+		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		List<String> avaliablePetKindList = (List<String>)param.get("availablePetKind");
+		if(avaliablePetKindList.size() == 0){
+			avaliablePetKindList.add("NONE");
+		}
+		Map<String, Object> avaliablePetKind = new HashMap<>();
+		avaliablePetKind.put("avaliablePetKindList", avaliablePetKindList);
+		avaliablePetKind.put("userNo", userNo);
+		
+		List<PetDTO> pList = petService.getAvaliablePetList(avaliablePetKind);
+		
+		log.info(this.getClass() + ".getAvaliablePetList end!!!");
+		return pList;
 	}
 }

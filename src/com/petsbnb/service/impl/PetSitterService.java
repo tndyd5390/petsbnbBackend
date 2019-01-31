@@ -83,4 +83,19 @@ public class PetSitterService implements IPetSitterServcie {
 		int result = petSitterMapper.updateTogglePetSitterReservationExposure(pDTO);
 		return result > 0;
 	}
+
+	@Override
+	public int updateStartReservationExposure(PetSitterDTO pDTO) throws Exception {
+		return petSitterMapper.updateStartReservationExposure(pDTO);
+	}
+
+	@Override
+	public int updateStopReservationExposure(PetSitterDTO pDTO) throws Exception {
+		return petSitterMapper.updateStopReservationExposure(pDTO);
+	}
+
+	@Override
+	public PetSitterDTO getPDTO(String petSitterNo) throws Exception {
+		return petSitterMapper.getPDTO(petSitterNo);
+	}
 }
