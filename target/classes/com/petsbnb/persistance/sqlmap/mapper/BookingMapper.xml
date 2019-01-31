@@ -6,6 +6,7 @@
 		SELECT
 			P.PETSITTER_NO AS petsitterNo,
 			P.PETSITTER_NAME AS petsitterName,
+			P.USER_NO AS petsitterUserNo,
 		 	P.PETSITTER_INTRODUCE_ONELINE AS petsitterIntroduceOneline,
 			ROUND(AVG(IFNULL(R.STARCOUNT,0)),1) AS starCount,
 			COUNT(R.REVIEW_NO) AS reviewCount,
@@ -54,6 +55,7 @@
 	<select id="getBookingDetail" parameterType="string" resultType="HashMap">
 		SELECT
 			P.PETSITTER_NO AS petsitterNo,
+			P.USER_NO AS petsitterUserNo,
 			P.PETSITTER_NAME AS petsitterName,
 			U.USER_ADDRESS AS userAddress,
 			U.USER_ADDRESS_DETAIL AS userAddressDetail,
