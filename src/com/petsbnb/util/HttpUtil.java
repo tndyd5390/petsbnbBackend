@@ -42,56 +42,6 @@ public class HttpUtil {
 		return sbQuery.toString();
 	}
 
-	
-	public static Object callURLJSON(String sURL, HashMap<String, String> getData, HashMap<String, String> postData, String charSet){
-        HashMap<String, String> hashmapResult = new HashMap<String, String>();
-
-        URL url;
-        HttpURLConnection urlConnection;
-
-        String getParams = MapToQueryString(getData, charSet);
-        String postParams = MapToQueryString(postData, charSet);
-
-        if (!"".equals(getParams)){
-        	sURL += "?" + getParams;
-        }
-        try {
-			url = new URL(sURL);
-			urlConnection = (HttpURLConnection) url.openConnection();
-	        urlConnection.setDoOutput(true);
-	        urlConnection.setInstanceFollowRedirects(false);
-	        urlConnection.setRequestMethod("POST");
-	        urlConnection.setRequestProperty("Content-Type", "application/json");
-	        urlConnection.setRequestProperty("charset", charSet);
-
-			byte[] bytePostData	= postParams.getBytes(charSet);
-			int postDataLength	= bytePostData.length;
-			urlConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
-			urlConnection.setUseCaches(false);
-			urlConnection.getOutputStream().write(bytePostData);
-
-			StringBuilder sb = new StringBuilder();
-			Reader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
-			for (int c = 0; (c = in.read()) >=0; ) {
-				sb.append((char)c);
-			}
-			String responseBody = sb.toString();
-			System.out.println("test");
-			System.out.println(responseBody);
-	        int httpStatus = urlConnection.getResponseCode();
-	        hashmapResult.put("httpStatus", String.valueOf(httpStatus));
-	        hashmapResult.put("responseBody", responseBody);
-		} catch (IOException e) {
-			e.printStackTrace();
-        } catch(IllegalArgumentException e){
-			e.printStackTrace();
-        } catch (Exception e) {
-			e.printStackTrace();
-		}
-
-        return hashmapResult;
-	}
-
 	public static Object callURL(String sURL, HashMap<String, String> getData, HashMap<String, String> postData, String charSet){
         HashMap<String, String> hashmapResult = new HashMap<String, String>();
 
@@ -139,6 +89,54 @@ public class HttpUtil {
         return hashmapResult;
 	}
 
+	public static Object callURL(String sURL, HashMap<String, String> getData, HashMap<String, String> postData, String charSet, String token){
+        HashMap<String, String> hashmapResult = new HashMap<String, String>();
+
+        URL url;
+        HttpURLConnection urlConnection;
+
+        String getParams = MapToQueryString(getData, charSet);
+        String postParams = MapToQueryString(postData, charSet);
+
+        if (!"".equals(getParams)){
+        	sURL += "?" + getParams;
+        }
+        try {
+			url = new URL(sURL);
+			urlConnection = (HttpURLConnection) url.openConnection();
+	        urlConnection.setDoOutput(true);
+	        urlConnection.setInstanceFollowRedirects(false);
+	        urlConnection.setRequestMethod("POST");
+	        urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+	        urlConnection.setRequestProperty("charset", charSet);
+	        urlConnection.setRequestProperty("Authorization", token);
+			byte[] bytePostData	= postParams.getBytes(charSet);
+			int postDataLength	= bytePostData.length;
+			urlConnection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
+			urlConnection.setUseCaches(false);
+			urlConnection.getOutputStream().write(bytePostData);
+
+			StringBuilder sb = new StringBuilder();
+			Reader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream(), "UTF-8"));
+			for (int c = 0; (c = in.read()) >=0; ) {
+				sb.append((char)c);
+			}
+			String responseBody = sb.toString();
+	        int httpStatus = urlConnection.getResponseCode();
+	        hashmapResult.put("httpStatus", String.valueOf(httpStatus));
+	        hashmapResult.put("responseBody", responseBody);
+		} catch (IOException e) {
+			e.printStackTrace();
+        } catch(IllegalArgumentException e){
+			e.printStackTrace();
+        } catch (Exception e) {
+			e.printStackTrace();
+		}
+
+        return hashmapResult;
+	}
+
+	
 	public static String getRequestBody(HttpServletRequest request) throws IOException {
 		String body = null;
 		StringBuilder stringBuilder = new StringBuilder();
@@ -193,6 +191,27 @@ public class HttpUtil {
 				result = "";
 			}
 		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static boolean cancelIamport(String imp_uid, String reason){
+		HashMap<String, String> hashmapJson = new HashMap<String, String>();
+		HashMap<String, String> hashmapRes = new HashMap<String, String>();
+		boolean result;
+		try{
+			hashmapJson.put("imp_uid", imp_uid);
+			hashmapJson.put("reason", reason);
+			String charSet = "UTF-8";
+			hashmapRes = (HashMap<String, String>) callURL("https://api.iamport.kr/payments/cancel", null, hashmapJson, charSet, getIamportToken());
+			if("200".equals(hashmapRes.get("httpStatus"))){
+				result = true;
+			}else{
+				result = false;
+			}
+		}catch(Exception e){
+			result = false;
 			e.printStackTrace();
 		}
 		return result;
