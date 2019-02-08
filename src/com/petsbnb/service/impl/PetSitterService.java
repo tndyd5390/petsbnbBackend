@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.petsbnb.dto.PetFileDTO;
 import com.petsbnb.dto.PetSitterDTO;
 import com.petsbnb.dto.PetSitterFileDTO;
+import com.petsbnb.dto.ReservationInfoDTO;
 import com.petsbnb.persistance.mapper.PetSitterMapper;
 import com.petsbnb.service.IPetSitterServcie;
 import com.petsbnb.util.AES256Util;
@@ -97,5 +98,65 @@ public class PetSitterService implements IPetSitterServcie {
 	@Override
 	public PetSitterDTO getPDTO(String petSitterNo) throws Exception {
 		return petSitterMapper.getPDTO(petSitterNo);
+	}
+
+	@Override
+	public List<Map<String, Object>> getPetSitterReservationList(String userNo) throws Exception {
+		List<Map<String, Object>> reservationList = petSitterMapper.getPetSitterReservationList(userNo);
+		for(Map<String, Object> reservation : reservationList) {
+			reservation.put("userName", AES256Util.strDecode((String)reservation.get("userName")));
+		}
+		return reservationList;
+	}
+
+	@Override
+	public Map<Object, Object> getPetSitterReservationDetail(String reservationNo) throws Exception {
+		Map<String, Object> reservationDetail = petSitterMapper.getPetSitterReservationDetail(reservationNo);
+		reservationDetail.put("userName", AES256Util.strDecode((String)reservationDetail.get("userName")));
+		reservationDetail.put("userPhone", AES256Util.strDecode((String)reservationDetail.get("userPhone")));
+		
+		List<Map<String, Object>> reservationPetDetail = petSitterMapper.getPetSitterReservationPetDetail(reservationNo);
+		
+		Map<Object, Object> resultMap = new HashMap<>();
+		resultMap.put("reservationDetail", reservationDetail);
+		resultMap.put("reservationPetDetail", reservationPetDetail);
+		
+		return resultMap;
+	}
+
+	@Override
+	public Map<String, Object> updateRejectReservation(String reservationNo) throws Exception {
+		petSitterMapper.updateRejectReservation(reservationNo);
+		Map<String, Object> reservationDetail = petSitterMapper.getPetSitterReservationDetail(reservationNo);
+		reservationDetail.put("userName", AES256Util.strDecode((String)reservationDetail.get("userName")));
+		reservationDetail.put("userPhone", AES256Util.strDecode((String)reservationDetail.get("userPhone")));
+		return reservationDetail;
+	}
+
+	@Override
+	public Map<String, Object> updateApprovalReservation(String reservationNo) throws Exception {
+		petSitterMapper.updateApprovalReservation(reservationNo);
+		Map<String, Object> reservationDetail = petSitterMapper.getPetSitterReservationDetail(reservationNo);
+		reservationDetail.put("userName", AES256Util.strDecode((String)reservationDetail.get("userName")));
+		reservationDetail.put("userPhone", AES256Util.strDecode((String)reservationDetail.get("userPhone")));
+		return reservationDetail;
+	}
+
+	@Override
+	public Map<String, Object> updateProgressReservation(String reservationNo) throws Exception {
+		petSitterMapper.updateProgressReservation(reservationNo);
+		Map<String, Object> reservationDetail = petSitterMapper.getPetSitterReservationDetail(reservationNo);
+		reservationDetail.put("userName", AES256Util.strDecode((String)reservationDetail.get("userName")));
+		reservationDetail.put("userPhone", AES256Util.strDecode((String)reservationDetail.get("userPhone")));
+		return reservationDetail;
+	}
+
+	@Override
+	public Map<String, Object> updateCompleteReservation(String reservationNo) throws Exception {
+		petSitterMapper.updateCompleteReservation(reservationNo);
+		Map<String, Object> reservationDetail = petSitterMapper.getPetSitterReservationDetail(reservationNo);
+		reservationDetail.put("userName", AES256Util.strDecode((String)reservationDetail.get("userName")));
+		reservationDetail.put("userPhone", AES256Util.strDecode((String)reservationDetail.get("userPhone")));
+		return reservationDetail;
 	}
 }

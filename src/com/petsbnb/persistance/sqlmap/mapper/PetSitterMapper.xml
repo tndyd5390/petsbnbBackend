@@ -306,4 +306,97 @@
   		    ON P.PETSITTER_NO = F.PETSITTER_NO
   		 WHERE P.PETSITTER_NO = #{petSitterNo}
 	</select>
+	
+	<select id="getPetSitterReservationList" parameterType="string" resultType="java.util.HashMap">
+		SELECT PFI.PET_FILE_NAME					AS petFileName,
+			   RI.RESERVATION_NAME					AS reservationName,
+		       UI.USER_NAME							AS userName,
+		       RI.STDATE							AS stDate,
+		       (
+					CASE RI.STATUS 
+						WHEN "1" THEN "승인 대기" 
+				        WHEN "2" THEN "승인 완료"
+				        WHEN "3" THEN "예약 반려"
+				        WHEN "4" THEN "예약 취소"
+				        WHEN "5" THEN "펫시팅 진행"
+					ELSE "펫시팅 완료" 
+					END
+				)									AS status,
+				RI.RESERVATION_INFO_NO				AS id
+		  FROM RESERVATION_INFO RI
+		 INNER JOIN RESERVATION_PET_INFO RPI
+		    ON RI.RESERVATION_INFO_NO = RPI.RESERVATION_INFO_NO
+		 INNER JOIN PET_FILE_INFO PFI
+		    ON RPI.PET_NO = PFI.PET_NO
+		 INNER JOIN USER_INFO UI
+		    ON PFI.USER_NO = UI.USER_NO
+		 WHERE RI.SERVICE_PROVIDER = #{userNo}
+		 GROUP BY RI.RESERVATION_INFO_NO
+		 ORDER BY RI.REG_DT DESC
+	</select>
+	<select id="getPetSitterReservationDetail" parameterType="string" resultType="java.util.HashMap">
+		SELECT RI.RESERVATION_INFO_NO									AS reservationInfoNo,
+			   RI.IMP_UID												AS imp_uid,
+		       RI.RESERVATION_NAME										AS reservationName,
+		       RI.AMOUNT												AS amount,
+		       RI.CHECKIN												AS checkin,	
+		       RI.CHECKOUT												AS checkout,
+		       RI.STDATE												AS stDate,
+		       RI.EDDATE												AS edDate,
+		       (
+					CASE RI.STATUS 
+						WHEN "1" THEN "승인 대기" 
+				        WHEN "2" THEN "승인 완료"
+				        WHEN "3" THEN "예약 반려"
+				        WHEN "4" THEN "예약 취소"
+				        WHEN "5" THEN "펫시팅 진행"
+					ELSE "펫시팅 완료" 
+					END
+				)														AS status,
+		       UI.USER_NAME												AS userName,
+		       UI.USER_PHONE											AS userPhone,
+		       CONCAT(UI.USER_ADDRESS, " ", UI.USER_ADDRESS_DETAIL)		AS userAddress
+		  FROM RESERVATION_INFO RI
+		 INNER JOIN USER_INFO UI
+		    ON RI.SERVICE_RECEIVER = UI.USER_NO
+		 WHERE RESERVATION_INFO_NO = #{reservationNo}
+	</select>
+	<select id="getPetSitterReservationPetDetail" parameterType="string" resultType="java.util.HashMap">
+		SELECT RPI.RESERVATION_INFO_NO								AS reservationInfoNo,
+		       RPI.RESERVATION_PET_INFO_NO							AS reservationPetInfoNo,
+		       PI.PET_NAME											AS petName,
+		       PI.PET_GENDER										AS petGender,
+		       TIMESTAMPDIFF(YEAR, PI.PET_BIRTHDAY, CURDATE()) + 1	AS petAge,
+		       PI.PET_WEIGHT										AS petWeight,
+		       PI.PET_KIND											AS petKind,
+		       PFI.PET_FILE_NAME									AS petFileName,
+		       RPI.PET_NO											AS petNo
+		  FROM RESERVATION_PET_INFO RPI
+		 INNER JOIN PET_INFO PI
+		    ON RPI.PET_NO = PI.PET_NO
+		 INNER JOIN PET_FILE_INFO PFI
+		    ON RPI.PET_NO = PFI.PET_NO
+		 WHERE RPI.RESERVATION_INFO_NO = #{reservationNo}
+		 GROUP BY RPI.RESERVATION_PET_INFO_NO
+	</select>
+	<update id="updateRejectReservation" parameterType="string">
+		UPDATE RESERVATION_INFO
+		   SET STATUS = 3
+		 WHERE RESERVATION_INFO_NO = #{reservationNo}
+	</update>
+	<update id="updateApprovalReservation" parameterType="string">
+		UPDATE RESERVATION_INFO
+		   SET STATUS = 2
+		 WHERE RESERVATION_INFO_NO = #{reservationNo}
+	</update>
+	<update id="updateProgressReservation" parameterType="string">
+		UPDATE RESERVATION_INFO
+		   SET STATUS = 5
+		 WHERE RESERVATION_INFO_NO = #{reservationNo}
+	</update>
+	<update id="updateCompleteReservation" parameterType="string">
+		UPDATE RESERVATION_INFO
+		   SET STATUS = 6
+		 WHERE RESERVATION_INFO_NO = #{reservationNo}
+	</update>
 </mapper>
