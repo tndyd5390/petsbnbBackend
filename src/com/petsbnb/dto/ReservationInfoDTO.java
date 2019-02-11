@@ -4,6 +4,7 @@ public class ReservationInfoDTO {
 	private String reservationInfoNo;
 	private String imp_uid;
 	private String merchant_uid;
+	private String reservationName;
 	private String amount;
 	private String buyerAddr;
 	private String buyerEmail;
@@ -24,6 +25,12 @@ public class ReservationInfoDTO {
 	private String regNo;
 	private String chgDt;
 	private String chgNo;
+	public String getReservationName() {
+		return reservationName;
+	}
+	public void setReservationName(String reservationName) {
+		this.reservationName = reservationName;
+	}
 	public String getReservationInfoNo() {
 		return reservationInfoNo;
 	}
