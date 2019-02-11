@@ -354,6 +354,7 @@
 					END
 				)														AS status,
 		       UI.USER_NAME												AS userName,
+		       UI.DEVICE_TOKEN											AS deviceToken,
 		       UI.USER_PHONE											AS userPhone,
 		       CONCAT(UI.USER_ADDRESS, " ", UI.USER_ADDRESS_DETAIL)		AS userAddress
 		  FROM RESERVATION_INFO RI
@@ -399,4 +400,11 @@
 		   SET STATUS = 6
 		 WHERE RESERVATION_INFO_NO = #{reservationNo}
 	</update>
+	<select id="getServiceProviderName" parameterType="string" resultType="java.util.HashMap">
+		SELECT UI.USER_NAME AS userName
+		  FROM RESERVATION_INFO RI
+		 INNER JOIN USER_INFO UI
+		    ON RI.SERVICE_PROVIDER = UI.USER_NO
+		 WHERE RESERVATION_INFO_NO = #{reservationNo}
+	</select>
 </mapper>

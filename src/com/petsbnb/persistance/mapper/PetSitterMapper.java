@@ -28,4 +28,5 @@ public interface PetSitterMapper {
 	public int updateApprovalReservation(String reservationNo) throws Exception;
 	public int updateProgressReservation(String reservationNo) throws Exception;
 	public int updateCompleteReservation(String reservationNo) throws Exception;
+	public Map<String, Object> getServiceProviderName(String reservationNo) throws Exception;
 }

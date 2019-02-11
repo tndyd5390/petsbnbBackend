@@ -17,6 +17,7 @@ import com.petsbnb.persistance.mapper.PetSitterMapper;
 import com.petsbnb.service.IPetSitterServcie;
 import com.petsbnb.util.AES256Util;
 import com.petsbnb.util.CmmUtil;
+import com.petsbnb.util.HttpUtil;
 
 @Service("PetSitterService")
 public class PetSitterService implements IPetSitterServcie {
@@ -130,6 +131,12 @@ public class PetSitterService implements IPetSitterServcie {
 		Map<String, Object> reservationDetail = petSitterMapper.getPetSitterReservationDetail(reservationNo);
 		reservationDetail.put("userName", AES256Util.strDecode((String)reservationDetail.get("userName")));
 		reservationDetail.put("userPhone", AES256Util.strDecode((String)reservationDetail.get("userPhone")));
+		
+		HttpUtil.cancelIamport((String)reservationDetail.get("imp_uid"), "예약 반려");
+		
+		Map<String, Object> serviceProviderName = petSitterMapper.getServiceProviderName(reservationNo);
+		serviceProviderName.put("userName", AES256Util.strDecode((String)serviceProviderName.get("userName")));
+		HttpUtil.sendFcm("펫시팅이 반려되었습니다.", ((String)serviceProviderName.get("userName") + "님에게 요청한 펫시팅이 반려되었습니다."), (String)reservationDetail.get("deviceToken"));
 		return reservationDetail;
 	}
 
@@ -139,6 +146,9 @@ public class PetSitterService implements IPetSitterServcie {
 		Map<String, Object> reservationDetail = petSitterMapper.getPetSitterReservationDetail(reservationNo);
 		reservationDetail.put("userName", AES256Util.strDecode((String)reservationDetail.get("userName")));
 		reservationDetail.put("userPhone", AES256Util.strDecode((String)reservationDetail.get("userPhone")));
+		Map<String, Object> serviceProviderName = petSitterMapper.getServiceProviderName(reservationNo);
+		serviceProviderName.put("userName", AES256Util.strDecode((String)serviceProviderName.get("userName")));
+		HttpUtil.sendFcm("예약이 승인되었습니다.", ((String)serviceProviderName.get("userName") + "님에게 요청한 펫시팅이 수락되었습니다."), (String)reservationDetail.get("deviceToken"));
 		return reservationDetail;
 	}
 
@@ -148,6 +158,9 @@ public class PetSitterService implements IPetSitterServcie {
 		Map<String, Object> reservationDetail = petSitterMapper.getPetSitterReservationDetail(reservationNo);
 		reservationDetail.put("userName", AES256Util.strDecode((String)reservationDetail.get("userName")));
 		reservationDetail.put("userPhone", AES256Util.strDecode((String)reservationDetail.get("userPhone")));
+		Map<String, Object> serviceProviderName = petSitterMapper.getServiceProviderName(reservationNo);
+		serviceProviderName.put("userName", AES256Util.strDecode((String)serviceProviderName.get("userName")));
+		HttpUtil.sendFcm("펫시팅이 시작되었습니다.", ((String)serviceProviderName.get("userName") + "님에게 요청한 펫시팅이 시작되었습니다."), (String)reservationDetail.get("deviceToken"));
 		return reservationDetail;
 	}
 
@@ -157,6 +170,9 @@ public class PetSitterService implements IPetSitterServcie {
 		Map<String, Object> reservationDetail = petSitterMapper.getPetSitterReservationDetail(reservationNo);
 		reservationDetail.put("userName", AES256Util.strDecode((String)reservationDetail.get("userName")));
 		reservationDetail.put("userPhone", AES256Util.strDecode((String)reservationDetail.get("userPhone")));
+		Map<String, Object> serviceProviderName = petSitterMapper.getServiceProviderName(reservationNo);
+		serviceProviderName.put("userName", AES256Util.strDecode((String)serviceProviderName.get("userName")));
+		HttpUtil.sendFcm("펫시팅이 완료되었습니다.", ((String)serviceProviderName.get("userName") + "님에게 요청한 펫시팅이 완료되었습니다."), (String)reservationDetail.get("deviceToken"));
 		return reservationDetail;
 	}
 }
