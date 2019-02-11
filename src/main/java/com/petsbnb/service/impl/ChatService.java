@@ -24,12 +24,15 @@ public class ChatService implements IChatService{
 		String petsitterUserNo = req.get("petsitterUserNo").toString();
 		String tokenUserNo = "";
 		
-		if(nowUserNo == petsitterUserNo) {
+		System.out.println(nowUserNo);
+		System.out.println(propsUserNo);
+		System.out.println(petsitterUserNo);
+		
+		if(nowUserNo.equals(petsitterUserNo)) {
 			tokenUserNo = propsUserNo;
 		}else {
 			tokenUserNo = petsitterUserNo;
 		}
-		
 		
 		return chatMapper.getToken(tokenUserNo);
 	}
