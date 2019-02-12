@@ -166,13 +166,64 @@ public class PetSitterService implements IPetSitterServcie {
 
 	@Override
 	public Map<String, Object> updateCompleteReservation(String reservationNo) throws Exception {
+		
 		petSitterMapper.updateCompleteReservation(reservationNo);
+		
 		Map<String, Object> reservationDetail = petSitterMapper.getPetSitterReservationDetail(reservationNo);
 		reservationDetail.put("userName", AES256Util.strDecode((String)reservationDetail.get("userName")));
 		reservationDetail.put("userPhone", AES256Util.strDecode((String)reservationDetail.get("userPhone")));
+		
 		Map<String, Object> serviceProviderName = petSitterMapper.getServiceProviderName(reservationNo);
 		serviceProviderName.put("userName", AES256Util.strDecode((String)serviceProviderName.get("userName")));
+		
 		HttpUtil.sendFcm("펫시팅이 완료되었습니다.", ((String)serviceProviderName.get("userName") + "님에게 요청한 펫시팅이 완료되었습니다."), (String)reservationDetail.get("deviceToken"));
+		
+		Map<Object, Object> pointMap = new HashMap<>();
+		double reserveRate = (double)petSitterMapper.getReserveRate().get("reserveRate");
+		pointMap.put("reservationInfoNo", reservationDetail.get("reservationInfoNo"));
+		pointMap.put("userNo", reservationDetail.get("serviceProviderNo"));
+		pointMap.put("getPoint", ((int)reservationDetail.get("amount") * reserveRate));
+		petSitterMapper.insertPoint(pointMap);
+		
 		return reservationDetail;
+	}
+
+	@Override
+	public Map<Object, Object> getPetSitterPointInfo(String userNo) throws Exception {
+		Map<Object, Object> resultMap = new HashMap<>();
+		
+		List<Map<String, Object>> getPointMap = petSitterMapper.getPetSitterGetPoint(userNo);
+		resultMap.put("getPoint", getPointMap);
+		
+		List<Map<String, Object>> refundPointMap = petSitterMapper.getPetSitterRefundPoint(userNo);
+		resultMap.put("refundPoint", refundPointMap);
+		
+		Map<String, Object> totalPointMap = petSitterMapper.getPetSitterTotalPoint(userNo);
+		if(totalPointMap != null) resultMap.put("totalPoint", totalPointMap.get("totalPoint"));
+		else resultMap.put("totalPoint", 0);
+		
+		Map<String, Object> userImageMap = petSitterMapper.getUserImage(userNo);
+		if(userImageMap != null)resultMap.put("userImage", userImageMap.get("userImage"));
+		else resultMap.put("userImage", null);
+		
+		return resultMap;
+	}
+
+	@Override
+	public Map<Object, Object> requestRefund(Map<String, Object> refundMap) throws Exception {
+		petSitterMapper.insertRequestRefund(refundMap);
+		Map<Object, Object> resultMap = new HashMap<>();
+		
+		List<Map<String, Object>> getPointMap = petSitterMapper.getPetSitterGetPoint((String)refundMap.get("userNo"));
+		resultMap.put("getPoint", getPointMap);
+		
+		List<Map<String, Object>> refundPointMap = petSitterMapper.getPetSitterRefundPoint((String)refundMap.get("userNo"));
+		resultMap.put("refundPoint", refundPointMap);
+		
+		Map<String, Object> totalPointMap = petSitterMapper.getPetSitterTotalPoint((String)refundMap.get("userNo"));
+		if(totalPointMap != null) resultMap.put("totalPoint", totalPointMap.get("totalPoint"));
+		else resultMap.put("totalPoint", 0);
+		
+		return resultMap;
 	}
 }

@@ -356,7 +356,8 @@
 		       UI.USER_NAME												AS userName,
 		       UI.DEVICE_TOKEN											AS deviceToken,
 		       UI.USER_PHONE											AS userPhone,
-		       CONCAT(UI.USER_ADDRESS, " ", UI.USER_ADDRESS_DETAIL)		AS userAddress
+		       CONCAT(UI.USER_ADDRESS, " ", UI.USER_ADDRESS_DETAIL)		AS userAddress,
+		       RI.SERVICE_PROVIDER										AS serviceProviderNo
 		  FROM RESERVATION_INFO RI
 		 INNER JOIN USER_INFO UI
 		    ON RI.SERVICE_RECEIVER = UI.USER_NO
@@ -407,4 +408,93 @@
 		    ON RI.SERVICE_PROVIDER = UI.USER_NO
 		 WHERE RESERVATION_INFO_NO = #{reservationNo}
 	</select>
+	<insert id="insertPoint" parameterType="java.util.HashMap">
+		INSERT INTO POINT_INFO
+		(
+			RESERVATION_INFO_NO,
+			USER_NO,
+			GET_POINT,
+			GET_POINT_DATE,
+			STATUS,
+			REG_DT,
+			REG_NO
+		)
+		VALUES
+		(
+			#{reservationInfoNo},
+			#{userNo},
+			#{getPoint},
+			NOW(),
+			1,
+			NOW(),
+			#{userNo}
+		)
+	</insert>
+	<select id="getReserveRate" resultType="java.util.HashMap">
+		SELECT RESERVE_RATE AS reserveRate
+		  FROM RESERVE_RATE
+	</select>
+	<select id="getPetSitterGetPoint" parameterType="string" resultType="java.util.HashMap">
+		SELECT POINT_INFO_NO					AS pointInfoNo,
+			   GET_POINT						AS getPoint,
+		       (SUBSTR(GET_POINT_DATE, 1, 10))	AS getPointDate
+		  FROM POINT_INFO
+		 WHERE USER_NO = #{userNo} AND REFUND_POINT = 0
+		 ORDER BY GET_POINT_DATE DESC
+	</select>
+	<select id="getPetSitterRefundPoint" parameterType="string" resultType="java.util.HashMap">
+		SELECT POINT_INFO_NO							AS pointInfoNo,
+			   REFUND_POINT	* -1						AS refundPoint,
+		       (SUBSTR(REFUND_POINT_DATE, 1, 10))		AS refundPointDate,
+		       (
+		       		CASE STATUS
+		       			WHEN "1" THEN "받은 포인트"
+		       			WHEN "2" THEN "처리중"
+		       			WHEN "3" THEN "처리 완료"
+		       			WHEN "4" THEN "처리 보류"
+		       		END
+		       )										AS status
+		  FROM POINT_INFO
+		 WHERE USER_NO = #{userNo} AND GET_POINT = 0 AND STATUS != 1
+		 ORDER BY REFUND_POINT_DATE DESC
+	</select>
+	<select id="getPetSitterTotalPoint" parameterType="string" resultType="java.util.HashMap">
+		 SELECT SUM(
+					CASE STATUS 
+						WHEN "1" THEN GET_POINT 
+		                WHEN "2" THEN REFUND_POINT
+		                WHEN "3" THEN REFUND_POINT 
+					END
+		            ) 									AS totalPoint
+		   FROM POINT_INFO
+		  GROUP BY USER_NO
+		 HAVING USER_NO = #{userNo}
+	</select>
+	<select id="getUserImage" parameterType="string" resultType="java.util.HashMap">
+		SELECT FI.FILE_NAME AS userImage
+		  FROM USER_INFO UI
+		 INNER JOIN FILE_INFO FI
+		    ON UI.IMAGE_FILE_NO = FI.FILE_NO
+		 WHERE USER_NO = #{userNo}
+	</select>
+	<insert id="insertRequestRefund" parameterType="java.util.HashMap">
+		INSERT INTO POINT_INFO
+		(
+		    USER_NO,
+		    REFUND_POINT,
+		    REFUND_POINT_DATE,
+		    REG_DT,
+		    REG_NO,
+		    STATUS
+		)
+		VALUES
+		(
+		    #{userNo},
+		    #{refundPoint},
+		    NOW(),
+		    NOW(),
+		    #{userNo},
+		    2
+		)
+	</insert>
 </mapper>

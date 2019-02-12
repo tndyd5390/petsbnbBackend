@@ -24,4 +24,6 @@ public interface IPetSitterServcie {
 	public Map<String, Object> updateApprovalReservation(String reservationNo) throws Exception;
 	public Map<String, Object> updateProgressReservation(String reservationNo) throws Exception;
 	public Map<String, Object> updateCompleteReservation(String reservationNo) throws Exception;
+	public Map<Object, Object> getPetSitterPointInfo(String userNo) throws Exception;
+	public Map<Object, Object> requestRefund(Map<String, Object> refundMap) throws Exception;
 }

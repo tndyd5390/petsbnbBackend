@@ -605,4 +605,36 @@ public class PetSitterController {
 		log.info(this.getClass() + ".completeReservation end!!!");
 		return reservationDetail;
 	}
+	
+	@RequestMapping(value="/petSitter/getPetSitterPointInfo", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> getPetSitterPointInfo(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getPetSitterPointInfo start!!!");
+		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		Map<Object, Object> resultMap = petSitterService.getPetSitterPointInfo(userNo);
+		
+		log.info(this.getClass() + ".getPetSitterPointInfo end!!!");
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/petSitter/requestRefund", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> requestRefund(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".requestRefund start!!!");
+		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : "+ userNo);
+		String refundPointStr = CmmUtil.nvl((String)param.get("refundPointInput"));
+		log.info("refundPoint : " + refundPointStr);
+		int refundPoint = Integer.parseInt(refundPointStr) * -1;
+		Map<String, Object> refundMap = new HashMap<>();
+		refundMap.put("userNo", userNo);
+		refundMap.put("refundPoint", refundPoint);
+		
+		Map<Object, Object> resultMap = new HashMap<>();
+		resultMap = petSitterService.requestRefund(refundMap);
+		
+		log.info(this.getClass() + ".requestRefund end!!!");
+		return resultMap;
+	}
 }
