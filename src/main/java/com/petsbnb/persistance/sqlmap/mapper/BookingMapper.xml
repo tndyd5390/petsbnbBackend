@@ -138,4 +138,21 @@
 						 )
 	</select>
 	
+	<insert id="insertReview" parameterType="HashMap">
+		INSERT INTO PETSITTER_REVIEW 
+		(
+			PETSITTER_NO,
+			USER_NO,
+			STARTCOUNT,
+			REVIEW_TEXT,
+			REG_USER_NO,
+			REG_DATE
+		) VALUES (
+			#{petsitterNo},
+			#{userNo},
+			#{reviewText},
+			#{userNo},
+			now()
+		)
+	</insert>
 </mapper>

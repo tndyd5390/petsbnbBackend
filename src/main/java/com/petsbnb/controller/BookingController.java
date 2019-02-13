@@ -42,6 +42,7 @@ public class BookingController {
 		
 		HashMap<Object, Object> rslt = bookingService.getBookingDetail(req);
 		
+		
 		log.info(this.getClass().getName() + "end!!");
 		return rslt;
 	}
@@ -59,5 +60,19 @@ public class BookingController {
 		
 		log.info(this.getClass().getName() + " end!!");
 		return rsltList;
+	}
+	
+	@RequestMapping("/booking/reviewWrite")
+	public @ResponseBody HashMap<Object, Object> reviewWrite(@RequestBody HashMap<Object, Object> req) throws Exception{
+		log.info(this.getClass().getName() + " start!!");
+		
+		log.info("userNo : "+ req.get("userNo"));
+		log.info("petsitterNo : "+ req.get("petsitterNo"));
+		log.info("starCount : "+ req.get("starCount"));
+		log.info("reviewText : "+ req.get("reviewText"));
+		
+		log.info(this.getClass().getName() + " end!!");
+		
+		return bookingService.insertReview(req);
 	}
 }
