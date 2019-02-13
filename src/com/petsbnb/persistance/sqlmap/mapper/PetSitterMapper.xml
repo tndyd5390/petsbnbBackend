@@ -497,4 +497,9 @@
 		    2
 		)
 	</insert>
+	<select id="getReservationInfoNoFromPointInfo" parameterType="string" resultType="java.util.HashMap">
+		SELECT RESERVATION_INFO_NO AS reservationInfoNo
+		  FROM POINT_INFO
+		 WHERE POINT_INFO_NO = #{pointInfoNo}
+	</select>
 </mapper>

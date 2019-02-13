@@ -226,4 +226,20 @@ public class PetSitterService implements IPetSitterServcie {
 		
 		return resultMap;
 	}
+
+	@Override
+	public Map<Object, Object> getPointDetail(String pointInfoNo) throws Exception {
+		
+		Map<String, Object> reservationInfoMap = petSitterMapper.getReservationInfoNoFromPointInfo(pointInfoNo);
+		System.out.println(reservationInfoMap.get("reservationInfoNo"));
+		Map<String, Object> reservationDetail = petSitterMapper.getPetSitterReservationDetail(reservationInfoMap.get("reservationInfoNo") + "");
+		reservationDetail.put("userName", AES256Util.strDecode((String)reservationDetail.get("userName")));
+		reservationDetail.put("userPhone", AES256Util.strDecode((String)reservationDetail.get("userPhone")));
+		
+		List<Map<String, Object>> reservationPetDetail = petSitterMapper.getPetSitterReservationPetDetail(reservationInfoMap.get("reservationInfoNo") + "");
+		Map<Object, Object> resultMap = new HashMap<>();
+		resultMap.put("reservationDetail", reservationDetail);
+		resultMap.put("reservationPetDetail", reservationPetDetail);
+		return resultMap;
+	}
 }

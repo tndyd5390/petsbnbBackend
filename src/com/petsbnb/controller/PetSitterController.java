@@ -637,4 +637,17 @@ public class PetSitterController {
 		log.info(this.getClass() + ".requestRefund end!!!");
 		return resultMap;
 	}
+	
+	@RequestMapping(value="/petSitter/getPointDetail", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> getPointDetail(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getPointDetail start!!!");
+		
+		String pointInfoNo = CmmUtil.nvl((String)param.get("pointInfoNo"));
+		log.info("pointInfoNo : " + pointInfoNo);
+		
+		Map<Object, Object> resultMap = petSitterService.getPointDetail(pointInfoNo);
+		
+		log.info(this.getClass() + ".getPointDetail end!!!");
+		return resultMap;
+	}
 }
