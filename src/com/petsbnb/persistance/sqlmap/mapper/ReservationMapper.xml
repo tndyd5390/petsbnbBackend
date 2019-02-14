@@ -107,7 +107,9 @@
 	<select id="getReservationDetail" parameterType="string" resultType="java.util.HashMap">
 		SELECT FI.FILE_NAME						AS fileName,
 		       PI.PETSITTER_NAME				AS petsitterName,
+ 			   PI.PETSITTER_NO 					AS petsitterNo,
 		       PI.PETSITTER_INTRODUCE_ONELINE	AS petsitterIntroOne,
+           	   RI.REG_DT 						AS regDt,
 		       RI.STDATE						AS stDate,
 		       RI.EDDATE						AS edDate,
 		       RI.CHECKIN						AS checkin,

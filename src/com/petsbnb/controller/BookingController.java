@@ -67,6 +67,7 @@ public class BookingController {
 		log.info(this.getClass().getName() + " start!!");
 		
 		log.info("userNo : "+ req.get("userNo"));
+		log.info("reservationNo : "+ req.get("reservationNo"));
 		log.info("petsitterNo : "+ req.get("petsitterNo"));
 		log.info("starCount : "+ req.get("starCount"));
 		log.info("reviewText : "+ req.get("reviewText"));

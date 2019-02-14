@@ -353,6 +353,8 @@
 					ELSE "펫시팅 완료" 
 					END
 				)														AS status,
+			   RI.SERVICE_PROVIDER										AS serviceProvider,
+			   RI.SERVICE_RECEIVER										AS serviceReceiver,
 		       UI.USER_NAME												AS userName,
 		       UI.DEVICE_TOKEN											AS deviceToken,
 		       UI.USER_PHONE											AS userPhone,
