@@ -529,7 +529,7 @@ public class UserController {
         conn.setRequestProperty("Authorization", "key=" + apiKey);
         conn.setDoOutput(true);
 
-        String input = "{\"notification\" : {\"title\" : \" 새로운 펫시팅 요청 \", \"body\" : \"박수용님이 펫시팅을 요청했습니다.\"}, \"to\":\"dKe-yRJY-sQ:APA91bE0vR-f5m52REPUd_v47Xz59eIZJKNTffBszQboJ7vPHuV2z7VItlMfLQVdnpRbIlvGMsWId5pEXnHVyfnRcb4DyXiyjD9FHg21Z9MEBIJHAhi2mc6w_CcsAg77xnTmxwrHRxnc\"}";
+        String input = "{\"notification\" : {\"title\" : \" 새로운 펫시팅 요청 \", \"body\" : \"박수용님이 펫시팅을 요청했습니다.\"}, \"to\":\"cF3Gncbtshw:APA91bF1VsMz2k_l8FInsBmPIQ-Jecjido7F1qSH4KbAnCuK2SF1XgNUB4529JDVoiyY96TjAUJHibSF14eDQ3LhCcLi0Xn_y6048DhiAZ8Kq6_-GAswd-AHoDevSjLCFE5Ofic6uZIH\"}";
 
         OutputStream os = conn.getOutputStream();
         
@@ -539,6 +539,9 @@ public class UserController {
         os.close();
 
         int responseCode = conn.getResponseCode();
+        System.out.println("\nSending 'POST' request to URL : " + url);
+        System.out.println("Post parameters : " + input);
+        System.out.println("Response Code : " + responseCode);
         
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         String inputLine;
@@ -547,7 +550,9 @@ public class UserController {
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
-        in.close();  
+        in.close();
+        // print result
+        System.out.println(response.toString());        
 		log.info(this.getClass() + ".fcmTest end!!!");
 	}
 	

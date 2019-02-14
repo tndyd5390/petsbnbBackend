@@ -17,4 +17,6 @@ public interface BookingMapper {
 	List<HashMap<Object, Object>> getBookingDetailReviews(HashMap<Object, Object> req) throws Exception;
 
 	HashMap<Object, Object> getPetsitterUserImage(String petsitterNo) throws Exception;
+
+	int insertReview(HashMap<Object, Object> req) throws Exception;
 }

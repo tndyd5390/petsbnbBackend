@@ -11,4 +11,57 @@
 		WHERE
 			USER_NO = #{tokenUserNo}
 	</select>
+	
+	<insert id="insertChatRoom" parameterType="HashMap">
+		
+		INSERT INTO CHATROOM_INFO
+		(
+			CHATROOM_ID,
+			USER_NO,
+			PETSITTER_USER_NO,
+			PETSITTER_NO,
+			REG_DATE
+		) VALUES (
+			#{roomId},
+			#{userNo},
+			#{petsitterUserNo},
+			#{petsitterNo},
+			now()
+		)
+		
+	</insert>
+	
+	<select id="getChatList" parameterType="HashMap" resultType="HashMap">
+		SELECT 	
+      		U.USER_NAME AS userName, 
+			CR.CHATROOM_ID AS roomId, 
+			CR.USER_NO AS userNo, 
+			CR.PETSITTER_NO AS petsitterNo, 
+			CR.PETSITTER_USER_NO AS petsitterUserNo 
+		FROM 
+			(
+				SELECT 
+					C.PETSITTER_USER_NO, C.USER_NO, C.CID1, C.CID2 FROM
+				(
+					SELECT 
+						A.PETSITTER_USER_NO,B.USER_NO, A.CHATROOM_ID AS CID1, B.CHATROOM_ID AS CID2
+					FROM
+						(SELECT CHATROOM_ID, USER_NO,PETSITTER_USER_NO FROM CHATROOM_INFO WHERE USER_NO = #{userNo}) A LEFT OUTER JOIN
+						(SELECT CHATROOM_ID, USER_NO,PETSITTER_USER_NO FROM CHATROOM_INFO WHERE PETSITTER_USER_NO = #{userNo}) B
+						ON A.CHATROOM_ID = B.CHATROOM_ID 
+					UNION
+					SELECT 
+						A.PETSITTER_USER_NO,B.USER_NO, A.CHATROOM_ID AS CID1, B.CHATROOM_ID AS CID2
+					FROM
+						(SELECT CHATROOM_ID, USER_NO,PETSITTER_USER_NO FROM CHATROOM_INFO WHERE USER_NO = #{userNo}) A RIGHT OUTER JOIN
+						(SELECT CHATROOM_ID, USER_NO,PETSITTER_USER_NO FROM CHATROOM_INFO WHERE PETSITTER_USER_NO = #{userNo}) B
+						ON A.CHATROOM_ID = B.CHATROOM_ID
+					) C
+				) D,
+			USER_INFO U,
+			CHATROOM_INFO CR
+		WHERE 
+			(U.USER_NO = D.USER_NO OR U.USER_NO = D.PETSITTER_USER_NO) AND 
+			(CR.CHATROOM_ID = D.CID1 OR CR.CHATROOM_ID = D.CID2)
+	</select>
 </mapper>

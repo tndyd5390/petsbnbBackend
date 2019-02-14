@@ -12,4 +12,8 @@ public interface IChatService {
 
 	ChatDTO getToken(HashMap<Object, Object> req) throws Exception;
 
+	void createChatRoom(HashMap<Object, Object> req) throws Exception;
+
+	List<HashMap<Object, Object>> getChatList(HashMap<Object, Object> req) throws Exception;
+
 }
