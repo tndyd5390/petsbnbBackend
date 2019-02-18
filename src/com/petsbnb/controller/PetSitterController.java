@@ -650,4 +650,18 @@ public class PetSitterController {
 		log.info(this.getClass() + ".getPointDetail end!!!");
 		return resultMap;
 	}
+	
+	@RequestMapping(value="/petSitter/gotoPetDetail", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> gotoPetDetail(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".gotoPetDetail start!!!");
+		
+		String petNo = CmmUtil.nvl((String)param.get("petNo"));
+		log.info("petNo : " + petNo);
+		
+		Map<Object, Object> resultMap = petSitterService.getPetDetail(petNo);
+		
+		
+		log.info(this.getClass() + ".gotoPetDetail end!!!");
+		return resultMap;
+	}
 }
