@@ -504,4 +504,65 @@
 		  FROM POINT_INFO
 		 WHERE POINT_INFO_NO = #{pointInfoNo}
 	</select>
+	<select id="getPetDetail" parameterType="string" resultType="java.util.HashMap">
+		SELECT PI.PET_NO						AS petNo,
+			   PI.USER_NO						AS userNo,
+		       PI.PET_NAME						AS petName,
+		       PI.PET_GENDER					AS petGender,
+		       PI.PET_KIND						AS petKind,
+		       PI.PET_WEIGHT					AS petWeight,
+		       PI.PET_NEUTRALIZATION			AS petNeutralization,
+		       (
+		       CASE PI.PET_MEETANOTHERPET
+		       		WHEN '0' THEN '좋아하며 잘 어울려요'
+		       		WHEN '1' THEN '별로 관심이 없어요'
+		       		WHEN '2' THEN '무서워하며 피하려고 해요'
+		       		ELSE '짖으면서 달려들어요'
+		       	END
+		       )								AS petMeetAnotherPet,
+		       (
+		       CASE PI.PET_BARKS
+		       		WHEN '0' THEN '거의 짖지 않아요'
+		       		WHEN '1' THEN '외부 소음에만 짖는 편이에요'
+		       		ELSE '이유없이 헛짖음을 자주해요'
+		       	END
+		       )								AS petBarks,
+		       (
+		       CASE PI.PET_BOWELTRAINING
+		       		WHEN '0' THEN '배변 패드에 잘 가려요'
+		       		WHEN '1' THEN '아직 배변 실수가 있어요'
+		       		ELSE '실외배변만 해요'
+		       	END
+		       )								AS petBowelTraining,	
+		       PI.PET_COMPREHENSIVE_VACCINE		AS petComprehensiveVaccine,
+		       PI.PET_RABIESVACCINATION			AS petRabiesVaccination,
+		       PI.PET_HEARTWORM					AS petHeartworm,
+		       PI.PET_CORONAENTERITIS			AS petCoronaenteritis,
+		       PI.PET_KENNELKOV					AS petKennelkov,
+		       PI.PET_NONEVACCINE				AS petNoneVaccine,	
+		       (
+		       CASE PI.PET_UNFAMILIAR
+		       		WHEN '0' THEN '좋아하며 잘 어울려요'
+		       		WHEN '1' THEN '별로 관심이 없어요'
+		       		WHEN '2' THEN '무서워하며 피하려고 해요'
+		       		ELSE '짖으면서 달려들어요'
+		       	END
+		       )								AS petUnfamiliar,
+		       PI.PET_SPECIALMATTERS			AS petSpecialMatters,
+		       PI.PET_REFERENCE					AS petReference,
+		       PFI.PET_FILE_NAME				AS petFileName,
+		       PFI.REG_DT						AS regDt,
+		       PI.PET_BIRTHDAY					AS petBirthday
+		  FROM PET_INFO PI
+		 INNER JOIN PET_FILE_INFO PFI
+		    ON PI.PET_NO = PFI.PET_NO
+		 WHERE PI.PET_NO = #{petNo}
+		 ORDER BY PFI.REG_DT DESC
+		 LIMIT 1
+	</select>
+	<select id="getPetImages" parameterType="string" resultType="java.util.HashMap">
+		SELECT PET_FILE_NAME AS petFileName
+		  FROM PET_FILE_INFO
+		 WHERE PET_NO = #{petNo}
+	</select>
 </mapper>

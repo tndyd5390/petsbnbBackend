@@ -27,4 +27,5 @@ public interface IPetSitterServcie {
 	public Map<Object, Object> getPetSitterPointInfo(String userNo) throws Exception;
 	public Map<Object, Object> requestRefund(Map<String, Object> refundMap) throws Exception;
 	public Map<Object, Object> getPointDetail(String pointInfoNo) throws Exception;
+	public Map<Object, Object> getPetDetail(String petNo) throws Exception;
 }

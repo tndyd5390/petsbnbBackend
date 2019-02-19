@@ -1,5 +1,6 @@
 package com.petsbnb.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -240,6 +241,20 @@ public class PetSitterService implements IPetSitterServcie {
 		Map<Object, Object> resultMap = new HashMap<>();
 		resultMap.put("reservationDetail", reservationDetail);
 		resultMap.put("reservationPetDetail", reservationPetDetail);
+		return resultMap;
+	}
+
+	@Override
+	public Map<Object, Object> getPetDetail(String petNo) throws Exception {
+		Map<String, Object> petDetail = petSitterMapper.getPetDetail(petNo);
+		List<Map<String, Object>> petImageMap = petSitterMapper.getPetImages(petNo);
+		List<String> petImageFileNames = new ArrayList<>();
+		for(Map<String, Object> petImage: petImageMap){
+			petImageFileNames.add((String)petImage.get("petFileName"));
+		}
+		Map<Object, Object> resultMap = new HashMap<>();
+		resultMap.put("petDetail", petDetail);
+		resultMap.put("petImages", petImageFileNames);
 		return resultMap;
 	}
 }

@@ -37,4 +37,6 @@ public interface PetSitterMapper {
 	public Map<String, Object> getUserImage(String userNo) throws Exception;
 	public int insertRequestRefund(Map<String, Object> refundMap) throws Exception;
 	public Map<String, Object> getReservationInfoNoFromPointInfo(String pointInfoNo) throws Exception;
+	public Map<String, Object> getPetDetail(String petNo) throws Exception;
+	public List<Map<String, Object>> getPetImages(String petNo) throws Exception;
 }
