@@ -23,7 +23,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.petsbnb.dto.PetFileDTO;
 import com.petsbnb.dto.PetSitterDTO;
 import com.petsbnb.dto.PetSitterFileDTO;
-import com.petsbnb.dto.ReservationInfoDTO;
 import com.petsbnb.service.IPetSitterServcie;
 import com.petsbnb.util.AES256Util;
 import com.petsbnb.util.CmmUtil;
@@ -525,84 +524,5 @@ public class PetSitterController {
 		
 		log.info(this.getClass() + ".getPDTO end!!!");
 		return pDTO;
-	}
-	
-	@RequestMapping(value="/petSitter/petSitterReservationList.do", method=RequestMethod.POST)
-	public @ResponseBody List<Map<String, Object>> petSitterReservationList(@RequestBody Map<Object, Object> param) throws Exception{
-		log.info(this.getClass() + ".petSitterReservationList start!!!");
-		
-		String userNo = CmmUtil.nvl((String) param.get("userNo"));
-		log.info("userNo : " + userNo);
-		
-		List<Map<String, Object>> reservationList = petSitterService.getPetSitterReservationList(userNo);
-		if(reservationList == null) reservationList = new ArrayList<>();
-		
-		log.info(this.getClass() + ".petSitterReservationList end!!!");
-		return reservationList;
-	}
-	
-	@RequestMapping(value="/petSitter/petSitterReservationDetail", method=RequestMethod.POST)
-	public @ResponseBody Map<Object, Object> getReservationDetail(@RequestBody Map<Object, Object> param) throws Exception{
-		log.info(this.getClass() + ".getReservationDetail start!!!");
-		
-		String reservationNo = CmmUtil.nvl((String)param.get("reservationNo"));
-		log.info("reservationNo : " + reservationNo);
-		
-		Map<Object, Object> resultMap = petSitterService.getPetSitterReservationDetail(reservationNo);
-		
-		log.info(this.getClass() + ".getReservationDetail end!!!");
-		return resultMap;
-	}
-	
-	@RequestMapping(value="/petSitter/rejectReservation", method=RequestMethod.POST)
-	public @ResponseBody Map<String, Object> rejectReservation(@RequestBody Map<Object, Object> param) throws Exception{
-		log.info(this.getClass() + ".rejectReservation start!!!");
-		
-		String reservationNo = CmmUtil.nvl((String)param.get("reservationNo"));
-		log.info("reservationNo : " + reservationNo);
-		
-		Map<String, Object> reservationDetail = petSitterService.updateRejectReservation(reservationNo);
-		
-		log.info(this.getClass() + ".rejectReservation end!!!");
-		return reservationDetail;
-	}
-	
-	@RequestMapping(value="/petSitter/approvalReservation", method=RequestMethod.POST)
-	public @ResponseBody Map<String, Object> approvalReservation(@RequestBody Map<Object, Object> param) throws Exception{
-		log.info(this.getClass() + ".approvalReservation start!!!");
-		
-		String reservationNo = CmmUtil.nvl((String)param.get("reservationNo"));
-		log.info("reservationNo : " + reservationNo);
-		
-		Map<String, Object> reservationDetail = petSitterService.updateApprovalReservation(reservationNo);
-		
-		log.info(this.getClass() + ".approvalReservation end!!!");
-		return reservationDetail;
-	}
-	
-	@RequestMapping(value="/petSitter/progressReservation", method=RequestMethod.POST)
-	public @ResponseBody Map<String, Object> progressReservation(@RequestBody Map<Object, Object> param) throws Exception{
-		log.info(this.getClass() + ".progressReservation start!!!");
-		
-		String reservationNo = CmmUtil.nvl((String)param.get("reservationNo"));
-		log.info("reservationNo : " + reservationNo);
-		
-		Map<String, Object> reservationDetail = petSitterService.updateProgressReservation(reservationNo);
-		
-		log.info(this.getClass() + ".progressReservation end!!");
-		return reservationDetail;
-	}
-	
-	@RequestMapping(value="/petSitter/completeReservation", method=RequestMethod.POST)
-	public @ResponseBody Map<String, Object> completeReservation(@RequestBody Map<Object, Object> param) throws Exception{
-		log.info(this.getClass() + ".completeReservation start!!!");
-		
-		String reservationNo = CmmUtil.nvl((String)param.get("reservationNo"));
-		log.info("reservationNo : " + reservationNo);
-		
-		Map<String, Object> reservationDetail = petSitterService.updateCompleteReservation(reservationNo);
-		
-		log.info(this.getClass() + ".completeReservation end!!!");
-		return reservationDetail;
 	}
 }

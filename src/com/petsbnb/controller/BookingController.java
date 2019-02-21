@@ -53,9 +53,7 @@ public class BookingController {
 		log.info("petsitterNo : "+ req.get("petsitterNo"));
 		log.info("reviewNow : "+ req.get("reviewNow"));
 		
-		
 		List<HashMap<Object, Object>> rsltList = bookingService.getMoreReview(req);
-		
 		
 		log.info(this.getClass().getName() + " end!!");
 		return rsltList;

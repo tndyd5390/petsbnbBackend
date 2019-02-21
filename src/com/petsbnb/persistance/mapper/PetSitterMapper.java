@@ -21,12 +21,4 @@ public interface PetSitterMapper {
 	public int updateStartReservationExposure(PetSitterDTO pDTO) throws Exception;
 	public int updateStopReservationExposure(PetSitterDTO pDTO) throws Exception;
 	public PetSitterDTO getPDTO(String petSitterNo) throws Exception;
-	public List<Map<String, Object>> getPetSitterReservationList(String userNo) throws Exception;
-	public Map<String, Object> getPetSitterReservationDetail(String reservationNo) throws Exception;
-	public List<Map<String, Object>> getPetSitterReservationPetDetail(String reservationNo) throws Exception;
-	public int updateRejectReservation(String reservationNo) throws Exception;
-	public int updateApprovalReservation(String reservationNo) throws Exception;
-	public int updateProgressReservation(String reservationNo) throws Exception;
-	public int updateCompleteReservation(String reservationNo) throws Exception;
-	public Map<String, Object> getServiceProviderName(String reservationNo) throws Exception;
 }

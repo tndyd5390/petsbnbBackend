@@ -46,8 +46,6 @@ public class ReservationController {
 		log.info("imp_uid : " + imp_uid);
 		String merchant_uid = CmmUtil.nvl((String)param.get("merchant_uid"));
 		log.info("merchant_uid : " + merchant_uid);
-		String reservationName = CmmUtil.nvl((String)param.get("reservationName"));
-		log.info("reservationName : " + reservationName);
 		String amount = CmmUtil.nvl((String)param.get("amount"));
 		log.info("amount : " + amount);
 		String buyerAddr = CmmUtil.nvl((String)param.get("buyer_addr"));
@@ -83,7 +81,6 @@ public class ReservationController {
 		ReservationInfoDTO rDTO = new ReservationInfoDTO();
 		rDTO.setImp_uid(imp_uid);
 		rDTO.setMerchant_uid(merchant_uid);
-		rDTO.setReservationName(reservationName);
 		rDTO.setAmount(amount);
 		rDTO.setBuyerAddr(buyerAddr);
 		rDTO.setBuyerEmail(buyerEmail);
@@ -109,9 +106,6 @@ public class ReservationController {
 		
 		boolean result = reservationService.insertReservationInfo(rDTO, petNoList);
 		
-		String token = reservationService.getServiceProviderToken(serviceProvider);
-		HttpUtil.sendFcm("새로운 펫시팅 요청", "새로운 펫시팅 요청이 있습니다. 확인해주세요.", token);
-		
 		Map<Object, Object> resultMap = new HashMap<>();
 		resultMap.put("result", result);
 		
@@ -119,54 +113,42 @@ public class ReservationController {
 		return resultMap;
 	}
 	
-	@RequestMapping(value="/reservation/getReservationList", method=RequestMethod.POST)
-	public @ResponseBody List<Map<String, Object>> getReservationList(@RequestBody Map<Object, Object> param) throws Exception{
-		log.info(this.getClass() + ".getReservationList start!!!");
+	@RequestMapping(value="/pay/paymentResult")
+	public void paymentResult(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".paymentResult start");
 		
-		String userNo = CmmUtil.nvl((String)param.get("userNo"));
-		log.info("userNo : " + userNo);
+		String pay_method = CmmUtil.nvl((String)param.get("pay_method"));
+		System.out.println("pay_method :" + pay_method);
+		String paid_amount= CmmUtil.nvl((String)param.get("paid_amount"));
+		System.out.println("paid_amount : " + paid_amount);
+		String status= CmmUtil.nvl((String)param.get("status"));
+		System.out.println("status : " + status);
+		String pg_provider= CmmUtil.nvl((String)param.get("pg_provider"));
+		System.out.println("pg_provider : " + pg_provider);
+		String pg_tid= CmmUtil.nvl((String)param.get("pg_tid"));
+		System.out.println("pg_tid : " + pg_tid);
+		String buyer_addr= CmmUtil.nvl((String)param.get("buyer_addr"));
+		System.out.println(buyer_addr);
+		String buyer_email= CmmUtil.nvl((String)param.get("buyer_email"));
+		System.out.println(buyer_email);
+		String buyer_name= CmmUtil.nvl((String)param.get("buyer_name"));
+		System.out.println(buyer_name);
+		String buyer_postcode= CmmUtil.nvl((String)param.get("buyer_postcode"));
+		System.out.println(buyer_postcode);
+		String buyer_tel= CmmUtil.nvl((String)param.get("buyer_tel"));
+		System.out.println(buyer_tel);
 		
-		List<Map<String, Object>> reservationList = reservationService.getReservationList(userNo);
 		
-		log.info(this.getClass() + ".getReservationList end!!!");
-		return reservationList;
+		
+		log.info(this.getClass() + "paymentResult end!!!");
 	}
-	
-	@RequestMapping(value="/reservation/getReservationDetail", method=RequestMethod.POST)
-	public @ResponseBody Map<String, Object> getReservationDetail(@RequestBody Map<Object, Object> param) throws Exception{
-		log.info(this.getClass() + ".getReservationDetail start!!!");
-		
-		String reservationNo = CmmUtil.nvl((String)param.get("id"));
-		log.info("reservationNo : " + reservationNo);
-		
-		Map<String, Object> reservationDetail = reservationService.getReservationDetatil(reservationNo);
-		if(reservationDetail == null) reservationDetail = new HashMap<>();
+	@RequestMapping(value="/pay/networkCheck")
+	public @ResponseBody boolean networkCheck() throws Exception{
+		log.info(this.getClass() + ".networkCheck start!!!");
 		
 		
-		log.info(this.getClass() + ".getReservationDetail end!!!");
-		return reservationDetail;
-	}
-	
-	@RequestMapping(value="/reservation/cancelReservation", method=RequestMethod.POST)
-	public @ResponseBody Map<String, Object> cancelReservation(@RequestBody Map<Object, Object> param) throws Exception{
-		log.info(this.getClass() + ".cancelReservation start!!!");
-			
-		String reservationNo = CmmUtil.nvl((String)param.get("reservationNo"));
-		log.info("reservationNo : " + reservationNo);
-		String reason = CmmUtil.nvl((String)param.get("reason"));
-		log.info("reason : " + reason);
-		
-		Map<String, Object> reservationDetail = reservationService.updateCancelReservation(reservationNo, reason);
-		
-		log.info(this.getClass() + ".cancelReservation end!!!");
-		return reservationDetail;
-	}
-	
-	@RequestMapping(value="/test/test", method=RequestMethod.POST)
-	public void test() throws Exception{
-		log.info("test start");
-		HttpUtil.cancelIamport("imp_297882245035", "병신");
-		log.info("test end");
+		log.info(this.getClass() + ".networkCheck end!!!");
+		return true;
 	}
 	
 	@RequestMapping(value="/payment/getToken", method=RequestMethod.POST)
