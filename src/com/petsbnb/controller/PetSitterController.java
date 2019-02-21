@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.petsbnb.dto.PetFileDTO;
 import com.petsbnb.dto.PetSitterDTO;
 import com.petsbnb.dto.PetSitterFileDTO;
+import com.petsbnb.dto.ReservationInfoDTO;
 import com.petsbnb.service.IPetSitterServcie;
 import com.petsbnb.util.AES256Util;
 import com.petsbnb.util.CmmUtil;
@@ -524,5 +525,143 @@ public class PetSitterController {
 		
 		log.info(this.getClass() + ".getPDTO end!!!");
 		return pDTO;
+	}
+	
+	@RequestMapping(value="/petSitter/petSitterReservationList.do", method=RequestMethod.POST)
+	public @ResponseBody List<Map<String, Object>> petSitterReservationList(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".petSitterReservationList start!!!");
+		
+		String userNo = CmmUtil.nvl((String) param.get("userNo"));
+		log.info("userNo : " + userNo);
+		
+		List<Map<String, Object>> reservationList = petSitterService.getPetSitterReservationList(userNo);
+		if(reservationList == null) reservationList = new ArrayList<>();
+		
+		log.info(this.getClass() + ".petSitterReservationList end!!!");
+		return reservationList;
+	}
+	
+	@RequestMapping(value="/petSitter/petSitterReservationDetail", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> getReservationDetail(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getReservationDetail start!!!");
+		
+		String reservationNo = CmmUtil.nvl((String)param.get("reservationNo"));
+		log.info("reservationNo : " + reservationNo);
+		
+		Map<Object, Object> resultMap = petSitterService.getPetSitterReservationDetail(reservationNo);
+		
+		log.info(this.getClass() + ".getReservationDetail end!!!");
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/petSitter/rejectReservation", method=RequestMethod.POST)
+	public @ResponseBody Map<String, Object> rejectReservation(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".rejectReservation start!!!");
+		
+		String reservationNo = CmmUtil.nvl((String)param.get("reservationNo"));
+		log.info("reservationNo : " + reservationNo);
+		
+		Map<String, Object> reservationDetail = petSitterService.updateRejectReservation(reservationNo);
+		
+		log.info(this.getClass() + ".rejectReservation end!!!");
+		return reservationDetail;
+	}
+	
+	@RequestMapping(value="/petSitter/approvalReservation", method=RequestMethod.POST)
+	public @ResponseBody Map<String, Object> approvalReservation(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".approvalReservation start!!!");
+		
+		String reservationNo = CmmUtil.nvl((String)param.get("reservationNo"));
+		log.info("reservationNo : " + reservationNo);
+		
+		Map<String, Object> reservationDetail = petSitterService.updateApprovalReservation(reservationNo);
+		
+		log.info(this.getClass() + ".approvalReservation end!!!");
+		return reservationDetail;
+	}
+	
+	@RequestMapping(value="/petSitter/progressReservation", method=RequestMethod.POST)
+	public @ResponseBody Map<String, Object> progressReservation(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".progressReservation start!!!");
+		
+		String reservationNo = CmmUtil.nvl((String)param.get("reservationNo"));
+		log.info("reservationNo : " + reservationNo);
+		
+		Map<String, Object> reservationDetail = petSitterService.updateProgressReservation(reservationNo);
+		
+		log.info(this.getClass() + ".progressReservation end!!");
+		return reservationDetail;
+	}
+	
+	@RequestMapping(value="/petSitter/completeReservation", method=RequestMethod.POST)
+	public @ResponseBody Map<String, Object> completeReservation(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".completeReservation start!!!");
+		
+		String reservationNo = CmmUtil.nvl((String)param.get("reservationNo"));
+		log.info("reservationNo : " + reservationNo);
+		
+		Map<String, Object> reservationDetail = petSitterService.updateCompleteReservation(reservationNo);
+		
+		log.info(this.getClass() + ".completeReservation end!!!");
+		return reservationDetail;
+	}
+	
+	@RequestMapping(value="/petSitter/getPetSitterPointInfo", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> getPetSitterPointInfo(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getPetSitterPointInfo start!!!");
+		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : " + userNo);
+		Map<Object, Object> resultMap = petSitterService.getPetSitterPointInfo(userNo);
+		
+		log.info(this.getClass() + ".getPetSitterPointInfo end!!!");
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/petSitter/requestRefund", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> requestRefund(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".requestRefund start!!!");
+		
+		String userNo = CmmUtil.nvl((String)param.get("userNo"));
+		log.info("userNo : "+ userNo);
+		String refundPointStr = CmmUtil.nvl((String)param.get("refundPointInput"));
+		log.info("refundPoint : " + refundPointStr);
+		int refundPoint = Integer.parseInt(refundPointStr) * -1;
+		Map<String, Object> refundMap = new HashMap<>();
+		refundMap.put("userNo", userNo);
+		refundMap.put("refundPoint", refundPoint);
+		
+		Map<Object, Object> resultMap = new HashMap<>();
+		resultMap = petSitterService.requestRefund(refundMap);
+		
+		log.info(this.getClass() + ".requestRefund end!!!");
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/petSitter/getPointDetail", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> getPointDetail(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".getPointDetail start!!!");
+		
+		String pointInfoNo = CmmUtil.nvl((String)param.get("pointInfoNo"));
+		log.info("pointInfoNo : " + pointInfoNo);
+		
+		Map<Object, Object> resultMap = petSitterService.getPointDetail(pointInfoNo);
+		
+		log.info(this.getClass() + ".getPointDetail end!!!");
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/petSitter/gotoPetDetail", method=RequestMethod.POST)
+	public @ResponseBody Map<Object, Object> gotoPetDetail(@RequestBody Map<Object, Object> param) throws Exception{
+		log.info(this.getClass() + ".gotoPetDetail start!!!");
+		
+		String petNo = CmmUtil.nvl((String)param.get("petNo"));
+		log.info("petNo : " + petNo);
+		
+		Map<Object, Object> resultMap = petSitterService.getPetDetail(petNo);
+		
+		
+		log.info(this.getClass() + ".gotoPetDetail end!!!");
+		return resultMap;
 	}
 }

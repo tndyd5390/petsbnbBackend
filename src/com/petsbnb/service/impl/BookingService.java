@@ -39,6 +39,19 @@ public class BookingService implements IBookingService{
 	public List<HashMap<Object, Object>> getMoreReview(HashMap<Object, Object> req) throws Exception {
 		
 		return  DecodeUtil.decodeName(bookingMapper.getBookingDetailReviews(req));
+	}
+
+	@Override
+	public HashMap<Object, Object> insertReview(HashMap<Object, Object> req) throws Exception {
+		HashMap<Object, Object> rslt = new HashMap<>();
+		int rsltYn = bookingMapper.insertReview(req);
+		if(rsltYn == 1) {
+			rslt.put("regSuccess", rsltYn);
+		}else {
+			rslt.put("regSuccess", 0);
+		}
+		
+		return rslt;
 	};
 	
 }

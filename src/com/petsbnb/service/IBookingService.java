@@ -10,5 +10,7 @@ public interface IBookingService {
 	HashMap<Object, Object> getBookingDetail(HashMap<Object, Object> req) throws Exception;
 
 	List<HashMap<Object, Object>> getMoreReview(HashMap<Object, Object> req) throws Exception;
+
+	HashMap<Object, Object> insertReview(HashMap<Object, Object> req) throws Exception;
 	
 }
