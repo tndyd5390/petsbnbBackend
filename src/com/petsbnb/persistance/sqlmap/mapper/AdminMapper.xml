@@ -11,6 +11,7 @@
 		where 
 			po.user_no = info.user_no 
 			and status = 2
+		order by POINT_INFO_NO DESC	
 	</select>
 	
 	<update id="updateStatus" parameterType="String" >
@@ -30,8 +31,9 @@
 			POINT_INFO po,
 			PETSITTER_INFO info
 		where 
-		po.user_no = info.user_no 
-		and status = 3
+			po.user_no = info.user_no 
+			and status = 3
+		order by POINT_INFO_NO DESC		
 	</select>
 	
 	<update id="updateStatus2" parameterType="String" >
