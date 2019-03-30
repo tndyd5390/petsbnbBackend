@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- JAVA와 연결할 Mapper 파일 설정 -->
+<mapper namespace="com.petsbnb.persistance.mapper.AdminMapper">
+	<select id="getPointinfo" resultType="Map">
+		select 
+			*
+		from 
+			POINT_INFO po,
+			PETSITTER_INFO info
+		where 
+			po.user_no = info.user_no 
+			and status = 2
+		order by POINT_INFO_NO DESC	
+	</select>
+	
+	<update id="updateStatus" parameterType="String" >
+		update 
+			POINT_INFO 
+		set 
+			STATUS = 3,
+			CHG_DT = NOW() 
+		where 
+			POINT_INFO_NO = #{pointNo}
+	</update>
+	
+	<select id="getPointPaymentinfo" resultType="Map">
+		select
+			* 
+		from
+			POINT_INFO po,
+			PETSITTER_INFO info
+		where 
+			po.user_no = info.user_no 
+			and status = 3
+		order by POINT_INFO_NO DESC		
+	</select>
+	
+	<update id="updateStatus2" parameterType="String" >
+		update 
+			POINT_INFO 
+		set
+			STATUS = 2 ,
+			CHG_DT = NOW()
+		where
+			POINT_INFO_NO = #{pointNo}
+	</update>
+</mapper>
