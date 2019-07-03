@@ -2,5 +2,66 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- JAVA와 연결할 Mapper 파일 설정 -->
 <mapper namespace="com.petsbnb.persistance.mapper.TimelineMapper">
-
+	<insert id="insertTimelineInfo" parameterType="java.util.HashMap">
+		INSERT INTO TIMELINE_INFO
+		(
+			RESERVATION_INFO_NO,
+			CONTENT,
+			EMOTION_RATE,
+			REG_DT,
+			REG_NO
+		)
+		VALUES
+		(
+			#{reservationNo},
+			#{content},
+			#{emotionRate},
+			now(),
+			#{userNo}
+		);
+		<selectKey resultType="string" keyProperty="timelineInfoNo" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+	
+	<insert id="insertTimelineFileInfo" parameterType="java.util.HashMap">
+		INSERT INTO TIMELINE_FILE_INFO
+		(
+			TIMELINE_INFO_NO,
+			TIMELINE_FILE_ORG_NAME,
+			TIMELINE_FILE_NAME,
+			TIMELINE_FILE_PATH,
+			REG_NO,
+			REG_DT
+		)
+		VALUES
+		(
+			#{timelineInfoNo},
+			#{fileName},
+			#{fileName},
+			#{filePath},
+			#{userNo},
+			now()
+		);
+	</insert>
+	<select id="getTimelineList" parameterType="string" resultType="java.util.HashMap">
+		SELECT TI.TIMELINE_INFO_NO,
+       		   TI.RESERVATION_INFO_NO,
+       		   TI.CONTENT,
+       		   TI.REG_DT,
+       		   TI.EMOTION_RATE,
+       		   TFI.TIMELINE_FILE_NAME,
+       		   (SELECT USER_NAME
+          		  FROM USER_INFO
+		 		 WHERE USER_NO = TI.REG_NO) AS REGISTER_NAME,
+	   		   (SELECT FILE_NAME 
+          		  FROM FILE_INFO 
+		 		 WHERE FILE_NO = (SELECT IMAGE_FILE_NO 
+                 		            FROM USER_INFO 
+						 		   WHERE USER_NO = TI.REG_NO)) AS REGISTER_FILE_NAME
+  		  FROM TIMELINE_INFO TI
+  		  JOIN TIMELINE_FILE_INFO TFI
+			ON TI.TIMELINE_INFO_NO = TFI.TIMELINE_INFO_NO
+ 		 WHERE TI.RESERVATION_INFO_NO = #{reservationNo};
+	</select>
 </mapper>

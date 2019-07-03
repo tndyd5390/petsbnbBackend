@@ -12,7 +12,7 @@
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://116.124.128.185:3306/petsbnb?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=Asia/Seoul" />
         <property name="username" value="root" />
-        <property name="password" value="epdlxjqnstjr!16" />
+        <property name="password" value="epdlxjqnstjr!19" />
     </bean>
     
 </beans>
